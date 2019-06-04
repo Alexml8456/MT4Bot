@@ -1,50 +1,54 @@
 package com.alex.services;
 
-import com.alex.telegram.TelegramBot;
+import com.opencsv.CSVParser;
+import com.opencsv.CSVParserBuilder;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
+
 import java.io.IOException;
+import java.io.Reader;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Slf4j
 public class Scheduling {
 
-    @Value("${send.photo.message.enable}")
-    private boolean enable;
 
     @Autowired
     private DataHolder dataHolder;
+
+    @Autowired
+    private FileOperations fileOperations;
 
 //    @Autowired
 //    private TelegramBot telegramBot;
 
 
     @Scheduled(cron = "0 0/1 * ? * *")
-    public void test() {
-        try (Stream<Path> walk = Files.walk(Paths.get("/home/alexml/.wine/drive_c/Program Files (x86)/ForexClub MT4/MQL4/Files"))) {
+    public void saveFiles() {
+        fileOperations.saveFilesToList();
 
-            List<String> result = walk.filter(Files::isRegularFile)
-                    .map(x -> x.toString()).collect(Collectors.toList());
+        dataHolder.getFileList().forEach((file) -> {
+            log.info(file);
 
-            result.forEach((file) -> {
-                log.info(new File(file).getName());
-            });
+            try {
+                Reader reader = Files.newBufferedReader(Paths.get(file));
+                CSVParser parser = new CSVParserBuilder().withSeparator(',').withIgnoreQuotations(true).build();
+                CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).withCSVParser(parser).build();
 
-        } catch (IOException e) {
-            log.error("Cannot read files from folder - " + e.getMessage(), e);
-        }
+
+                reader.close();
+                csvReader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
     }
-
 }

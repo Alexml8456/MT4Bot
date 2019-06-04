@@ -26,4 +26,23 @@ public class DataHolder {
     public void deleteSubscriber(String subscription) {
         subscriptions.remove(subscription);
     }
+
+    @Getter
+    private List<String> fileList = new ArrayList<>();
+
+    public void addFile(String file) {
+        if (!fileList.contains(file)) {
+            fileList.add(file);
+        }
+    }
+
+    public void clearFileList() {
+        try {
+            this.fileList.clear();
+        } catch (Exception e) {
+            log.error("File list cannot be clear");
+        }
+
+    }
+
 }
