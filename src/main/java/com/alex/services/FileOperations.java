@@ -40,5 +40,6 @@ public class FileOperations {
         } catch (IOException e) {
             log.error("Cannot read files from folder - " + e.getMessage(), e);
         }
+        log.info("List of files has been saved!");
     }
 }

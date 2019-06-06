@@ -42,6 +42,7 @@ public class DataHolder {
         } catch (Exception e) {
             log.error("File list cannot be clear");
         }
+        log.info("File list has been cleaned!");
 
     }
 

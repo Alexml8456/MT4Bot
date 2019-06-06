@@ -1,10 +1,15 @@
 package com.alex;
 
-import java.io.File;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
 
 public class Main {
-    public static void main(String[] args) {
-        String test = new File("/home/alexml/.wine/drive_c/Program Files (x86)/ForexClub MT4/MQL4/Files/ETHUSD_15.csv").getName();
-        System.out.println(test.replaceFirst("[.][^.]+$", ""));
+    public static void main(String[] args) throws IOException {
+
     }
 }

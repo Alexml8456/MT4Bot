@@ -22,9 +22,18 @@ public class Scheduling {
     @Autowired
     private DataHolder dataHolder;
 
+    @Autowired
+    private TradeCondition tradeCondition;
+
 
 //    @Autowired
 //    private TelegramBot telegramBot;
+
+    @Scheduled(cron = "0 50 23 ? * *")
+    public void deleteRows() {
+        csvOperations.deleteRowsForFile();
+        dataHolder.clearFileList();
+    }
 
 
     @Scheduled(cron = "0 0/1 * ? * *")
@@ -37,8 +46,8 @@ public class Scheduling {
             log.info("Key = {}, Value = {}", key, values.get(values.size() - 1).getTfxValue());
         });
 
-        timeMetrics.getCsvMetrics().clear();
+        tradeCondition.checkTradeCondition();
 
-        dataHolder.clearFileList();
+        timeMetrics.getCsvMetrics().clear();
     }
 }

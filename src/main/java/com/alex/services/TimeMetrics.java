@@ -17,9 +17,9 @@ public class TimeMetrics {
 
     @Getter
     @Setter
-    private Map<String, List<CSVFields>> csvMetrics = new ConcurrentSkipListMap<>();
+    private Map<Integer, List<CSVFields>> csvMetrics = new ConcurrentSkipListMap<>();
 
-    public void saveMetrics(String fileName, String dateTime, Double ssValue, Double tfxValue, Double closePrice) {
+    public void saveMetrics(Integer fileName, String dateTime, Double ssValue, Double tfxValue, Double closePrice) {
         csvMetrics.putIfAbsent(fileName, new ArrayList<>());
         csvMetrics.get(fileName).add(new CSVFields(dateTime, ssValue, tfxValue, closePrice));
     }
