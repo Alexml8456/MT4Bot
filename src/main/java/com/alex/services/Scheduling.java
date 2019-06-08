@@ -25,10 +25,6 @@ public class Scheduling {
     @Autowired
     private TradeCondition tradeCondition;
 
-
-//    @Autowired
-//    private TelegramBot telegramBot;
-
     @Scheduled(cron = "0 50 23 ? * *")
     public void deleteRows() {
         csvOperations.deleteRowsForFile();
@@ -36,15 +32,11 @@ public class Scheduling {
     }
 
 
-    @Scheduled(cron = "0 0/1 * ? * *")
+    @Scheduled(cron = "10 0/15 * ? * *")
     public void saveFiles() {
         fileOperations.saveFilesToList();
 
         csvOperations.saveValuesToMap();
-
-        timeMetrics.getCsvMetrics().forEach((key, values) -> {
-            log.info("Key = {}, Value = {}", key, values.get(values.size() - 1).getTfxValue());
-        });
 
         tradeCondition.checkTradeCondition();
 

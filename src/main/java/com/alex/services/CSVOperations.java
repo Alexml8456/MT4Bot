@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -44,7 +46,7 @@ public class CSVOperations {
                             .withIgnoreLeadingWhiteSpace(true).build();
 
                     for (CSVMapping csvMapping : csvToBean) {
-                        timeMetrics.saveMetrics(key, csvMapping.getDateTime(), csvMapping.getSsValue(), csvMapping.getTfxValue(), csvMapping.getClosePrice());
+                        timeMetrics.saveMetrics(key, csvMapping.getDateTime(), round(csvMapping.getSsValue(),2), round(csvMapping.getTfxValue(),2), round(csvMapping.getClosePrice(),2));
                     }
 
                 } catch (IOException e) {
@@ -74,6 +76,14 @@ public class CSVOperations {
                 log.error("Can't delete data from file. " + e.getMessage(), e);
             }
         });
+    }
+
+    private static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 
 }

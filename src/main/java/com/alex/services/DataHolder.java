@@ -14,7 +14,6 @@ public class DataHolder {
     @Getter
     private List<String> subscriptions = new ArrayList<String>() {{
         add("311771410");
-        //add("393063353");
     }};
 
     public void addSubscriber(String subscription) {
