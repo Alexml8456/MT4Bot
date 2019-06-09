@@ -46,7 +46,7 @@ public class CSVOperations {
                             .withIgnoreLeadingWhiteSpace(true).build();
 
                     for (CSVMapping csvMapping : csvToBean) {
-                        timeMetrics.saveMetrics(key, csvMapping.getDateTime(), round(csvMapping.getSsValue(),2), round(csvMapping.getTfxValue(),2), round(csvMapping.getClosePrice(),2));
+                        timeMetrics.saveMetrics(key, csvMapping.getDateTime(), round(csvMapping.getSsValue(),2), round(csvMapping.getTfxValue(),2), round(csvMapping.getClosePrice(),1));
                     }
 
                 } catch (IOException e) {

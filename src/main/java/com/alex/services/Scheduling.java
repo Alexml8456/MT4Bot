@@ -33,6 +33,7 @@ public class Scheduling {
 
 
     @Scheduled(cron = "10 0/15 * ? * *")
+    //@Scheduled(cron = "10 0/1 * ? * *")
     public void saveFiles() {
         fileOperations.saveFilesToList();
 
