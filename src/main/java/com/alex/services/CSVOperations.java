@@ -46,7 +46,7 @@ public class CSVOperations {
                             .withIgnoreLeadingWhiteSpace(true).build();
 
                     for (CSVMapping csvMapping : csvToBean) {
-                        timeMetrics.saveMetrics(key, csvMapping.getDateTime(), round(csvMapping.getSsValue(),2), round(csvMapping.getTfxValue(),2), round(csvMapping.getClosePrice(),1));
+                        timeMetrics.saveMetrics(key, csvMapping.getDateTime(), round(csvMapping.getSsValue(), 2), round(csvMapping.getTfxValue(), 2), round(csvMapping.getClosePrice(), 1));
                     }
 
                 } catch (IOException e) {
@@ -66,7 +66,7 @@ public class CSVOperations {
                     while (allRows.size() > 100) {
                         allRows.remove(1);
                     }
-                    CSVWriter writer = new CSVWriter(new FileWriter(file));
+                    CSVWriter writer = new CSVWriter(new FileWriter(file), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.NO_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
                     writer.writeAll(allRows);
                     writer.close();
                     log.info("File {} has been cleaned", file);
