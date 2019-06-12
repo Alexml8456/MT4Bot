@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -93,14 +95,22 @@ public class TradeCondition {
             builder.append("P=");
             builder.append(key);
             builder.append("; SS=");
-            builder.append(values.get(values.size() - 1).getSsValue());
+            builder.append(round(values.get(values.size() - 1).getSsValue(), 2));
             builder.append("; TFX=");
-            builder.append(values.get(values.size() - 1).getTfxValue());
+            builder.append(round(values.get(values.size() - 1).getTfxValue(), 2));
             builder.append("; CP=");
-            builder.append(values.get(values.size() - 1).getClosePrice());
+            builder.append(round(values.get(values.size() - 1).getClosePrice(), 1));
             builder.append("\n");
         });
         builder.append("---------------------------------");
         return builder.toString();
+    }
+
+    private static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }

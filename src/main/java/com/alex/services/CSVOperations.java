@@ -46,7 +46,7 @@ public class CSVOperations {
                             .withIgnoreLeadingWhiteSpace(true).build();
 
                     for (CSVMapping csvMapping : csvToBean) {
-                        timeMetrics.saveMetrics(key, csvMapping.getDateTime(), round(csvMapping.getSsValue(), 2), round(csvMapping.getTfxValue(), 2), round(csvMapping.getClosePrice(), 1));
+                        timeMetrics.saveMetrics(key, csvMapping.getDateTime(), csvMapping.getSsValue(), csvMapping.getTfxValue(), csvMapping.getClosePrice());
                     }
 
                 } catch (IOException e) {
@@ -77,13 +77,4 @@ public class CSVOperations {
             }
         });
     }
-
-    private static double round(double value, int places) {
-        if (places < 0) throw new IllegalArgumentException();
-
-        BigDecimal bd = new BigDecimal(value);
-        bd = bd.setScale(places, RoundingMode.HALF_UP);
-        return bd.doubleValue();
-    }
-
 }
