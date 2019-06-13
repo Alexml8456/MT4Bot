@@ -8,12 +8,12 @@ public class Main {
 
 
     private static boolean conditionSecondToSell() {
-        double test = 0.09;
+        double test = -0.0043;
         return test <= 0.0999 && test >= -0.0999;
     }
 
     private static boolean conditionSecondToBuy() {
-        double test = 0.0933;
+        double test = -0.0043;
         return test <= 0.0999 && test >= -0.0999;
     }
 }

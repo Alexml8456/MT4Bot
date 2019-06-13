@@ -76,12 +76,12 @@ public class TradeCondition {
 
     private boolean conditionThirdToBuy() {
         int mapSize = timeMetrics.getCsvMetrics().get(15).size();
-        return timeMetrics.getCsvMetrics().get(15).get(mapSize - 1).getSsValue() < -0.1 && conditionNearZero(mapSize);
+        return timeMetrics.getCsvMetrics().get(15).get(mapSize - 2).getSsValue() < -0.1 && conditionNearZero(mapSize);
     }
 
     private boolean conditionThirdToSell() {
         int mapSize = timeMetrics.getCsvMetrics().get(15).size();
-        return timeMetrics.getCsvMetrics().get(15).get(mapSize - 1).getSsValue() > 0.1 && conditionNearZero(mapSize);
+        return timeMetrics.getCsvMetrics().get(15).get(mapSize - 2).getSsValue() > 0.1 && conditionNearZero(mapSize);
     }
 
     private boolean conditionNearZero(Integer mapSize) {
