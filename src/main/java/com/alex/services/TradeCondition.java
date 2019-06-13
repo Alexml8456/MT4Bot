@@ -42,11 +42,11 @@ public class TradeCondition {
                 lastConditionTime = DateTime.getGMTTimeMillis();
                 log.info(getValues("Sell-based on TFX values"));
                 telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Sell-based on TFX values"));
-            } else if (conditionOneToBuy()) {
+            } else if (conditionThirdToBuy()) {
                 lastConditionTime = DateTime.getGMTTimeMillis();
                 log.info(getValues("Buy-based on SS values"));
                 telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Buy-based on SS values"));
-            } else if (conditionOneToSell()) {
+            } else if (conditionThirdToSell()) {
                 lastConditionTime = DateTime.getGMTTimeMillis();
                 log.info(getValues("Sell-based on SS values"));
                 telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Sell-based on SS values"));
@@ -76,12 +76,17 @@ public class TradeCondition {
 
     private boolean conditionThirdToBuy() {
         int mapSize = timeMetrics.getCsvMetrics().get(15).size();
-        return timeMetrics.getCsvMetrics().get(15).get(mapSize - 1).getSsValue().toString().contains("-0.0");
+        return timeMetrics.getCsvMetrics().get(15).get(mapSize - 1).getSsValue() < -0.1 && conditionNearZero(mapSize);
     }
 
     private boolean conditionThirdToSell() {
         int mapSize = timeMetrics.getCsvMetrics().get(15).size();
-        return timeMetrics.getCsvMetrics().get(15).get(mapSize - 1).getSsValue().toString().contains("0.0");
+        return timeMetrics.getCsvMetrics().get(15).get(mapSize - 1).getSsValue() > 0.1 && conditionNearZero(mapSize);
+    }
+
+    private boolean conditionNearZero(Integer mapSize) {
+        double lastValue = timeMetrics.getCsvMetrics().get(15).get(mapSize - 1).getSsValue();
+        return lastValue <= 0.0999 && lastValue >= -0.0999;
     }
 
     private String getValues(String direction) {
