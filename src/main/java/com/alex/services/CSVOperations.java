@@ -26,7 +26,7 @@ public class CSVOperations {
     @Value("${instrument}")
     private String instrument;
 
-    @Value("clear.rows")
+    @Value("${clear.rows}")
     private Integer numberOfRows;
 
     @Autowired
