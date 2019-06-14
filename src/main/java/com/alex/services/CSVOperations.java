@@ -26,6 +26,9 @@ public class CSVOperations {
     @Value("${instrument}")
     private String instrument;
 
+    @Value("clear.rows")
+    private Integer numberOfRows;
+
     @Autowired
     private DataHolder dataHolder;
 
@@ -62,8 +65,8 @@ public class CSVOperations {
             try {
                 CSVReader readFile = new CSVReader(new FileReader(file));
                 List<String[]> allRows = readFile.readAll();
-                if (allRows.size() > 100) {
-                    while (allRows.size() > 100) {
+                if (allRows.size() > numberOfRows) {
+                    while (allRows.size() > numberOfRows) {
                         allRows.remove(1);
                     }
                     CSVWriter writer = new CSVWriter(new FileWriter(file), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.NO_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
