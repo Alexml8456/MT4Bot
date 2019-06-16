@@ -42,11 +42,11 @@ public class TradeCondition {
                 lastConditionTime = DateTime.getGMTTimeMillis();
                 log.info(getValues("Sell-based on TFX values"));
                 telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Sell-based on TFX values"));
-            } else if (conditionFourthToBuy()) {
+            } else if (firstFilterBuyStage()) {
                 lastConditionTime = DateTime.getGMTTimeMillis();
                 log.info(getValues("Buy-based on SS values"));
                 telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Buy-based on SS values"));
-            } else if (conditionFourthToSell()) {
+            } else if (firstFilterSellStage()) {
                 lastConditionTime = DateTime.getGMTTimeMillis();
                 log.info(getValues("Sell-based on SS values"));
                 telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Sell-based on SS values"));
@@ -86,13 +86,13 @@ public class TradeCondition {
         return timeMetrics.getCsvMetrics().get(key).get(mapSize - 2).getSsValue() > 0.1 && conditionNearZero(mapSize, key);
     }
 
-    private boolean conditionFourthToBuy() {
+    private boolean firstFilterBuyStage() {
         int key = 5;
         int mapSize = timeMetrics.getCsvMetrics().get(key).size();
         return conditionalBuyCompareSSTFX(mapSize, key) && conditionNearZero(mapSize, key);
     }
 
-    private boolean conditionFourthToSell() {
+    private boolean firstFilterSellStage() {
         int key = 5;
         int mapSize = timeMetrics.getCsvMetrics().get(key).size();
         return conditionalSellCompareSSTFX(mapSize, key) && conditionNearZero(mapSize, key);
@@ -105,11 +105,11 @@ public class TradeCondition {
     }
 
     private boolean conditionalSellCompareSSTFX(Integer mapSize, Integer key) {
-        return timeMetrics.getCsvMetrics().get(key).get(mapSize - 2).getSsValue() > 0.1 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() > 0.7;
+        return timeMetrics.getCsvMetrics().get(key).get(mapSize - 2).getSsValue() > 0.1 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() > 0.1;
     }
 
     private boolean conditionalBuyCompareSSTFX(Integer mapSize, Integer key) {
-        return timeMetrics.getCsvMetrics().get(key).get(mapSize - 2).getSsValue() < -0.1 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() < -0.7;
+        return timeMetrics.getCsvMetrics().get(key).get(mapSize - 2).getSsValue() < -0.1 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() < -0.1;
     }
 
     private String getValues(String direction) {
