@@ -25,14 +25,14 @@ public class Scheduling {
     @Autowired
     private TradeCondition tradeCondition;
 
-    @Scheduled(cron = "0 51 23 ? * *")
+    @Scheduled(cron = "0 52 23 ? * *")
     public void deleteRows() {
         csvOperations.deleteRowsForFile();
         dataHolder.clearFileList();
     }
 
 
-    @Scheduled(cron = "10 0/5 * ? * *")
+    @Scheduled(cron = "15 0/5 * ? * *")
     //@Scheduled(cron = "10 0/1 * ? * *")
     public void saveFiles() {
         fileOperations.saveFilesToList();
