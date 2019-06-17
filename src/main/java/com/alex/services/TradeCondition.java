@@ -31,25 +31,29 @@ public class TradeCondition {
     private LocalDateTime lastConditionTime = DateTime.getGMTTimeMillis();
 
     public void checkTradeCondition() {
-        LocalDateTime oneHourBefore = DateTime.getGMTTimeMillis().truncatedTo(ChronoUnit.MINUTES).minusMinutes(1);
+        LocalDateTime minutesBefore = DateTime.getGMTTimeMillis().truncatedTo(ChronoUnit.MINUTES).minusMinutes(1);
 
-        if (lastConditionTime.isBefore(oneHourBefore)) {
-            if (conditionSecondToBuy()) {
-                lastConditionTime = DateTime.getGMTTimeMillis();
-                log.info(getValues("Buy-based on TFX values"));
-                telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Buy-based on TFX values"));
-            } else if (conditionSecondToSell()) {
-                lastConditionTime = DateTime.getGMTTimeMillis();
-                log.info(getValues("Sell-based on TFX values"));
-                telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Sell-based on TFX values"));
-            } else if (firstFilterBuyStage()) {
-                lastConditionTime = DateTime.getGMTTimeMillis();
-                log.info(getValues("Buy-based on SS values"));
-                telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Buy-based on SS values"));
-            } else if (firstFilterSellStage()) {
-                lastConditionTime = DateTime.getGMTTimeMillis();
-                log.info(getValues("Sell-based on SS values"));
-                telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Sell-based on SS values"));
+        if (lastConditionTime.isBefore(minutesBefore)) {
+            if (firstFilteringBuyLevel()) {
+                log.info("First buy filtering level was passed!");
+                if (secondFilteringBuyLevel()) {
+                    log.info("Second buy filtering level was passed!");
+                    if (thirdFilteringBuyLevel()) {
+                        lastConditionTime = DateTime.getGMTTimeMillis();
+                        log.info("Third buy filtering level was passed - time to Buy!");
+                        telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Buy-all conditions passed"));
+                    }
+                }
+            } else if (firstFilteringSellLevel()) {
+                log.info("First sell filtering level was passed!");
+                if (secondFilteringSellLevel()) {
+                    log.info("Second sell filtering level was passed!");
+                    if (thirdFilteringSellLevel()) {
+                        lastConditionTime = DateTime.getGMTTimeMillis();
+                        log.info("Third sell filtering level was passed - time to Sell!");
+                        telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Sell-all conditions passed"));
+                    }
+                }
             }
         }
     }
@@ -110,6 +114,42 @@ public class TradeCondition {
 
     private boolean conditionalBuyCompareSSTFX(Integer mapSize, Integer key) {
         return timeMetrics.getCsvMetrics().get(key).get(mapSize - 2).getSsValue() < -0.1 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() < -0.1;
+    }
+
+    private boolean firstFilteringSellLevel() {
+        int key = 5;
+        int mapSize = timeMetrics.getCsvMetrics().get(key).size();
+        return timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getSsValue() > 0.2 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() > 0.8;
+    }
+
+    private boolean firstFilteringBuyLevel() {
+        int key = 5;
+        int mapSize = timeMetrics.getCsvMetrics().get(key).size();
+        return timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getSsValue() < -0.2 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() < -0.8;
+    }
+
+    private boolean secondFilteringSellLevel() {
+        int key = 15;
+        int mapSize = timeMetrics.getCsvMetrics().get(key).size();
+        return timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getSsValue() > 0.2 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() > 0.6;
+    }
+
+    private boolean secondFilteringBuyLevel() {
+        int key = 15;
+        int mapSize = timeMetrics.getCsvMetrics().get(key).size();
+        return timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getSsValue() < -0.2 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() < -0.6;
+    }
+
+    private boolean thirdFilteringSellLevel() {
+        int key = 30;
+        int mapSize = timeMetrics.getCsvMetrics().get(key).size();
+        return timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getSsValue() > 0.15 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() > 0.6;
+    }
+
+    private boolean thirdFilteringBuyLevel() {
+        int key = 30;
+        int mapSize = timeMetrics.getCsvMetrics().get(key).size();
+        return timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getSsValue() < -0.15 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() < -0.6;
     }
 
     private String getValues(String direction) {
