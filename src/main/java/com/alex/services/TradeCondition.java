@@ -40,7 +40,7 @@ public class TradeCondition {
                     log.info("Second buy filtering level was passed!");
                     if (thirdFilteringBuyLevel()) {
                         lastConditionTime = DateTime.getGMTTimeMillis();
-                        log.info("Third buy filtering level was passed - time to Buy!");
+                        log.info(getValues("Third buy filtering level was passed - time to Buy!"));
                         telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Buy-all conditions passed"));
                     }
                 }
@@ -50,7 +50,7 @@ public class TradeCondition {
                     log.info("Second sell filtering level was passed!");
                     if (thirdFilteringSellLevel()) {
                         lastConditionTime = DateTime.getGMTTimeMillis();
-                        log.info("Third sell filtering level was passed - time to Sell!");
+                        log.info(getValues("Third sell filtering level was passed - time to Sell!"));
                         telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Sell-all conditions passed"));
                     }
                 }
