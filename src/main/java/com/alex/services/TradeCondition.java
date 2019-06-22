@@ -30,11 +30,17 @@ public class TradeCondition {
 
     private LocalDateTime lastConditionTime = DateTime.getGMTTimeMillis();
 
+    private boolean bullMarket = false;
+
     public void checkTradeCondition() {
         LocalDateTime minutesBefore = DateTime.getGMTTimeMillis().truncatedTo(ChronoUnit.MINUTES).minusMinutes(1);
 
         if (lastConditionTime.isBefore(minutesBefore)) {
-            if (firstFilteringBuyLevel()) {
+            if (firstFilteringBuyLevel() && bullMarket) {
+                log.info("First buy filtering level was passed, after sell!");
+                telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("First buy after sell!"));
+                bullMarket = false;
+            } else if (firstFilteringBuyLevel()) {
                 log.info("First buy filtering level was passed!");
                 if (secondFilteringBuyLevel()) {
                     log.info("Second buy filtering level was passed!");
@@ -52,68 +58,11 @@ public class TradeCondition {
                         lastConditionTime = DateTime.getGMTTimeMillis();
                         log.info(getValues("Third sell filtering level was passed - time to Sell!"));
                         telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Sell-all conditions passed"));
+                        bullMarket = true;
                     }
                 }
             }
         }
-    }
-
-    private boolean conditionOneToBuy() {
-        int mapSize = timeMetrics.getCsvMetrics().get(15).size();
-        return timeMetrics.getCsvMetrics().get(15).get(mapSize - 1).getSsValue() > 0 && timeMetrics.getCsvMetrics().get(15).get(mapSize - 2).getSsValue() < 0;
-    }
-
-    private boolean conditionSecondToBuy() {
-        int mapSize = timeMetrics.getCsvMetrics().get(15).size();
-        return timeMetrics.getCsvMetrics().get(15).get(mapSize - 1).getTfxValue() < -0.9;
-    }
-
-    private boolean conditionOneToSell() {
-        int mapSize = timeMetrics.getCsvMetrics().get(15).size();
-        return timeMetrics.getCsvMetrics().get(15).get(mapSize - 1).getSsValue() < 0 && timeMetrics.getCsvMetrics().get(15).get(mapSize - 2).getSsValue() > 0;
-    }
-
-    private boolean conditionSecondToSell() {
-        int mapSize = timeMetrics.getCsvMetrics().get(15).size();
-        return timeMetrics.getCsvMetrics().get(15).get(mapSize - 1).getTfxValue() > 0.9;
-    }
-
-    private boolean conditionThirdToBuy() {
-        int key = 15;
-        int mapSize = timeMetrics.getCsvMetrics().get(key).size();
-        return timeMetrics.getCsvMetrics().get(key).get(mapSize - 2).getSsValue() < -0.1 && conditionNearZero(mapSize, key);
-    }
-
-    private boolean conditionThirdToSell() {
-        int key = 15;
-        int mapSize = timeMetrics.getCsvMetrics().get(key).size();
-        return timeMetrics.getCsvMetrics().get(key).get(mapSize - 2).getSsValue() > 0.1 && conditionNearZero(mapSize, key);
-    }
-
-    private boolean firstFilterBuyStage() {
-        int key = 5;
-        int mapSize = timeMetrics.getCsvMetrics().get(key).size();
-        return conditionalBuyCompareSSTFX(mapSize, key) && conditionNearZero(mapSize, key);
-    }
-
-    private boolean firstFilterSellStage() {
-        int key = 5;
-        int mapSize = timeMetrics.getCsvMetrics().get(key).size();
-        return conditionalSellCompareSSTFX(mapSize, key) && conditionNearZero(mapSize, key);
-    }
-
-
-    private boolean conditionNearZero(Integer mapSize, Integer key) {
-        double lastValue = timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getSsValue();
-        return lastValue <= 0.0999 && lastValue >= -0.0999;
-    }
-
-    private boolean conditionalSellCompareSSTFX(Integer mapSize, Integer key) {
-        return timeMetrics.getCsvMetrics().get(key).get(mapSize - 2).getSsValue() > 0.1 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() > 0.1;
-    }
-
-    private boolean conditionalBuyCompareSSTFX(Integer mapSize, Integer key) {
-        return timeMetrics.getCsvMetrics().get(key).get(mapSize - 2).getSsValue() < -0.1 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() < -0.1;
     }
 
     private boolean firstFilteringSellLevel() {
