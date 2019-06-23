@@ -36,8 +36,8 @@ public class TradeCondition {
         LocalDateTime minutesBefore = DateTime.getGMTTimeMillis().truncatedTo(ChronoUnit.MINUTES).minusMinutes(1);
 
         if (lastConditionTime.isBefore(minutesBefore)) {
-            if (secondFilteringBuyLevel() && bullMarket) {
-                log.info("Second buy filtering level was passed, after sell!");
+            if (reEnterAfterSell() && bullMarket) {
+                log.info("Re enter to buy, after sell!");
                 telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("First buy after sell!"));
                 bullMarket = false;
             } else if (firstFilteringBuyLevel()) {
@@ -99,6 +99,12 @@ public class TradeCondition {
         int key = 30;
         int mapSize = timeMetrics.getCsvMetrics().get(key).size();
         return timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getSsValue() < -0.15 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() < -0.6;
+    }
+
+    private boolean reEnterAfterSell() {
+        int key = 5;
+        int mapSize = timeMetrics.getCsvMetrics().get(key).size();
+        return timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getSsValue() < -0.2 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() < -0.3;
     }
 
     private String getValues(String direction) {
