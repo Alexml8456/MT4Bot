@@ -35,6 +35,8 @@ public class TradeCondition {
     public void checkTradeCondition() {
         LocalDateTime minutesBefore = DateTime.getGMTTimeMillis().truncatedTo(ChronoUnit.MINUTES).minusMinutes(1);
 
+        log.info(getValues("Trading metrics!"));
+
         if (lastConditionTime.isBefore(minutesBefore)) {
             if (reEnterAfterSell() && bullMarket) {
                 log.info("Re enter to buy, after sell!");
