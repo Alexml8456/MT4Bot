@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -55,7 +53,7 @@ public class CSVOperations {
                 } catch (IOException e) {
                     log.error("Can't read data from file. " + e.getMessage(), e);
                 }
-                log.info("Values has been saved from file - {}", fineName);
+                //log.info("Values has been saved from file - {}", fineName);
             }
         });
     }

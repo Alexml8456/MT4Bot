@@ -1,19 +1,15 @@
 package com.alex;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.TimeZone;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println(conditionSecondToSell());
-        System.out.println(conditionSecondToBuy());
+        //LocalDateTime time = LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(test)), TimeZone.getDefault().toZoneId());
+        LocalDateTime now = LocalDateTime.ofInstant(Instant.now().truncatedTo(ChronoUnit.MINUTES).minus(5,ChronoUnit.MINUTES), TimeZone.getTimeZone("UTC").toZoneId());
+        System.out.println(now);
     }
 
-
-    private static boolean conditionSecondToSell() {
-        double test = -0.0043;
-        return test <= 0.0999 && test >= -0.0999;
-    }
-
-    private static boolean conditionSecondToBuy() {
-        double test = -0.0043;
-        return test <= 0.0999 && test >= -0.0999;
-    }
 }

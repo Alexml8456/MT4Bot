@@ -2,7 +2,6 @@ package com.alex.services;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +39,6 @@ public class FileOperations {
         } catch (IOException e) {
             log.error("Cannot read files from folder - " + e.getMessage(), e);
         }
-        log.info("List of files has been saved!");
+        //log.info("List of files has been saved!");
     }
 }
