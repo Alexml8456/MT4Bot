@@ -43,6 +43,8 @@ public class TradeCondition {
 
         log.info(getValues("Trading metrics!", buys, sells));
 
+        log.info(getValues("Trading metrics!"));
+
         if (lastConditionTime.isBefore(minutesBefore)) {
             if (reEnterAfterSell() && bullMarket) {
                 log.info("Re enter to buy, after sell!");
