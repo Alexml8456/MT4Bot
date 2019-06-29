@@ -133,9 +133,9 @@ public class TradeCondition {
             builder.append(round(values.get(values.size() - 1).getClosePrice(), 1));
             builder.append("\n");
         });
-        builder.append("TotalBuy = ");
+        builder.append("TotalBuy=");
         builder.append(buy);
-        builder.append("; TotalSell = ");
+        builder.append(";TotalSell=");
         builder.append(sell);
         builder.append("\n");
         builder.append("---------------------------------");
