@@ -38,8 +38,8 @@ public class TradeCondition {
     public void checkTradeCondition() {
         LocalDateTime minutesBefore = DateTime.getGMTTimeMillis().truncatedTo(ChronoUnit.MINUTES).minusMinutes(1);
         LocalDateTime lastPeriod = DateTime.GMTLastPeriod(5);
-        double buys = round(volumeGenerationService.getVolume().get("5").get(lastPeriod).getBuy().doubleValue(), 2);
-        double sells = round(volumeGenerationService.getVolume().get("5").get(lastPeriod).getSell().doubleValue(), 2);
+        double buys = round(volumeGenerationService.getVolume().get("5").get(lastPeriod).getBuy().doubleValue(), 1);
+        double sells = round(volumeGenerationService.getVolume().get("5").get(lastPeriod).getSell().doubleValue(), 1);
 
         log.info(getValues("Trading metrics!", buys, sells));
 
@@ -135,7 +135,7 @@ public class TradeCondition {
         });
         builder.append("TotalBuy=");
         builder.append(buy);
-        builder.append(";TotalSell=");
+        builder.append("; TotalSell=");
         builder.append(sell);
         builder.append("\n");
         builder.append("---------------------------------");

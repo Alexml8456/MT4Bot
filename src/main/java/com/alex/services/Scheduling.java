@@ -54,9 +54,9 @@ public class Scheduling {
     @Scheduled(fixedDelay = 60000)
     public void verifyStalePrice() {
         try {
-            LocalDateTime threeMinsBefore = DateTime.getGMTTimeMillis().truncatedTo(ChronoUnit.MINUTES).minusMinutes(3);
+            LocalDateTime fiveMinsBefore = DateTime.getGMTTimeMillis().truncatedTo(ChronoUnit.MINUTES).minusMinutes(5);
             if (processingService.getLastTradeTime() != null &&
-                    processingService.getLastTradeTime().isBefore(threeMinsBefore)) {
+                    processingService.getLastTradeTime().isBefore(fiveMinsBefore)) {
                 log.error("Stale price is found. Reconnect will be initiated");
                 scheduledReconnect();
             }
