@@ -34,12 +34,20 @@ public class TradeCondition {
     private LocalDateTime lastConditionTime = DateTime.getGMTTimeMillis();
 
     private boolean bullMarket = false;
+    private double buys = 0;
+    private double sells = 0;
 
     public void checkTradeCondition() {
         LocalDateTime minutesBefore = DateTime.getGMTTimeMillis().truncatedTo(ChronoUnit.MINUTES).minusMinutes(1);
         LocalDateTime lastPeriod = DateTime.GMTLastPeriod(5);
-        double buys = round(volumeGenerationService.getVolume().get("5").get(lastPeriod).getBuy().doubleValue(), 1);
-        double sells = round(volumeGenerationService.getVolume().get("5").get(lastPeriod).getSell().doubleValue(), 1);
+
+        if (ifKeyPresent(lastPeriod)) {
+            buys = round(volumeGenerationService.getVolume().get("5").get(lastPeriod).getBuy().doubleValue(), 1);
+            sells = round(volumeGenerationService.getVolume().get("5").get(lastPeriod).getSell().doubleValue(), 1);
+        } else {
+            buys = 0;
+            sells = 0;
+        }
 
         log.info(getValues("Trading metrics!", buys, sells));
 
@@ -148,5 +156,9 @@ public class TradeCondition {
         BigDecimal bd = new BigDecimal(value);
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
+    }
+
+    private boolean ifKeyPresent(LocalDateTime key) {
+        return volumeGenerationService.getVolume().get("5").containsKey(key);
     }
 }
