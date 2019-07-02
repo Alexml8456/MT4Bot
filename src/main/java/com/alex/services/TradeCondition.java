@@ -52,12 +52,11 @@ public class TradeCondition {
         log.info(getValues("Trading metrics!", buys, sells));
 
         if (lastConditionTime.isBefore(minutesBefore)) {
-//            if (reEnterAfterSell() && bullMarket) {
-//                log.info("Re enter to buy, after sell!");
-//                telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("First buy after sell!", buys, sells));
-//                bullMarket = false;
-//            }
-            if (firstFilteringBuyLevel()) {
+            if (reEnterAfterSell() && bullMarket) {
+                log.info("Re enter to buy, after sell!");
+                telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("First buy after sell!", buys, sells));
+                bullMarket = false;
+            } else if (firstFilteringBuyLevel()) {
                 log.info("First buy filtering level was passed!");
                 if (secondFilteringBuyLevel()) {
                     //log.info("Second buy filtering level was passed!");
@@ -77,6 +76,7 @@ public class TradeCondition {
                     lastConditionTime = DateTime.getGMTTimeMillis();
                     log.info(getValues("Second sell filtering level was passed - time to Sell!", buys, sells));
                     telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Sell-all conditions passed", buys, sells));
+                    bullMarket = true;
 //                    if (thirdFilteringSellLevel()) {
 //                        lastConditionTime = DateTime.getGMTTimeMillis();
 //                        log.info(getValues("Third sell filtering level was passed - time to Sell!", buys, sells));
