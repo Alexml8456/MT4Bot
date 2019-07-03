@@ -157,6 +157,30 @@ public class TradeCondition {
         return builder.toString();
     }
 
+    private String getVolume() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("--");
+        builder.append(instrument);
+        builder.append(" ");
+        builder.append("Volume metrics!");
+        builder.append("--\n");
+        volumeGenerationService.getVolume().entrySet().stream().forEach(period -> {
+            LocalDateTime maxKey = period.getValue().keySet().stream().max(LocalDateTime::compareTo).get();
+            double buys = round(volumeGenerationService.getVolume().get(period.getKey()).get(maxKey).getBuy().doubleValue(), 1);
+            double sells = round(volumeGenerationService.getVolume().get(period.getKey()).get(maxKey).getSell().doubleValue(), 1);
+            builder.append("P=");
+            builder.append(period);
+            builder.append("; TotalBuy=");
+            builder.append(buys);
+            builder.append("; TotalSell=");
+            builder.append(sells);
+            builder.append("\n");
+            builder.append("---------------------------------");
+        });
+
+        return builder.toString();
+    }
+
     private static double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
