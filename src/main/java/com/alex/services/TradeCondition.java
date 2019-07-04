@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
 
 @Slf4j
 @Service
@@ -50,6 +51,7 @@ public class TradeCondition {
         }
 
         log.info(getValues("Trading metrics!", buys, sells));
+        log.info(getVolume());
 
         if (lastConditionTime.isBefore(minutesBefore)) {
             if (reEnterAfterSell() && bullMarket) {
@@ -164,20 +166,21 @@ public class TradeCondition {
         builder.append(" ");
         builder.append("Volume metrics!");
         builder.append("--\n");
-        volumeGenerationService.getVolume().entrySet().stream().forEach(period -> {
+        volumeGenerationService.getVolume().entrySet().stream()
+                .sorted(Comparator.comparingInt(o -> Integer.valueOf(o.getKey())))
+                .forEach(period -> {
             LocalDateTime maxKey = period.getValue().keySet().stream().max(LocalDateTime::compareTo).get();
             double buys = round(volumeGenerationService.getVolume().get(period.getKey()).get(maxKey).getBuy().doubleValue(), 1);
             double sells = round(volumeGenerationService.getVolume().get(period.getKey()).get(maxKey).getSell().doubleValue(), 1);
             builder.append("P=");
-            builder.append(period);
+            builder.append(period.getKey());
             builder.append("; TotalBuy=");
             builder.append(buys);
             builder.append("; TotalSell=");
             builder.append(sells);
             builder.append("\n");
-            builder.append("---------------------------------");
         });
-
+        builder.append("---------------------------------");
         return builder.toString();
     }
 
