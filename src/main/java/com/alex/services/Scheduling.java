@@ -113,7 +113,7 @@ public class Scheduling {
                 log.info("Stop connection manager");
                 connectionManager.get().stop();
                 SECONDS.sleep(2);
-                connect();
+                reconnect();
             } catch (Exception e) {
                 log.error("Can't reconnect. " + e.getMessage(), e);
             }
@@ -126,7 +126,7 @@ public class Scheduling {
         connectionService.connect();
         SECONDS.sleep(2);
         if (isConnected()) {
-            log.info("Connected");
+            //log.info("Connected");
         } else {
             log.error("Can't connect");
         }
