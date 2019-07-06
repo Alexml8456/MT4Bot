@@ -58,6 +58,8 @@ public class Scheduling {
             if (processingService.getLastTradeTime() != null &&
                     processingService.getLastTradeTime().isBefore(fiveMinsBefore)) {
                 log.error("Stale price is found. Reconnect will be initiated");
+                log.info("Closing session");
+                sessionStorage.getSession().close();
                 //scheduledReconnect();
             }
         } catch (Exception e) {
