@@ -58,7 +58,7 @@ public class Scheduling {
             if (processingService.getLastTradeTime() != null &&
                     processingService.getLastTradeTime().isBefore(fiveMinsBefore)) {
                 log.error("Stale price is found. Reconnect will be initiated");
-                scheduledReconnect();
+                //scheduledReconnect();
             }
         } catch (Exception e) {
             log.error("Verify Stale Price failed", e);
