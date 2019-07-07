@@ -57,9 +57,9 @@ public class Scheduling {
             LocalDateTime fiveMinsBefore = DateTime.getGMTTimeMillis().truncatedTo(ChronoUnit.MINUTES).minusMinutes(5);
             if (processingService.getLastTradeTime() != null &&
                     processingService.getLastTradeTime().isBefore(fiveMinsBefore)) {
-                log.error("Stale price is found. Reconnect will be initiated");
-                log.info("Closing session");
-                sessionStorage.getSession().close();
+                log.error("Stale price was found!");
+                //log.info("Closing session");
+                //sessionStorage.getSession().close();
                 //scheduledReconnect();
             }
         } catch (Exception e) {

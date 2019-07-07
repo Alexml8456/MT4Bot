@@ -35,40 +35,28 @@ public class TradeCondition {
     private LocalDateTime lastConditionTime = DateTime.getGMTTimeMillis();
 
     private boolean bullMarket = false;
-    private double buys = 0;
-    private double sells = 0;
 
     public void checkTradeCondition() {
         LocalDateTime minutesBefore = DateTime.getGMTTimeMillis().truncatedTo(ChronoUnit.MINUTES).minusMinutes(14);
-        LocalDateTime lastPeriod = DateTime.GMTLastPeriod(5);
 
-        if (ifKeyPresent(lastPeriod)) {
-            buys = round(volumeGenerationService.getVolume().get("5").get(lastPeriod).getBuy().doubleValue(), 1);
-            sells = round(volumeGenerationService.getVolume().get("5").get(lastPeriod).getSell().doubleValue(), 1);
-        } else {
-            buys = 0;
-            sells = 0;
-        }
-
-        log.info(getValues("Trading metrics!", buys, sells));
-        log.info(getVolume());
+        log.info(getValues("Trading metrics!"));
 
         if (lastConditionTime.isBefore(minutesBefore)) {
             if (reEnterAfterSell() && bullMarket) {
                 log.info("Re enter to buy, after sell!");
-                telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("First buy after sell!", buys, sells));
+                telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("First buy after sell!"));
                 bullMarket = false;
             } else if (firstFilteringBuyLevel()) {
                 log.info("First buy filtering level was passed!");
                 if (secondFilteringBuyLevel()) {
                     //log.info("Second buy filtering level was passed!");
                     lastConditionTime = DateTime.getGMTTimeMillis();
-                    log.info(getValues("Second buy filtering level was passed - time to Buy!", buys, sells));
-                    telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Buy-all conditions passed", buys, sells));
+                    log.info(getValues("Second buy filtering level was passed - time to Buy!"));
+                    telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Buy-all conditions passed"));
 //                    if (thirdFilteringBuyLevel()) {
 //                        lastConditionTime = DateTime.getGMTTimeMillis();
-//                        log.info(getValues("Third buy filtering level was passed - time to Buy!", buys, sells));
-//                        telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Buy-all conditions passed", buys, sells));
+//                        log.info(getValues("Third buy filtering level was passed - time to Buy!"s));
+//                        telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Buy-all conditions passed"));
 //                    }
                 }
             } else if (firstFilteringSellLevel()) {
@@ -76,13 +64,13 @@ public class TradeCondition {
                 if (secondFilteringSellLevel()) {
                     //log.info("Second sell filtering level was passed!");
                     lastConditionTime = DateTime.getGMTTimeMillis();
-                    log.info(getValues("Second sell filtering level was passed - time to Sell!", buys, sells));
-                    telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Sell-all conditions passed", buys, sells));
+                    log.info(getValues("Second sell filtering level was passed - time to Sell!"));
+                    telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Sell-all conditions passed"));
                     bullMarket = true;
 //                    if (thirdFilteringSellLevel()) {
 //                        lastConditionTime = DateTime.getGMTTimeMillis();
-//                        log.info(getValues("Third sell filtering level was passed - time to Sell!", buys, sells));
-//                        telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Sell-all conditions passed", buys, sells));
+//                        log.info(getValues("Third sell filtering level was passed - time to Sell!"));
+//                        telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Sell-all conditions passed"));
 //                        bullMarket = true;
 //                    }
                 }
@@ -132,7 +120,7 @@ public class TradeCondition {
         return timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getSsValue() < -0.2 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() < -0.3;
     }
 
-    private String getValues(String direction, Double buy, Double sell) {
+    private String getValues(String direction) {
         StringBuilder builder = new StringBuilder();
         builder.append("--");
         builder.append(instrument);
@@ -141,7 +129,7 @@ public class TradeCondition {
         builder.append("--\n");
         timeMetrics.getCsvMetrics().forEach((key, values) -> {
             builder.append("P=");
-            builder.append(key);
+            builder.append(valueMapping(key.toString()));
             builder.append("; SS=");
             builder.append(round(values.get(values.size() - 1).getSsValue(), 2));
             builder.append("; TFX=");
@@ -150,12 +138,7 @@ public class TradeCondition {
             builder.append(round(values.get(values.size() - 1).getClosePrice(), 1));
             builder.append("\n");
         });
-        builder.append("TotalBuy=");
-        builder.append(buy);
-        builder.append("; TotalSell=");
-        builder.append(sell);
-        builder.append("\n");
-        builder.append("---------------------------------");
+        builder.append(getVolume());
         return builder.toString();
     }
 
@@ -169,17 +152,17 @@ public class TradeCondition {
         volumeGenerationService.getVolume().entrySet().stream()
                 .sorted(Comparator.comparingInt(o -> Integer.valueOf(o.getKey())))
                 .forEach(period -> {
-            LocalDateTime maxKey = period.getValue().keySet().stream().max(LocalDateTime::compareTo).get();
-            double buys = round(volumeGenerationService.getVolume().get(period.getKey()).get(maxKey).getBuy().doubleValue(), 1);
-            double sells = round(volumeGenerationService.getVolume().get(period.getKey()).get(maxKey).getSell().doubleValue(), 1);
-            builder.append("P=");
-            builder.append(period.getKey());
-            builder.append("; TotalBuy=");
-            builder.append(buys);
-            builder.append("; TotalSell=");
-            builder.append(sells);
-            builder.append("\n");
-        });
+                    LocalDateTime maxKey = period.getValue().keySet().stream().max(LocalDateTime::compareTo).get();
+                    double buys = round(volumeGenerationService.getVolume().get(period.getKey()).get(maxKey).getBuy().doubleValue(), 1);
+                    double sells = round(volumeGenerationService.getVolume().get(period.getKey()).get(maxKey).getSell().doubleValue(), 1);
+                    builder.append("P=");
+                    builder.append(valueMapping(period.getKey()));
+                    builder.append("; TotalBuy=");
+                    builder.append(buys);
+                    builder.append("; TotalSell=");
+                    builder.append(sells);
+                    builder.append("\n");
+                });
         builder.append("---------------------------------");
         return builder.toString();
     }
@@ -192,7 +175,14 @@ public class TradeCondition {
         return bd.doubleValue();
     }
 
-    private boolean ifKeyPresent(LocalDateTime key) {
-        return volumeGenerationService.getVolume().get("5").containsKey(key);
+    private String valueMapping(String key) {
+        switch (key) {
+            case "240":
+                return "4H";
+            case "1440":
+                return "1D";
+            default:
+                return key;
+        }
     }
 }
