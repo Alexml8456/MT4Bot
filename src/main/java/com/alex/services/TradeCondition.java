@@ -157,9 +157,9 @@ public class TradeCondition {
                     double sells = round(volumeGenerationService.getVolume().get(period.getKey()).get(maxKey).getSell().doubleValue(), 1);
                     builder.append("P=");
                     builder.append(valueMapping(period.getKey()));
-                    builder.append("; TotalBuy=");
+                    builder.append("; TBuy=");
                     builder.append(buys);
-                    builder.append("; TotalSell=");
+                    builder.append("; TSell=");
                     builder.append(sells);
                     builder.append("\n");
                 });
