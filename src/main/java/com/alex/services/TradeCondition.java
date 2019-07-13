@@ -153,8 +153,8 @@ public class TradeCondition {
                 .sorted(Comparator.comparingInt(o -> Integer.valueOf(o.getKey())))
                 .forEach(period -> {
                     LocalDateTime maxKey = period.getValue().keySet().stream().max(LocalDateTime::compareTo).get();
-                    double buys = round(volumeGenerationService.getVolume().get(period.getKey()).get(maxKey).getBuy().doubleValue(), 1);
-                    double sells = round(volumeGenerationService.getVolume().get(period.getKey()).get(maxKey).getSell().doubleValue(), 1);
+                    double buys = round(volumeGenerationService.getVolume().get(period.getKey()).get(getRelevantKey(period.getKey(),maxKey)).getBuy().doubleValue(), 1);
+                    double sells = round(volumeGenerationService.getVolume().get(period.getKey()).get(getRelevantKey(period.getKey(),maxKey)).getSell().doubleValue(), 1);
                     builder.append("P=");
                     builder.append(valueMapping(period.getKey()));
                     builder.append("; TBuy=");
@@ -184,5 +184,13 @@ public class TradeCondition {
             default:
                 return key;
         }
+    }
+
+    private LocalDateTime getRelevantKey(String period, LocalDateTime key) {
+        LocalDateTime currentTime = DateTime.getGMTTimeMillis().truncatedTo(ChronoUnit.MINUTES);
+        if (currentTime.compareTo(key) > 0) {
+            return key;
+        } else
+            return key.minusMinutes(Integer.valueOf(period));
     }
 }
