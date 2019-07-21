@@ -35,7 +35,7 @@ public class CSVOperations {
 
     @SuppressWarnings("unchecked assignment")
     public void saveValuesToMap() {
-        dataHolder.getFileList().forEach((file) -> {
+        dataHolder.getFileList().stream().filter(f -> f.endsWith(".csv")).forEach((file) -> {
             String fineName = new File(file).getName().replaceFirst("[.][^.]+$", "");
             Integer key = Integer.valueOf(fineName.split("_")[1]);
             if (fineName.contains(instrument)) {
@@ -59,7 +59,7 @@ public class CSVOperations {
     }
 
     public void deleteRowsForFile() {
-        dataHolder.getFileList().forEach((file) -> {
+        dataHolder.getFileList().stream().filter(f -> f.endsWith(".csv")).forEach((file) -> {
             try {
                 CSVReader readFile = new CSVReader(new FileReader(file));
                 List<String[]> allRows = readFile.readAll();
