@@ -29,7 +29,7 @@ public class FileOperations {
     public void saveFilesToList() {
         try (Stream<Path> walk = Files.walk(Paths.get(mt4Folder))) {
 
-            List<String> result = walk.filter(f -> f.endsWith(".csv"))
+            List<String> result = walk.filter(f -> f.getFileName().toString().endsWith(".csv"))
                     .map(Path::toString).collect(Collectors.toList());
 
             if (result.size() > 0) {
