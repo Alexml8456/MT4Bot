@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -59,6 +61,33 @@ public class Main {
             List<String> result = walk.filter(f -> f.getFileName().toString().endsWith(".gif"))
                     .map(Path::toString).collect(Collectors.toList());
             System.out.println(result);
+            List<File> fileList = new ArrayList<>();
+            result.forEach(f->{
+                fileList.add(new File(f));
+            });
+
+            File[] files = {
+                    new File("/home/alexml/.wine/drive_c/Program Files (x86)/ForexClub MT4/MQL4/Files/ScreenShots/60.gif"),
+                    new File("/home/alexml/.wine/drive_c/Program Files (x86)/ForexClub MT4/MQL4/Files/ScreenShots/5.gif"),
+                    new File("/home/alexml/.wine/drive_c/Program Files (x86)/ForexClub MT4/MQL4/Files/ScreenShots/15.gif"),
+                    new File("/home/alexml/.wine/drive_c/Program Files (x86)/ForexClub MT4/MQL4/Files/ScreenShots/30.gif"),
+                    new File("/home/alexml/.wine/drive_c/Program Files (x86)/ForexClub MT4/MQL4/Files/ScreenShots/240.gif"),
+            };
+
+
+            Arrays.sort(files, (o1, o2) -> {
+                int n1 = Integer.valueOf(o1.getName().replaceFirst("[.][^.]+$", ""));
+                int n2 = Integer.valueOf(o2.getName().replaceFirst("[.][^.]+$", ""));
+                return n1 - n2;
+            });
+
+            for(File f:files){
+                System.out.println(f.getName());
+            }
+
+
+
+
         } catch (IOException e) {
             System.out.println(e);
         }
