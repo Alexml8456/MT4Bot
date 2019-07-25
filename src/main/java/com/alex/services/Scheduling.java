@@ -37,6 +37,9 @@ public class Scheduling {
     private FileOperations fileOperations;
 
     @Autowired
+    private ImageOperations imageOperations;
+
+    @Autowired
     private CSVOperations csvOperations;
 
     @Autowired
@@ -71,6 +74,8 @@ public class Scheduling {
     @Scheduled(cron = "15 0/5 * ? * *")
     //@Scheduled(cron = "10 0/1 * ? * *")
     public void saveFiles() {
+        imageOperations.mergeImageFiles();
+
         fileOperations.saveFilesToList();
 
         csvOperations.saveValuesToMap();

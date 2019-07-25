@@ -17,6 +17,9 @@ import java.util.Comparator;
 @Service
 public class TradeCondition {
 
+    @Value("${mt4.files.folder}")
+    private String mt4Folder;
+
     @Value("${instrument}")
     private String instrument;
 
@@ -45,6 +48,7 @@ public class TradeCondition {
             if (reEnterAfterSell() && bullMarket) {
                 log.info("Re enter to buy, after sell!");
                 telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("First buy after sell!"));
+                telegramBot.pushPhotoMessage(dataHolder.getSubscriptions(), mt4Folder.concat("ScreenShots/").concat("MT4.png"));
                 bullMarket = false;
             } else if (firstFilteringBuyLevel()) {
                 log.info("First buy filtering level was passed!");
@@ -53,6 +57,7 @@ public class TradeCondition {
                     lastConditionTime = DateTime.getGMTTimeMillis();
                     log.info(getValues("Second buy filtering level was passed - time to Buy!"));
                     telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Buy-all conditions passed"));
+                    telegramBot.pushPhotoMessage(dataHolder.getSubscriptions(), mt4Folder.concat("ScreenShots/").concat("MT4.png"));
 //                    if (thirdFilteringBuyLevel()) {
 //                        lastConditionTime = DateTime.getGMTTimeMillis();
 //                        log.info(getValues("Third buy filtering level was passed - time to Buy!"s));
@@ -66,6 +71,7 @@ public class TradeCondition {
                     lastConditionTime = DateTime.getGMTTimeMillis();
                     log.info(getValues("Second sell filtering level was passed - time to Sell!"));
                     telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Sell-all conditions passed"));
+                    telegramBot.pushPhotoMessage(dataHolder.getSubscriptions(), mt4Folder.concat("ScreenShots/").concat("MT4.png"));
                     bullMarket = true;
 //                    if (thirdFilteringSellLevel()) {
 //                        lastConditionTime = DateTime.getGMTTimeMillis();
@@ -153,8 +159,8 @@ public class TradeCondition {
                 .sorted(Comparator.comparingInt(o -> Integer.valueOf(o.getKey())))
                 .forEach(period -> {
                     LocalDateTime maxKey = period.getValue().keySet().stream().max(LocalDateTime::compareTo).get();
-                    double buys = round(volumeGenerationService.getVolume().get(period.getKey()).get(getRelevantKey(period.getKey(),maxKey)).getBuy().doubleValue(), 1);
-                    double sells = round(volumeGenerationService.getVolume().get(period.getKey()).get(getRelevantKey(period.getKey(),maxKey)).getSell().doubleValue(), 1);
+                    double buys = round(volumeGenerationService.getVolume().get(period.getKey()).get(getRelevantKey(period.getKey(), maxKey)).getBuy().doubleValue(), 1);
+                    double sells = round(volumeGenerationService.getVolume().get(period.getKey()).get(getRelevantKey(period.getKey(), maxKey)).getSell().doubleValue(), 1);
                     builder.append("P=");
                     builder.append(valueMapping(period.getKey()));
                     builder.append("; TBuy=");
