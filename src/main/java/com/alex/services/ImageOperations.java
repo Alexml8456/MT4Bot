@@ -24,8 +24,8 @@ public class ImageOperations {
     private String mt4Folder;
 
     public void mergeImageFiles() {
-        int rows = 2;
-        int cols = 2;
+        int rows = 4;
+        int cols = 1;
         int chunks = rows * cols;
         int chunkWidth, chunkHeight;
         int type;
