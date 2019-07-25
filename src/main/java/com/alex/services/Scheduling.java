@@ -74,9 +74,9 @@ public class Scheduling {
     @Scheduled(cron = "15 0/5 * ? * *")
     //@Scheduled(cron = "10 0/1 * ? * *")
     public void saveFiles() {
-        imageOperations.mergeImageFiles();
-
         fileOperations.saveFilesToList();
+
+        imageOperations.mergeImageFiles();
 
         csvOperations.saveValuesToMap();
 
