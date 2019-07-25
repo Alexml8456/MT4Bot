@@ -71,7 +71,7 @@ public class Scheduling {
     }
 
 
-    @Scheduled(cron = "20 0/5 * ? * *")
+    @Scheduled(cron = "15 0/5 * ? * *")
     //@Scheduled(cron = "10 0/1 * ? * *")
     public void saveFiles() {
         fileOperations.saveFilesToList();
@@ -83,6 +83,8 @@ public class Scheduling {
         tradeCondition.checkTradeCondition();
 
         timeMetrics.getCsvMetrics().clear();
+
+        fileOperations.cleanDirectory();
     }
 
     @Scheduled(fixedDelay = 1000)
