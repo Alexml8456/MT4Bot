@@ -84,7 +84,7 @@ public class Scheduling {
 
         timeMetrics.getCsvMetrics().clear();
 
-        fileOperations.cleanDirectory();
+        //fileOperations.cleanDirectory();
     }
 
     @Scheduled(fixedDelay = 1000)
