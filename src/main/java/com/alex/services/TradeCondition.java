@@ -47,7 +47,7 @@ public class TradeCondition {
         if (lastConditionTime.isBefore(minutesBefore)) {
             if (reEnterAfterSell() && bullMarket) {
                 log.info("Re enter to buy, after sell!");
-                telegramBot.pushPhotoMessage(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("MT4.png"));
+                telegramBot.pushPhotoMessage(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("MT4.jpg"));
                 telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("First buy after sell!"));
                 bullMarket = false;
             } else if (firstFilteringBuyLevel()) {
@@ -56,7 +56,7 @@ public class TradeCondition {
                     //log.info("Second buy filtering level was passed!");
                     lastConditionTime = DateTime.getGMTTimeMillis();
                     log.info(getValues("Second buy filtering level was passed - time to Buy!"));
-                    telegramBot.pushPhotoMessage(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("MT4.png"));
+                    telegramBot.pushPhotoMessage(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("MT4.jpg"));
                     telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Buy-all conditions passed"));
 //                    if (thirdFilteringBuyLevel()) {
 //                        lastConditionTime = DateTime.getGMTTimeMillis();
@@ -70,7 +70,7 @@ public class TradeCondition {
                     //log.info("Second sell filtering level was passed!");
                     lastConditionTime = DateTime.getGMTTimeMillis();
                     log.info(getValues("Second sell filtering level was passed - time to Sell!"));
-                    telegramBot.pushPhotoMessage(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("MT4.png"));
+                    telegramBot.pushPhotoMessage(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("MT4.jpg"));
                     telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Sell-all conditions passed"));
                     bullMarket = true;
 //                    if (thirdFilteringSellLevel()) {
