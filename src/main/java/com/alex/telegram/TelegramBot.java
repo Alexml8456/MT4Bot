@@ -4,6 +4,7 @@ import com.alex.services.DataHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -66,6 +67,19 @@ public class TelegramBot extends TelegramLongPollingBot {
                 execute(sendPhotoRequest);
             } catch (TelegramApiException e) {
                 log.error("Can't send telegram photo message", e);
+            }
+        }
+    }
+
+    public void pushFile(List<String> chatIds, String filePath) {
+        for (String chatId : chatIds) {
+            SendDocument sendFileRequest = new SendDocument();
+            sendFileRequest.setChatId(chatId);
+            sendFileRequest.setDocument(new File(filePath));
+            try {
+                execute(sendFileRequest);
+            } catch (TelegramApiException e) {
+                log.error("Can't send telegram file", e);
             }
         }
     }

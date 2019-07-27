@@ -65,7 +65,7 @@ public class ImageOperations {
             }
             log.info("Image concatenated.....");
 
-            ImageIO.write(finalImg, "jpg", new File(mt4Folder.concat("/ScreenShots/").concat("MT4.jpg")));
+            ImageIO.write(finalImg, "png", new File(mt4Folder.concat("/ScreenShots/").concat("MT4.png")));
         } catch (IOException e) {
             log.error("Cannot write file- {}", e.getMessage());
         }
