@@ -24,25 +24,23 @@ public class ImageOperations {
     private String mt4Folder;
 
     public void mergeImageFiles() {
-        int rows = 4;
+
+        List<String> result = dataHolder.getFileList().stream().filter(f -> f.endsWith(".gif")).collect(Collectors.toList());
+
+        int rows = result.size();
         int cols = 1;
         int chunks = rows * cols;
         int chunkWidth, chunkHeight;
         int type;
 
-
         File[] imgFiles = new File[chunks];
-        List<String> result = dataHolder.getFileList().stream().filter(f -> f.endsWith(".gif")).collect(Collectors.toList());
 
         for (int i = 0; i < result.size(); i++) {
             imgFiles[i] = new File(result.get(i));
         }
 
-        Arrays.sort(imgFiles, (o1, o2) -> {
-            int n1 = Integer.valueOf(o1.getName().replaceFirst("[.][^.]+$", ""));
-            int n2 = Integer.valueOf(o2.getName().replaceFirst("[.][^.]+$", ""));
-            return n1 - n2;
-        });
+        sortString(imgFiles);
+
         try {
             //creating a bufferd image array from image files
             BufferedImage[] buffImages = new BufferedImage[chunks];
@@ -72,4 +70,21 @@ public class ImageOperations {
 
 
     }
+
+    private void sortInteger(File[] fileArray){
+        Arrays.sort(fileArray, (o1, o2) -> {
+            int n1 = Integer.valueOf(o1.getName().replaceFirst("[.][^.]+$", ""));
+            int n2 = Integer.valueOf(o2.getName().replaceFirst("[.][^.]+$", ""));
+            return n1 - n2;
+        });
+    }
+
+    private void sortString(File[] fileArray){
+        Arrays.sort(fileArray, (o1, o2) -> {
+            String n1 = o1.getName().replaceFirst("[.][^.]+$", "");
+            String n2 = o2.getName().replaceFirst("[.][^.]+$", "");
+            return n2.compareTo(n1);
+        });
+    }
+
 }
