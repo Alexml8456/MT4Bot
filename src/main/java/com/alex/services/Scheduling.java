@@ -78,11 +78,11 @@ public class Scheduling {
 
         imageOperations.mergeImageFiles();
 
-        csvOperations.saveValuesToMap();
+        //csvOperations.saveValuesToMap();
 
-        tradeCondition.checkTradeCondition();
+        //tradeCondition.checkTradeCondition();
 
-        timeMetrics.getCsvMetrics().clear();
+        //timeMetrics.getCsvMetrics().clear();
 
         //fileOperations.cleanDirectory();
     }
