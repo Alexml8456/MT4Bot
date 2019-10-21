@@ -50,11 +50,11 @@ public class Scheduling {
 
     @Scheduled(cron = "0 52 23 ? * *")
     public void deleteRows() {
-        csvOperations.deleteRowsForFile();
+        //csvOperations.deleteRowsForFile();
         dataHolder.clearFileList();
     }
 
-    @Scheduled(fixedDelay = 60000)
+    //@Scheduled(fixedDelay = 60000)
     public void verifyStalePrice() {
         try {
             LocalDateTime fiveMinsBefore = DateTime.getGMTTimeMillis().truncatedTo(ChronoUnit.MINUTES).minusMinutes(5);
@@ -71,7 +71,7 @@ public class Scheduling {
     }
 
 
-    @Scheduled(cron = "15 0/5 * ? * *")
+    @Scheduled(cron = "05 0/5 * ? * *")
     //@Scheduled(cron = "10 0/1 * ? * *")
     public void saveFiles() {
         fileOperations.saveFilesToList();
@@ -87,7 +87,7 @@ public class Scheduling {
         //fileOperations.cleanDirectory();
     }
 
-    @Scheduled(fixedDelay = 1000)
+    //@Scheduled(fixedDelay = 1000)
     public void reconnect() throws InterruptedException, IOException, DeploymentException {
         if (!isConnected()) {
             log.info("Connection status is {}", isConnected());
