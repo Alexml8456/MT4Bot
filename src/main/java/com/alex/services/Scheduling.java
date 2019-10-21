@@ -1,8 +1,10 @@
 package com.alex.services;
 
+import com.alex.telegram.TelegramBot;
 import com.alex.utils.DateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketSession;
@@ -20,6 +22,9 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 @Service
 @Slf4j
 public class Scheduling {
+
+    @Value("${mt4.files.folder}")
+    private String mt4Folder;
 
     @Autowired
     private KrakenProcessingService processingService;
@@ -47,6 +52,9 @@ public class Scheduling {
 
     @Autowired
     private TradeCondition tradeCondition;
+
+    @Autowired
+    private TelegramBot telegramBot;
 
     @Scheduled(cron = "0 52 23 ? * *")
     public void deleteRows() {
@@ -85,6 +93,14 @@ public class Scheduling {
         //timeMetrics.getCsvMetrics().clear();
 
         //fileOperations.cleanDirectory();
+    }
+
+
+    @Scheduled(cron = "30 0 0/4 ? * *")
+    public void pushMessage() {
+        log.info("Preparing to send message...");
+        telegramBot.pushFile(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("MT4.png"));
+        log.info("Message was sent!");
     }
 
     //@Scheduled(fixedDelay = 1000)
