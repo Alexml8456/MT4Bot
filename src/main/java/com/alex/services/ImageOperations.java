@@ -25,7 +25,9 @@ public class ImageOperations {
 
     public void mergeImageFiles() {
 
-        List<String> result = dataHolder.getFileList().stream().filter(f -> f.endsWith(".gif")).collect(Collectors.toList());
+        List<String> result = dataHolder.getFileList().stream()
+                .filter(f -> f.endsWith(".gif") || f.endsWith(".qwe"))
+                .collect(Collectors.toList());
 
         int rows = result.size();
         int cols = 1;
