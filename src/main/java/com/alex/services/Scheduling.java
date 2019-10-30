@@ -79,12 +79,12 @@ public class Scheduling {
     }
 
 
-    @Scheduled(cron = "05 0/5 * ? * *")
+    @Scheduled(cron = "05 0/1 * ? * *")
     //@Scheduled(cron = "10 0/1 * ? * *")
     public void saveFiles() {
         fileOperations.saveFilesToList();
 
-        imageOperations.mergeImageFiles();
+        imageOperations.mergeImages();
 
         //csvOperations.saveValuesToMap();
 
@@ -99,7 +99,7 @@ public class Scheduling {
     @Scheduled(cron = "30 0 0/4 ? * *")
     public void pushMessage() {
         log.info("Preparing to send message...");
-        telegramBot.pushFile(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("MT4.png"));
+        telegramBot.pushFile(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("Crypto.png"));
         log.info("Message was sent!");
     }
 

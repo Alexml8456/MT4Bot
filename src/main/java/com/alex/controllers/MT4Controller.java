@@ -23,10 +23,17 @@ public class MT4Controller {
     @Autowired
     private DataHolder dataHolder;
 
-    @GetMapping(value = "/get/image")
-    public ResponseEntity pushImage() {
-        log.info("Manual image get request was sent...");
-        telegramBot.pushFile(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("MT4.png"));
+    @GetMapping(value = "/get/image/cypto")
+    public ResponseEntity pushCyptoImage() {
+        log.info("Manual image get request for cypto was sent...");
+        telegramBot.pushFile(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("Crypto.png"));
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/get/image/gbp")
+    public ResponseEntity pushGbpImage() {
+        log.info("Manual image get request for gbp was sent...");
+        telegramBot.pushFile(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("GBP.png"));
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }

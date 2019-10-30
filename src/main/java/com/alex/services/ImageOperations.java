@@ -1,5 +1,7 @@
 package com.alex.services;
 
+import com.alex.configuration.CurrencyProperties;
+import com.alex.configuration.PeriodsProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,16 +20,39 @@ import java.util.stream.Collectors;
 public class ImageOperations {
 
     @Autowired
+    private CurrencyProperties currency;
+
+    @Autowired
     private DataHolder dataHolder;
 
     @Value("${mt4.files.folder}")
     private String mt4Folder;
 
-    public void mergeImageFiles() {
+    public void mergeImages() {
+        currency.getPairs().stream()
+                .filter(pair -> !pair.equals("ETH"))
+                .forEach(pair -> {
+                    mergeImageFiles(pair);
+                });
+    }
 
-        List<String> result = dataHolder.getFileList().stream()
-                .filter(f -> f.endsWith(".gif") || f.endsWith(".qwe"))
-                .collect(Collectors.toList());
+    private void mergeImageFiles(String pair) {
+        String fileName;
+        List<String> result;
+
+        if (pair.equals("BTC")) {
+            fileName = "Crypto.png";
+            result = dataHolder.getFileList().stream()
+                    .filter(f -> f.endsWith(".gif"))
+                    .filter(f -> f.contains("BTC") || f.contains("ETH"))
+                    .collect(Collectors.toList());
+        } else {
+            fileName = pair.concat(".png");
+            result = dataHolder.getFileList().stream()
+                    .filter(f -> f.endsWith(".gif"))
+                    .filter(f -> f.contains(pair))
+                    .collect(Collectors.toList());
+        }
 
         int rows = result.size();
         int cols = 1;
@@ -63,9 +88,9 @@ public class ImageOperations {
                     num++;
                 }
             }
-            log.info("Image concatenated.....");
+            log.info("Image for {} concatenated.....", pair);
 
-            ImageIO.write(finalImg, "png", new File(mt4Folder.concat("/ScreenShots/").concat("MT4.png")));
+            ImageIO.write(finalImg, "png", new File(mt4Folder.concat("/ScreenShots/").concat(fileName)));
         } catch (IOException e) {
             log.error("Cannot write file- {}", e.getMessage());
         }
@@ -73,7 +98,7 @@ public class ImageOperations {
 
     }
 
-    private void sortInteger(File[] fileArray){
+    private void sortInteger(File[] fileArray) {
         Arrays.sort(fileArray, (o1, o2) -> {
             int n1 = Integer.valueOf(o1.getName().replaceFirst("[.][^.]+$", ""));
             int n2 = Integer.valueOf(o2.getName().replaceFirst("[.][^.]+$", ""));
@@ -81,7 +106,7 @@ public class ImageOperations {
         });
     }
 
-    private void sortString(File[] fileArray){
+    private void sortString(File[] fileArray) {
         Arrays.sort(fileArray, (o1, o2) -> {
             String n1 = o1.getName().replaceFirst("[.][^.]+$", "");
             String n2 = o2.getName().replaceFirst("[.][^.]+$", "");
