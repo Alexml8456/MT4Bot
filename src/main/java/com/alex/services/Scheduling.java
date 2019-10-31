@@ -79,7 +79,7 @@ public class Scheduling {
     }
 
 
-    @Scheduled(cron = "05 0/1 * ? * *")
+    @Scheduled(cron = "05 0/5 * ? * *")
     //@Scheduled(cron = "10 0/1 * ? * *")
     public void saveFiles() {
         fileOperations.saveFilesToList();
