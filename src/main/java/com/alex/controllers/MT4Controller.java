@@ -23,9 +23,9 @@ public class MT4Controller {
     @Autowired
     private DataHolder dataHolder;
 
-    @GetMapping(value = "/get/image/cypto")
+    @GetMapping(value = "/get/image/crypto")
     public ResponseEntity pushCyptoImage() {
-        log.info("Manual image get request for cypto was sent...");
+        log.info("Manual image get request for crypto was sent...");
         telegramBot.pushFile(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("Crypto.png"));
         return ResponseEntity.ok(HttpStatus.OK);
     }
