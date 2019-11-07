@@ -96,7 +96,7 @@ public class Scheduling {
     }
 
 
-    @Scheduled(cron = "30 0 0/4 ? * *")
+    @Scheduled(cron = "30 0 2/4 ? * *")
     public void pushMessage() {
         log.info("Preparing to send message...");
         telegramBot.pushFile(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("Crypto.png"));
