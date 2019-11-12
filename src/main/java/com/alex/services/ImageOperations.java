@@ -30,20 +30,20 @@ public class ImageOperations {
 
     public void mergeImages() {
         currency.getPairs().stream()
-                .filter(pair -> !pair.equals("ETH"))
                 .forEach(pair -> {
                     mergeImageFiles(pair);
                 });
+        mergeImageFiles("Crypto");
     }
 
     private void mergeImageFiles(String pair) {
         String fileName;
         List<String> result;
 
-        if (pair.equals("BTC")) {
+        if (pair.equals("Crypto")) {
             fileName = "Crypto.png";
             result = dataHolder.getFileList().stream()
-                    .filter(f -> f.endsWith(".gif"))
+                    .filter(f -> f.endsWith(".png"))
                     .filter(f -> f.contains("BTC") || f.contains("ETH"))
                     .collect(Collectors.toList());
         } else {
@@ -66,7 +66,7 @@ public class ImageOperations {
             imgFiles[i] = new File(result.get(i));
         }
 
-        sortString(imgFiles);
+        sortInteger(imgFiles);
 
         try {
             //creating a bufferd image array from image files
@@ -99,11 +99,13 @@ public class ImageOperations {
     }
 
     private void sortInteger(File[] fileArray) {
-        Arrays.sort(fileArray, (o1, o2) -> {
-            int n1 = Integer.valueOf(o1.getName().replaceFirst("[.][^.]+$", ""));
-            int n2 = Integer.valueOf(o2.getName().replaceFirst("[.][^.]+$", ""));
-            return n1 - n2;
-        });
+        if (fileArray.length > 2) {
+            Arrays.sort(fileArray, (o1, o2) -> {
+                int n1 = Integer.valueOf(o1.getName().replaceFirst("[.][^.]+$", "").split("_")[1]);
+                int n2 = Integer.valueOf(o2.getName().replaceFirst("[.][^.]+$", "").split("_")[1]);
+                return n2 - n1;
+            });
+        }
     }
 
     private void sortString(File[] fileArray) {

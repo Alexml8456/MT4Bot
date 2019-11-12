@@ -56,7 +56,7 @@ public class Scheduling {
     @Autowired
     private TelegramBot telegramBot;
 
-    @Scheduled(cron = "0 52 23 ? * *")
+    //@Scheduled(cron = "0 52 23 ? * *")
     public void deleteRows() {
         //csvOperations.deleteRowsForFile();
         dataHolder.clearFileList();
@@ -85,6 +85,8 @@ public class Scheduling {
         fileOperations.saveFilesToList();
 
         imageOperations.mergeImages();
+
+        dataHolder.clearFileList();
 
         //csvOperations.saveValuesToMap();
 
