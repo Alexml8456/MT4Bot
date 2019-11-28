@@ -100,9 +100,11 @@ public class Scheduling {
 
     @Scheduled(cron = "30 0 2/4 ? * *")
     public void pushMessage() {
-        log.info("Preparing to send message...");
+        log.info("Preparing to send messages...");
         telegramBot.pushFile(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("Crypto.png"));
-        log.info("Message was sent!");
+        log.info("Message with crypto was sent!");
+        telegramBot.pushFile(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("GBP.png"));
+        log.info("Message with GBP was sent!");
     }
 
     //@Scheduled(fixedDelay = 1000)
