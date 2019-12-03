@@ -32,8 +32,15 @@ public class MT4Controller {
 
     @GetMapping(value = "/get/image/gbp")
     public ResponseEntity pushGbpImage() {
-        log.info("Manual image get request for gbp was sent...");
+        log.info("Manual image get request for GBPUSD was sent...");
         telegramBot.pushFile(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("GBP.png"));
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/get/image/eur")
+    public ResponseEntity pushEurImage() {
+        log.info("Manual image get request for EURUSD was sent...");
+        telegramBot.pushFile(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("EUR.png"));
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }

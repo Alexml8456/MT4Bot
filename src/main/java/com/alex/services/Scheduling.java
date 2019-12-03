@@ -105,6 +105,8 @@ public class Scheduling {
         log.info("Message with crypto was sent!");
         telegramBot.pushFile(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("GBP.png"));
         log.info("Message with GBP was sent!");
+        telegramBot.pushFile(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("EUR.png"));
+        log.info("Message with EUR was sent!");
     }
 
     //@Scheduled(fixedDelay = 1000)
