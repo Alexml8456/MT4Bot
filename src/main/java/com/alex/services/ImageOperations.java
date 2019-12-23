@@ -60,42 +60,42 @@ public class ImageOperations {
         int chunkWidth, chunkHeight;
         int type;
 
-        File[] imgFiles = new File[chunks];
+        if (rows != 0) {
+            File[] imgFiles = new File[chunks];
 
-        for (int i = 0; i < result.size(); i++) {
-            imgFiles[i] = new File(result.get(i));
-        }
-
-        sortInteger(imgFiles);
-
-        try {
-            //creating a bufferd image array from image files
-            BufferedImage[] buffImages = new BufferedImage[chunks];
-            for (int i = 0; i < chunks; i++) {
-                buffImages[i] = ImageIO.read(imgFiles[i]);
+            for (int i = 0; i < result.size(); i++) {
+                imgFiles[i] = new File(result.get(i));
             }
-            type = buffImages[0].getType();
-            chunkWidth = buffImages[0].getWidth();
-            chunkHeight = buffImages[0].getHeight();
 
-            //Initializing the final image
-            BufferedImage finalImg = new BufferedImage(chunkWidth * cols, chunkHeight * rows, type);
+            sortInteger(imgFiles);
 
-            int num = 0;
-            for (int i = 0; i < rows; i++) {
-                for (int j = 0; j < cols; j++) {
-                    finalImg.createGraphics().drawImage(buffImages[num], chunkWidth * j, chunkHeight * i, null);
-                    num++;
+            try {
+                //creating a bufferd image array from image files
+                BufferedImage[] buffImages = new BufferedImage[chunks];
+                for (int i = 0; i < chunks; i++) {
+                    buffImages[i] = ImageIO.read(imgFiles[i]);
                 }
+                type = buffImages[0].getType();
+                chunkWidth = buffImages[0].getWidth();
+                chunkHeight = buffImages[0].getHeight();
+
+                //Initializing the final image
+                BufferedImage finalImg = new BufferedImage(chunkWidth * cols, chunkHeight * rows, type);
+
+                int num = 0;
+                for (int i = 0; i < rows; i++) {
+                    for (int j = 0; j < cols; j++) {
+                        finalImg.createGraphics().drawImage(buffImages[num], chunkWidth * j, chunkHeight * i, null);
+                        num++;
+                    }
+                }
+                log.info("Image for {} concatenated.....", pair);
+
+                ImageIO.write(finalImg, "png", new File(mt4Folder.concat("/ScreenShots/").concat(fileName)));
+            } catch (IOException e) {
+                log.error("Cannot write file- {}", e.getMessage());
             }
-            log.info("Image for {} concatenated.....", pair);
-
-            ImageIO.write(finalImg, "png", new File(mt4Folder.concat("/ScreenShots/").concat(fileName)));
-        } catch (IOException e) {
-            log.error("Cannot write file- {}", e.getMessage());
         }
-
-
     }
 
     private void sortInteger(File[] fileArray) {
