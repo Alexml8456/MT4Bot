@@ -6,30 +6,135 @@ import com.opencsv.bean.CsvBindByPosition;
 public class CSVMapping {
 
     @CsvBindByPosition(position = 0)
-    private String dateTime;
+    private String symbol;
 
     @CsvBindByPosition(position = 1)
-    private Double ssValue;
+    private Integer period;
 
     @CsvBindByPosition(position = 2)
-    private Double tfxValue;
+    private String dateTime;
 
     @CsvBindByPosition(position = 3)
-    private Double closePrice;
+    private Integer upGlobalX3Trend;
+
+    @CsvBindByPosition(position = 4)
+    private Integer upLocalX3Trend;
+
+    @CsvBindByPosition(position = 5)
+    private Integer upZigZagLocalTrend;
+
+    @CsvBindByPosition(position = 6)
+    private Integer upZigZagMainTrend;
+
+    @CsvBindByPosition(position = 7)
+    private Integer sefc10Up;
+
+    @CsvBindByPosition(position = 8)
+    private Integer halfTrendUp;
+
+    @CsvBindByPosition(position = 9)
+    private Integer bbUpTrend;
+
+    @CsvBindByPosition(position = 10)
+    private Integer bbUpMainTrend;
+
+    @CsvBindByPosition(position = 11)
+    private Integer bbUpTrendIndex;
+
+    @CsvBindByPosition(position = 12)
+    private Integer bbDownTrendIndex;
+
+    @CsvBindByPosition(position = 13)
+    private Integer brainTrend2StopUp;
+
+    @CsvBindByPosition(position = 14)
+    private Integer brainTrend2StopMainUp;
+
+    @CsvBindByPosition(position = 15)
+    private Double lastPrice;
+
+    @CsvBindByPosition(position = 16)
+    private Double lastLowPrice;
+
+    @CsvBindByPosition(position = 17)
+    private Double lastHighPrice;
+
+    @CsvBindByPosition(position = 18)
+    private String condition;
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public Integer getPeriod() {
+        return period;
+    }
 
     public String getDateTime() {
         return dateTime;
     }
 
-    public Double getSsValue() {
-        return ssValue;
+    public Integer getUpGlobalX3Trend() {
+        return upGlobalX3Trend;
     }
 
-    public Double getTfxValue() {
-        return tfxValue;
+    public Integer getUpLocalX3Trend() {
+        return upLocalX3Trend;
     }
 
-    public Double getClosePrice() {
-        return closePrice;
+    public Integer getUpZigZagLocalTrend() {
+        return upZigZagLocalTrend;
+    }
+
+    public Integer getUpZigZagMainTrend() {
+        return upZigZagMainTrend;
+    }
+
+    public Integer getSefc10Up() {
+        return sefc10Up;
+    }
+
+    public Integer getHalfTrendUp() {
+        return halfTrendUp;
+    }
+
+    public Integer getBbUpTrend() {
+        return bbUpTrend;
+    }
+
+    public Integer getBbUpTrendIndex() {
+        return bbUpTrendIndex;
+    }
+
+    public Integer getBbDownTrendIndex() {
+        return bbDownTrendIndex;
+    }
+
+    public Integer getBrainTrend2StopUp() {
+        return brainTrend2StopUp;
+    }
+
+    public Double getLastPrice() {
+        return lastPrice;
+    }
+
+    public Double getLastLowPrice() {
+        return lastLowPrice;
+    }
+
+    public Double getLastHighPrice() {
+        return lastHighPrice;
+    }
+
+    public String getCondition() {
+        return condition;
+    }
+
+    public Integer getBrainTrend2StopMainUp() {
+        return brainTrend2StopMainUp;
+    }
+
+    public Integer getBbUpMainTrend() {
+        return bbUpMainTrend;
     }
 }

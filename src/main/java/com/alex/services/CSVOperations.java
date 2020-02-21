@@ -11,7 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -31,31 +34,54 @@ public class CSVOperations {
     private DataHolder dataHolder;
 
     @Autowired
-    private TimeMetrics timeMetrics;
+    private CsvMetrics csvMetrics;
 
     @SuppressWarnings("unchecked assignment")
-    public void saveValuesToMap() {
-        dataHolder.getFileList().stream().filter(f -> f.endsWith(".csv")).forEach((file) -> {
-            String fineName = new File(file).getName().replaceFirst("[.][^.]+$", "");
-            Integer key = Integer.valueOf(fineName.split("_")[1]);
-            if (fineName.contains(instrument)) {
-                try (Reader reader = Files.newBufferedReader(Paths.get(file))) {
-                    CsvToBean<CSVMapping> csvToBean = new CsvToBeanBuilder(reader)
-                            .withType(CSVMapping.class)
-                            .withIgnoreQuotations(true)
-                            .withSkipLines(1)
-                            .withIgnoreLeadingWhiteSpace(true).build();
+    public void saveValuesToMap(String filePath) {
+        //String fineName = new File(file).getName().replaceFirst("[.][^.]+$", "");
+        //Integer key = Integer.valueOf(fineName.split("_")[1]);
+        try (Reader reader = Files.newBufferedReader(Paths.get(filePath))) {
+            CsvToBean<CSVMapping> csvToBean = new CsvToBeanBuilder(reader)
+                    .withType(CSVMapping.class)
+                    .withIgnoreQuotations(true)
+                    .withSkipLines(1)
+                    .withIgnoreLeadingWhiteSpace(true).build();
 
-                    for (CSVMapping csvMapping : csvToBean) {
-                        timeMetrics.saveMetrics(key, csvMapping.getDateTime(), csvMapping.getSsValue(), csvMapping.getTfxValue(), csvMapping.getClosePrice());
-                    }
-
-                } catch (IOException e) {
-                    log.error("Can't read data from file. " + e.getMessage(), e);
-                }
-                //log.info("Values has been saved from file - {}", fineName);
+            for (CSVMapping csvMapping : csvToBean) {
+                csvMetrics.saveMt4Metrics(csvMapping.getSymbol(), csvMapping.getPeriod(), csvMapping.getDateTime(), csvMapping.getUpGlobalX3Trend(),
+                        csvMapping.getUpLocalX3Trend(), csvMapping.getUpZigZagLocalTrend(), csvMapping.getUpZigZagMainTrend(), csvMapping.getSefc10Up(),
+                        csvMapping.getHalfTrendUp(), csvMapping.getBbUpTrend(), csvMapping.getBbUpMainTrend(), csvMapping.getBbUpTrendIndex(),
+                        csvMapping.getBbDownTrendIndex(), csvMapping.getBrainTrend2StopUp(), csvMapping.getBrainTrend2StopMainUp(),
+                        csvMapping.getLastPrice(), csvMapping.getLastLowPrice(), csvMapping.getLastHighPrice(), csvMapping.getCondition());
             }
-        });
+
+        } catch (IOException e) {
+            log.error("Can't read data from file. " + e.getMessage(), e);
+        }
+        //log.info("Values has been saved from file - {}", fineName);
+    }
+
+    @SuppressWarnings("unchecked assignment")
+    public void saveValuesToList(String filePath) {
+        try (Reader reader = Files.newBufferedReader(Paths.get(filePath))) {
+            CsvToBean<CSVMapping> csvToBean = new CsvToBeanBuilder(reader)
+                    .withType(CSVMapping.class)
+                    .withIgnoreQuotations(true)
+                    .withSkipLines(1)
+                    .withIgnoreLeadingWhiteSpace(true).build();
+
+            for (CSVMapping csvMapping : csvToBean) {
+                csvMetrics.saveMt4MetricsToList(csvMapping.getSymbol(), csvMapping.getPeriod(), csvMapping.getDateTime(), csvMapping.getUpGlobalX3Trend(),
+                        csvMapping.getUpLocalX3Trend(), csvMapping.getUpZigZagLocalTrend(), csvMapping.getUpZigZagMainTrend(), csvMapping.getSefc10Up(),
+                        csvMapping.getHalfTrendUp(), csvMapping.getBbUpTrend(), csvMapping.getBbUpMainTrend(), csvMapping.getBbUpTrendIndex(),
+                        csvMapping.getBbDownTrendIndex(), csvMapping.getBrainTrend2StopUp(), csvMapping.getBrainTrend2StopMainUp(),
+                        csvMapping.getLastPrice(), csvMapping.getLastLowPrice(), csvMapping.getLastHighPrice(), csvMapping.getCondition());
+            }
+
+        } catch (IOException e) {
+            log.error("Can't read data from file. " + e.getMessage(), e);
+        }
+        //log.info("Values has been saved from file - {}", fineName);
     }
 
     public void deleteRowsForFile() {

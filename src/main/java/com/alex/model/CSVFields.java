@@ -10,9 +10,24 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class CSVFields {
-    private String time;
-    private Double ssValue;
-    private Double tfxValue;
-    private Double closePrice;
+    private String symbol;
+    private Integer period;
+    private String dateTime;
+    private Integer upGlobalX3Trend;
+    private Integer upLocalX3Trend;
+    private Integer upZigZagLocalTrend;
+    private Integer upZigZagMainTrend;
+    private Integer sefc10Up;
+    private Integer halfTrendUp;
+    private Integer bbUpTrend;
+    private Integer bbMainUpTrend;
+    private Integer bbUpTrendIndex;
+    private Integer bbDownTrendIndex;
+    private Integer brainTrend2StopUp;
+    private Integer brainTrend2StopMainUp;
+    private Double lastPrice;
+    private Double lastLowPrice;
+    private Double lastHighPrice;
+    private String condition;
 
 }

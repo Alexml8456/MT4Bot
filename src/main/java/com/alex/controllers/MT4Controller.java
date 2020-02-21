@@ -17,7 +17,7 @@ public class MT4Controller {
     @Value("${mt4.files.folder}")
     private String mt4Folder;
 
-    @Autowired
+    //@Autowired
     private TelegramBot telegramBot;
 
     @Autowired

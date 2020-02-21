@@ -5,7 +5,6 @@ import com.alex.utils.DateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.client.WebSocketConnectionManager;
@@ -36,7 +35,7 @@ public class Scheduling {
     private KrakenSessionStorage sessionStorage;
 
     @Autowired
-    private TimeMetrics timeMetrics;
+    private CsvMetrics timeMetrics;
 
     @Autowired
     private FileOperations fileOperations;
@@ -53,7 +52,7 @@ public class Scheduling {
     @Autowired
     private TradeCondition tradeCondition;
 
-    @Autowired
+    //@Autowired
     private TelegramBot telegramBot;
 
     //@Scheduled(cron = "0 52 23 ? * *")
@@ -79,7 +78,7 @@ public class Scheduling {
     }
 
 
-    @Scheduled(cron = "05 0/5 * ? * *")
+    //@Scheduled(cron = "05 0/5 * ? * *")
     //@Scheduled(cron = "10 0/1 * ? * *")
     public void saveFiles() {
         fileOperations.saveFilesToList();
@@ -98,7 +97,7 @@ public class Scheduling {
     }
 
 
-    @Scheduled(cron = "30 0 2/4 ? * *")
+    //@Scheduled(cron = "30 0 2/4 ? * *")
     public void pushMessage() {
         log.info("Preparing to send messages...");
         telegramBot.pushFile(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("Crypto.png"));

@@ -26,14 +26,14 @@ public class TradeCondition {
     @Autowired
     private VolumeGenerationService volumeGenerationService;
 
-    @Autowired
+    //@Autowired
     private TelegramBot telegramBot;
 
     @Autowired
     private DataHolder dataHolder;
 
     @Autowired
-    private TimeMetrics timeMetrics;
+    private CsvMetrics timeMetrics;
 
     private LocalDateTime lastConditionTime = DateTime.getGMTTimeMillis();
 
@@ -87,43 +87,50 @@ public class TradeCondition {
     private boolean firstFilteringSellLevel() {
         int key = 5;
         int mapSize = timeMetrics.getCsvMetrics().get(key).size();
-        return timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getSsValue() > 0.18 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() > 0.46;
+        return true;
+        //return timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getSsValue() > 0.18 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() > 0.46;
     }
 
     private boolean firstFilteringBuyLevel() {
         int key = 5;
         int mapSize = timeMetrics.getCsvMetrics().get(key).size();
-        return timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getSsValue() < -0.18 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() < -0.46;
+        return true;
+        //return timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getSsValue() < -0.18 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() < -0.46;
     }
 
     private boolean secondFilteringSellLevel() {
         int key = 15;
         int mapSize = timeMetrics.getCsvMetrics().get(key).size();
-        return timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getSsValue() > 0.17 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() > 0.45;
+        return true;
+        //return timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getSsValue() > 0.17 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() > 0.45;
     }
 
     private boolean secondFilteringBuyLevel() {
         int key = 15;
         int mapSize = timeMetrics.getCsvMetrics().get(key).size();
-        return timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getSsValue() < -0.17 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() < -0.45;
+        return true;
+        //return timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getSsValue() < -0.17 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() < -0.45;
     }
 
     private boolean thirdFilteringSellLevel() {
         int key = 30;
         int mapSize = timeMetrics.getCsvMetrics().get(key).size();
-        return timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getSsValue() > 0.15 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() > 0.6;
+        return true;
+        //return timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getSsValue() > 0.15 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() > 0.6;
     }
 
     private boolean thirdFilteringBuyLevel() {
         int key = 30;
         int mapSize = timeMetrics.getCsvMetrics().get(key).size();
-        return timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getSsValue() < -0.15 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() < -0.6;
+        return true;
+        //return timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getSsValue() < -0.15 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() < -0.6;
     }
 
     private boolean reEnterAfterSell() {
         int key = 5;
         int mapSize = timeMetrics.getCsvMetrics().get(key).size();
-        return timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getSsValue() < -0.2 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() < -0.3;
+        return true;
+        //return timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getSsValue() < -0.2 && timeMetrics.getCsvMetrics().get(key).get(mapSize - 1).getTfxValue() < -0.3;
     }
 
     private String getValues(String direction) {
@@ -137,11 +144,11 @@ public class TradeCondition {
             builder.append("P=");
             builder.append(valueMapping(key.toString()));
             builder.append("; SS=");
-            builder.append(round(values.get(values.size() - 1).getSsValue(), 2));
+            //builder.append(round(values.get(values.size() - 1).getSsValue(), 2));
             builder.append("; TFX=");
-            builder.append(round(values.get(values.size() - 1).getTfxValue(), 2));
+            //builder.append(round(values.get(values.size() - 1).getTfxValue(), 2));
             builder.append("; CP=");
-            builder.append(round(values.get(values.size() - 1).getClosePrice(), 1));
+            //builder.append(round(values.get(values.size() - 1).getClosePrice(), 1));
             builder.append("\n");
         });
         builder.append(getVolume());
