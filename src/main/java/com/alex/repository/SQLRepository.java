@@ -40,6 +40,12 @@ public class SQLRepository {
             "\t\t\t`BBDownTrendIndex` int(100) NOT NULL,\n" +
             "\t\t\t`BrainTrend2StopUP` int(1) NOT NULL,\n" +
             "\t\t\t`BrainTrend2StopMainUP` int(1) NOT NULL,\n" +
+            "\t\t\t`KX4ChannelUP` int(1) NOT NULL,\n" +
+            "\t\t\t`KX4ChannelBuyIndex` int(100) NOT NULL,\n" +
+            "\t\t\t`KX4ChannelSellIndex` int(100) NOT NULL,\n" +
+            "\t\t\t`KX4LineUP` int(1) NOT NULL,\n" +
+            "\t\t\t`KX4LineBuyIndex` int(100) NOT NULL,\n" +
+            "\t\t\t`KX4LineSellIndex` int(100) NOT NULL,\n" +
             "\t\t\t`LastPrice` DOUBLE NOT NULL,\n" +
             "\t\t\t`LastLowPrice` DOUBLE NOT NULL,\n" +
             "\t\t\t`LastHighPrice` DOUBLE NOT NULL,\n" +
@@ -52,8 +58,9 @@ public class SQLRepository {
             "\t\t) ENGINE = InnoDB DEFAULT CHARSET = utf8;";
 
     private static final String INSERT_VALUES = "INSERT INTO mt4_statistics(SYMBOL, PERIOD, DT, UPGlobalX3Trend, UPLocalX3Trend, UPZigZagLocalTrend, UPZigZagMainTrend," +
-            " SEFC10UP, HalfTrendUP, BBUpTrend, BBUpMainTrend, BBUpTrendIndex, BBDownTrendIndex, BrainTrend2StopUP, BrainTrend2StopMainUP," +
-            " LastPrice, LastLowPrice, LastHighPrice, TCondition) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            "SEFC10UP, HalfTrendUP, BBUpTrend, BBUpMainTrend, BBUpTrendIndex, BBDownTrendIndex, BrainTrend2StopUP, BrainTrend2StopMainUP," +
+            "KX4ChannelUP, KX4ChannelBuyIndex, KX4ChannelSellIndex, KX4LineUP, KX4LineBuyIndex, KX4LineSellIndex," +
+            "LastPrice, LastLowPrice, LastHighPrice, TCondition) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 
     private static final String DROP_MT4 = "DROP TABLE IF EXISTS mt4_statistics;";
@@ -62,17 +69,17 @@ public class SQLRepository {
         return jdbcTemplate.queryForMap(PORTFOLIO_ST_TP, "" + id);
     }
 
-    public void dropTable(){
+    public void dropTable() {
         jdbcTemplate.execute(DROP_MT4);
         log.info("MT4 table was dropped!");
     }
 
-    public void createTable(){
+    public void createTable() {
         jdbcTemplate.execute(CREATE_MT4_STATISTICS);
         log.info("MT4 table was created!");
     }
 
-    public void insertValues(){
+    public void insertValues() {
         jdbcTemplate.batchUpdate(INSERT_VALUES, csvMetrics.getCsvList());
         log.info("DB was updated with new values!");
     }
