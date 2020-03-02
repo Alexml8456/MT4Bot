@@ -36,6 +36,7 @@ public class CsvMetrics {
                                      Integer upZigZagMainTrend, Integer sefc10Up, Integer halfTrendUp, Integer bbUpTrend, Integer bbMainUpTrend, Integer bbUpTrendIndex, Integer bbDownTrendIndex,
                                      Integer brainTrend2StopUp, Integer brainTrend2StopMainUp,
                                      Integer kx4ChannelUP, Integer kx4ChannelBuyIndex, Integer kx4ChannelSellIndex, Integer kx4LineUP, Integer kx4LineBuyIndex, Integer kx4LineSellIndex,
+                                     Integer kx4FLineUP, Integer kx4FLineBuyIndex, Integer kx4FLineSellIndex,
                                      Double lastPrice, Double lastLowPrice, Double lastHighPrice, String condition){
         Object[] tmp = {
                 symbol,
@@ -59,6 +60,9 @@ public class CsvMetrics {
                 kx4LineUP,
                 kx4LineBuyIndex,
                 kx4LineSellIndex,
+                kx4FLineUP,
+                kx4FLineBuyIndex,
+                kx4FLineSellIndex,
                 lastPrice,
                 lastLowPrice,
                 lastHighPrice,

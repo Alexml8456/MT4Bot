@@ -69,15 +69,24 @@ public class CSVMapping {
     private Integer kx4LineSellIndex;
 
     @CsvBindByPosition(position = 21)
-    private Double lastPrice;
+    private Integer kx4FLineUP;
 
     @CsvBindByPosition(position = 22)
-    private Double lastLowPrice;
+    private Integer kx4FLineBuyIndex;
 
     @CsvBindByPosition(position = 23)
-    private Double lastHighPrice;
+    private Integer kx4FLineSellIndex;
 
     @CsvBindByPosition(position = 24)
+    private Double lastPrice;
+
+    @CsvBindByPosition(position = 25)
+    private Double lastLowPrice;
+
+    @CsvBindByPosition(position = 26)
+    private Double lastHighPrice;
+
+    @CsvBindByPosition(position = 27)
     private String condition;
 
     public String getSymbol() {
@@ -178,5 +187,17 @@ public class CSVMapping {
 
     public Integer getKx4LineUP() {
         return kx4LineUP;
+    }
+
+    public Integer getKx4FLineUP() {
+        return kx4FLineUP;
+    }
+
+    public Integer getKx4FLineBuyIndex() {
+        return kx4FLineBuyIndex;
+    }
+
+    public Integer getKx4FLineSellIndex() {
+        return kx4FLineSellIndex;
     }
 }

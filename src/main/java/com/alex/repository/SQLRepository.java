@@ -46,6 +46,9 @@ public class SQLRepository {
             "\t\t\t`KX4LineUP` int(1) NOT NULL,\n" +
             "\t\t\t`KX4LineBuyIndex` int(100) NOT NULL,\n" +
             "\t\t\t`KX4LineSellIndex` int(100) NOT NULL,\n" +
+            "\t\t\t`KX4FLineUP` int(1) NOT NULL,\n" +
+            "\t\t\t`KX4FLineBuyIndex` int(100) NOT NULL,\n" +
+            "\t\t\t`KX4FLineSellIndex` int(100) NOT NULL,\n" +
             "\t\t\t`LastPrice` DOUBLE NOT NULL,\n" +
             "\t\t\t`LastLowPrice` DOUBLE NOT NULL,\n" +
             "\t\t\t`LastHighPrice` DOUBLE NOT NULL,\n" +
@@ -60,7 +63,8 @@ public class SQLRepository {
     private static final String INSERT_VALUES = "INSERT INTO mt4_statistics(SYMBOL, PERIOD, DT, UPGlobalX3Trend, UPLocalX3Trend, UPZigZagLocalTrend, UPZigZagMainTrend," +
             "SEFC10UP, HalfTrendUP, BBUpTrend, BBUpMainTrend, BBUpTrendIndex, BBDownTrendIndex, BrainTrend2StopUP, BrainTrend2StopMainUP," +
             "KX4ChannelUP, KX4ChannelBuyIndex, KX4ChannelSellIndex, KX4LineUP, KX4LineBuyIndex, KX4LineSellIndex," +
-            "LastPrice, LastLowPrice, LastHighPrice, TCondition) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            "KX4FLineUP, KX4FLineBuyIndex, KX4FLineSellIndex," +
+            "LastPrice, LastLowPrice, LastHighPrice, TCondition) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 
     private static final String DROP_MT4 = "DROP TABLE IF EXISTS mt4_statistics;";
