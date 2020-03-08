@@ -40,6 +40,7 @@ public class SQLRepository {
             "\t\t\t`BBDownTrendIndex` int(100) NOT NULL,\n" +
             "\t\t\t`BrainTrend2StopUP` int(1) NOT NULL,\n" +
             "\t\t\t`BrainTrend2StopMainUP` int(1) NOT NULL,\n" +
+            "\t\t\t`KX430ChannelUP` int(1) NOT NULL,\n" +
             "\t\t\t`KX4ChannelUP` int(1) NOT NULL,\n" +
             "\t\t\t`KX4ChannelBuyIndex` int(100) NOT NULL,\n" +
             "\t\t\t`KX4ChannelSellIndex` int(100) NOT NULL,\n" +
@@ -60,11 +61,14 @@ public class SQLRepository {
             "\t\t\t)\n" +
             "\t\t) ENGINE = InnoDB DEFAULT CHARSET = utf8;";
 
+    private static final String ALTER_COLUMN = "ALTER TABLE\n" +
+            "\tmt4_statistics ADD KX430ChannelUP int(1) NOT NULL AFTER BrainTrend2StopMainUP;";
+
     private static final String INSERT_VALUES = "INSERT INTO mt4_statistics(SYMBOL, PERIOD, DT, UPGlobalX3Trend, UPLocalX3Trend, UPZigZagLocalTrend, UPZigZagMainTrend," +
             "SEFC10UP, HalfTrendUP, BBUpTrend, BBUpMainTrend, BBUpTrendIndex, BBDownTrendIndex, BrainTrend2StopUP, BrainTrend2StopMainUP," +
-            "KX4ChannelUP, KX4ChannelBuyIndex, KX4ChannelSellIndex, KX4LineUP, KX4LineBuyIndex, KX4LineSellIndex," +
+            "KX430ChannelUP, KX4ChannelUP, KX4ChannelBuyIndex, KX4ChannelSellIndex, KX4LineUP, KX4LineBuyIndex, KX4LineSellIndex," +
             "KX4FLineUP, KX4FLineBuyIndex, KX4FLineSellIndex," +
-            "LastPrice, LastLowPrice, LastHighPrice, TCondition) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            "LastPrice, LastLowPrice, LastHighPrice, TCondition) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 
     private static final String DROP_MT4 = "DROP TABLE IF EXISTS mt4_statistics;";
