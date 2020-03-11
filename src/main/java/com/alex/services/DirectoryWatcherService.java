@@ -49,7 +49,6 @@ public class DirectoryWatcherService {
                         final Path changed = (Path) event.context();
                         if (changed.toString().endsWith(".csv")) {
                             csvOperations.saveValuesToList(mt4Folder + "/" + event.context());
-                            log.info(Arrays.toString(csvMetrics.getCsvList().get(0)));
                             try {
                                 sqlRepository.insertValues();
                             } catch (

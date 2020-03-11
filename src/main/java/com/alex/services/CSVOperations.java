@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -75,13 +76,14 @@ public class CSVOperations {
                         csvMapping.getUpLocalX3Trend(), csvMapping.getUpZigZagLocalTrend(), csvMapping.getUpZigZagMainTrend(), csvMapping.getSefc10Up(),
                         csvMapping.getHalfTrendUp(), csvMapping.getBbUpTrend(), csvMapping.getBbUpMainTrend(), csvMapping.getBbUpTrendIndex(),
                         csvMapping.getBbDownTrendIndex(), csvMapping.getBrainTrend2StopUp(), csvMapping.getBrainTrend2StopMainUp(),
-                        csvMapping.getKx430ChannelUP(), csvMapping.getKx4ChannelUP(),csvMapping.getKx4ChannelBuyIndex(),csvMapping.getKx4ChannelSellIndex(),
-                        csvMapping.getKx4LineUP(),csvMapping.getKx4LineBuyIndex(), csvMapping.getKx4LineSellIndex(),
-                        csvMapping.getKx4FLineUP(),csvMapping.getKx4FLineBuyIndex(),csvMapping.getKx4FLineSellIndex(),
+                        csvMapping.getKx430ChannelUP(), csvMapping.getKx4ChannelUP(), csvMapping.getKx4ChannelBuyIndex(), csvMapping.getKx4ChannelSellIndex(),
+                        csvMapping.getKx4LineUP(), csvMapping.getKx4LineBuyIndex(), csvMapping.getKx4LineSellIndex(),
+                        csvMapping.getKx4FLineUP(), csvMapping.getKx4FLineBuyIndex(), csvMapping.getKx4FLineSellIndex(),
                         csvMapping.getLastPrice(), csvMapping.getLastLowPrice(), csvMapping.getLastHighPrice(), csvMapping.getCondition());
             }
+            log.info(Arrays.toString(csvMetrics.getCsvList().get(0)));
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("Can't read data from file. " + e.getMessage(), e);
         }
         //log.info("Values has been saved from file - {}", fineName);
