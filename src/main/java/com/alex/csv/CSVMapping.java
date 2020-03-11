@@ -51,45 +51,48 @@ public class CSVMapping {
     private Integer brainTrend2StopMainUp;
 
     @CsvBindByPosition(position = 15)
-    private Integer kx430ChannelUP;
+    private Integer kx45ChannelUP;
 
     @CsvBindByPosition(position = 16)
-    private Integer kx4ChannelUP;
+    private Integer kx430ChannelUP;
 
     @CsvBindByPosition(position = 17)
-    private Integer kx4ChannelBuyIndex;
+    private Integer kx4ChannelUP;
 
     @CsvBindByPosition(position = 18)
-    private Integer kx4ChannelSellIndex;
+    private Integer kx4ChannelBuyIndex;
 
     @CsvBindByPosition(position = 19)
-    private Integer kx4LineUP;
+    private Integer kx4ChannelSellIndex;
 
     @CsvBindByPosition(position = 20)
-    private Integer kx4LineBuyIndex;
+    private Integer kx4LineUP;
 
     @CsvBindByPosition(position = 21)
-    private Integer kx4LineSellIndex;
+    private Integer kx4LineBuyIndex;
 
     @CsvBindByPosition(position = 22)
-    private Integer kx4FLineUP;
+    private Integer kx4LineSellIndex;
 
     @CsvBindByPosition(position = 23)
-    private Integer kx4FLineBuyIndex;
+    private Integer kx4FLineUP;
 
     @CsvBindByPosition(position = 24)
-    private Integer kx4FLineSellIndex;
+    private Integer kx4FLineBuyIndex;
 
     @CsvBindByPosition(position = 25)
-    private Double lastPrice;
+    private Integer kx4FLineSellIndex;
 
     @CsvBindByPosition(position = 26)
-    private Double lastLowPrice;
+    private Double lastPrice;
 
     @CsvBindByPosition(position = 27)
-    private Double lastHighPrice;
+    private Double lastLowPrice;
 
     @CsvBindByPosition(position = 28)
+    private Double lastHighPrice;
+
+    @CsvBindByPosition(position = 29)
     private String condition;
 
     public String getSymbol() {
@@ -206,5 +209,9 @@ public class CSVMapping {
 
     public Integer getKx430ChannelUP() {
         return kx430ChannelUP;
+    }
+
+    public Integer getKx45ChannelUP() {
+        return kx45ChannelUP;
     }
 }

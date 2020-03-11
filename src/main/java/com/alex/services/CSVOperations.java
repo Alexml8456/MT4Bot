@@ -76,7 +76,8 @@ public class CSVOperations {
                         csvMapping.getUpLocalX3Trend(), csvMapping.getUpZigZagLocalTrend(), csvMapping.getUpZigZagMainTrend(), csvMapping.getSefc10Up(),
                         csvMapping.getHalfTrendUp(), csvMapping.getBbUpTrend(), csvMapping.getBbUpMainTrend(), csvMapping.getBbUpTrendIndex(),
                         csvMapping.getBbDownTrendIndex(), csvMapping.getBrainTrend2StopUp(), csvMapping.getBrainTrend2StopMainUp(),
-                        csvMapping.getKx430ChannelUP(), csvMapping.getKx4ChannelUP(), csvMapping.getKx4ChannelBuyIndex(), csvMapping.getKx4ChannelSellIndex(),
+                        csvMapping.getKx45ChannelUP(), csvMapping.getKx430ChannelUP(), csvMapping.getKx4ChannelUP(), csvMapping.getKx4ChannelBuyIndex(),
+                        csvMapping.getKx4ChannelSellIndex(),
                         csvMapping.getKx4LineUP(), csvMapping.getKx4LineBuyIndex(), csvMapping.getKx4LineSellIndex(),
                         csvMapping.getKx4FLineUP(), csvMapping.getKx4FLineBuyIndex(), csvMapping.getKx4FLineSellIndex(),
                         csvMapping.getLastPrice(), csvMapping.getLastLowPrice(), csvMapping.getLastHighPrice(), csvMapping.getCondition());
