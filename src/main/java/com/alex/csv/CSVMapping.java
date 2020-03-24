@@ -15,85 +15,61 @@ public class CSVMapping {
     private String dateTime;
 
     @CsvBindByPosition(position = 3)
-    private Integer upGlobalX3Trend;
-
-    @CsvBindByPosition(position = 4)
-    private Integer upLocalX3Trend;
-
-    @CsvBindByPosition(position = 5)
     private Integer upZigZagLocalTrend;
 
-    @CsvBindByPosition(position = 6)
+    @CsvBindByPosition(position = 4)
     private Integer upZigZagMainTrend;
 
-    @CsvBindByPosition(position = 7)
+    @CsvBindByPosition(position = 5)
     private Integer sefc10Up;
 
-    @CsvBindByPosition(position = 8)
+    @CsvBindByPosition(position = 6)
+    private Integer hrbUp;
+
+    @CsvBindByPosition(position = 7)
     private Integer halfTrendUp;
 
-    @CsvBindByPosition(position = 9)
+    @CsvBindByPosition(position = 8)
     private Integer bbUpTrend;
 
-    @CsvBindByPosition(position = 10)
+    @CsvBindByPosition(position = 9)
     private Integer bbUpMainTrend;
 
-    @CsvBindByPosition(position = 11)
+    @CsvBindByPosition(position = 10)
     private Integer bbUpTrendIndex;
 
-    @CsvBindByPosition(position = 12)
+    @CsvBindByPosition(position = 11)
     private Integer bbDownTrendIndex;
 
-    @CsvBindByPosition(position = 13)
+    @CsvBindByPosition(position = 12)
     private Integer brainTrend2StopUp;
 
-    @CsvBindByPosition(position = 14)
+    @CsvBindByPosition(position = 13)
     private Integer brainTrend2StopMainUp;
 
+    @CsvBindByPosition(position = 14)
+    private Double FL23;
+
     @CsvBindByPosition(position = 15)
-    private Integer kx45ChannelUP;
+    private Integer FL23Switch;
 
     @CsvBindByPosition(position = 16)
-    private Integer kx430ChannelUP;
+    private Double reversalValue;
 
     @CsvBindByPosition(position = 17)
-    private Integer kx4ChannelUP;
+    private Double GLineValue;
 
     @CsvBindByPosition(position = 18)
-    private Integer kx4ChannelBuyIndex;
+    private Double BLineValue;
 
     @CsvBindByPosition(position = 19)
-    private Integer kx4ChannelSellIndex;
-
-    @CsvBindByPosition(position = 20)
-    private Integer kx4LineUP;
-
-    @CsvBindByPosition(position = 21)
-    private Integer kx4LineBuyIndex;
-
-    @CsvBindByPosition(position = 22)
-    private Integer kx4LineSellIndex;
-
-    @CsvBindByPosition(position = 23)
-    private Integer kx4FLineUP;
-
-    @CsvBindByPosition(position = 24)
-    private Integer kx4FLineBuyIndex;
-
-    @CsvBindByPosition(position = 25)
-    private Integer kx4FLineSellIndex;
-
-    @CsvBindByPosition(position = 26)
     private Double lastPrice;
 
-    @CsvBindByPosition(position = 27)
+    @CsvBindByPosition(position = 20)
     private Double lastLowPrice;
 
-    @CsvBindByPosition(position = 28)
+    @CsvBindByPosition(position = 21)
     private Double lastHighPrice;
-
-    @CsvBindByPosition(position = 29)
-    private String condition;
 
     public String getSymbol() {
         return symbol;
@@ -105,14 +81,6 @@ public class CSVMapping {
 
     public String getDateTime() {
         return dateTime;
-    }
-
-    public Integer getUpGlobalX3Trend() {
-        return upGlobalX3Trend;
-    }
-
-    public Integer getUpLocalX3Trend() {
-        return upLocalX3Trend;
     }
 
     public Integer getUpZigZagLocalTrend() {
@@ -159,10 +127,6 @@ public class CSVMapping {
         return lastHighPrice;
     }
 
-    public String getCondition() {
-        return condition;
-    }
-
     public Integer getBrainTrend2StopMainUp() {
         return brainTrend2StopMainUp;
     }
@@ -171,47 +135,27 @@ public class CSVMapping {
         return bbUpMainTrend;
     }
 
-    public Integer getKx4ChannelUP() {
-        return kx4ChannelUP;
+    public Double getGLineValue() {
+        return GLineValue;
     }
 
-    public Integer getKx4ChannelBuyIndex() {
-        return kx4ChannelBuyIndex;
+    public Double getBLineValue() {
+        return BLineValue;
     }
 
-    public Integer getKx4ChannelSellIndex() {
-        return kx4ChannelSellIndex;
+    public Double getReversalValue() {
+        return reversalValue;
     }
 
-    public Integer getKx4LineSellIndex() {
-        return kx4LineSellIndex;
+    public Double getFL23() {
+        return FL23;
     }
 
-    public Integer getKx4LineBuyIndex() {
-        return kx4LineBuyIndex;
+    public Integer getFL23Switch() {
+        return FL23Switch;
     }
 
-    public Integer getKx4LineUP() {
-        return kx4LineUP;
-    }
-
-    public Integer getKx4FLineUP() {
-        return kx4FLineUP;
-    }
-
-    public Integer getKx4FLineBuyIndex() {
-        return kx4FLineBuyIndex;
-    }
-
-    public Integer getKx4FLineSellIndex() {
-        return kx4FLineSellIndex;
-    }
-
-    public Integer getKx430ChannelUP() {
-        return kx430ChannelUP;
-    }
-
-    public Integer getKx45ChannelUP() {
-        return kx45ChannelUP;
+    public Integer getHrbUp() {
+        return hrbUp;
     }
 }

@@ -32,22 +32,19 @@ public class CsvMetrics {
         //csvMetrics.get(fileName).add(new CSVFields(dateTime, ssValue, tfxValue, closePrice));
     }
 
-    public void saveMt4MetricsToList(String symbol, Integer period, String dateTime, Integer upGlobalX3Trend, Integer upLocalX3Trend, Integer upZigZagLocalTrend,
-                                     Integer upZigZagMainTrend, Integer sefc10Up, Integer halfTrendUp, Integer bbUpTrend, Integer bbMainUpTrend, Integer bbUpTrendIndex, Integer bbDownTrendIndex,
-                                     Integer brainTrend2StopUp, Integer brainTrend2StopMainUp,
-                                     Integer kx45ChannelUP, Integer kx430ChannelUP, Integer kx4ChannelUP, Integer kx4ChannelBuyIndex, Integer kx4ChannelSellIndex,
-                                     Integer kx4LineUP, Integer kx4LineBuyIndex, Integer kx4LineSellIndex,
-                                     Integer kx4FLineUP, Integer kx4FLineBuyIndex, Integer kx4FLineSellIndex,
-                                     Double lastPrice, Double lastLowPrice, Double lastHighPrice, String condition){
+    public void saveMt4MetricsToList(String symbol, Integer period, String dateTime, Integer upZigZagLocalTrend,
+                                     Integer upZigZagMainTrend, Integer sefc10Up, Integer hrbUp, Integer halfTrendUp, Integer bbUpTrend, Integer bbMainUpTrend, Integer bbUpTrendIndex, Integer bbDownTrendIndex,
+                                     Integer brainTrend2StopUp, Integer brainTrend2StopMainUp, Double fl23, Integer fl23Switch, Double reversalValue,
+                                     Double gLineValue, Double bLineValue,
+                                     Double lastPrice, Double lastLowPrice, Double lastHighPrice){
         Object[] tmp = {
                 symbol,
                 period,
                 dateTime,
-                upGlobalX3Trend,
-                upLocalX3Trend,
                 upZigZagLocalTrend,
                 upZigZagMainTrend,
                 sefc10Up,
+                hrbUp,
                 halfTrendUp,
                 bbUpTrend,
                 bbMainUpTrend,
@@ -55,33 +52,26 @@ public class CsvMetrics {
                 bbDownTrendIndex,
                 brainTrend2StopUp,
                 brainTrend2StopMainUp,
-                kx45ChannelUP,
-                kx430ChannelUP,
-                kx4ChannelUP,
-                kx4ChannelBuyIndex,
-                kx4ChannelSellIndex,
-                kx4LineUP,
-                kx4LineBuyIndex,
-                kx4LineSellIndex,
-                kx4FLineUP,
-                kx4FLineBuyIndex,
-                kx4FLineSellIndex,
+                fl23,
+                fl23Switch,
+                reversalValue,
+                gLineValue,
+                bLineValue,
                 lastPrice,
                 lastLowPrice,
-                lastHighPrice,
-                condition
+                lastHighPrice
         };
         csvList.add(tmp);
     }
 
-    public void saveMt4Metrics(String symbol, Integer period, String dateTime, Integer upGlobalX3Trend, Integer upLocalX3Trend, Integer upZigZagLocalTrend,
+    public void saveMt4Metrics(String symbol, Integer period, String dateTime, Integer upZigZagLocalTrend,
                                Integer upZigZagMainTrend, Integer sefc10Up, Integer halfTrendUp, Integer bbUpTrend, Integer bbMainUpTrend, Integer bbUpTrendIndex, Integer bbDownTrendIndex,
-                               Integer brainTrend2StopUp, Integer brainTrend2StopMainUp, Double lastPrice, Double lastLowPrice, Double lastHighPrice, String condition) {
+                               Integer brainTrend2StopUp, Integer brainTrend2StopMainUp, Double lastPrice, Double lastLowPrice, Double lastHighPrice) {
         csvMt4Metrics.putIfAbsent(symbol, new ConcurrentSkipListMap<>());
         csvMt4Metrics.get(symbol).putIfAbsent(period, new ArrayList<>());
-        csvMt4Metrics.get(symbol).get(period).add(new CSVFields(symbol, period, dateTime, upGlobalX3Trend, upLocalX3Trend, upZigZagLocalTrend, upZigZagMainTrend
+        csvMt4Metrics.get(symbol).get(period).add(new CSVFields(symbol, period, dateTime, upZigZagLocalTrend, upZigZagMainTrend
                 , sefc10Up, halfTrendUp, bbUpTrend, bbMainUpTrend, bbUpTrendIndex, bbDownTrendIndex,
                 brainTrend2StopUp, brainTrend2StopMainUp, lastPrice, lastLowPrice,
-                lastHighPrice, condition));
+                lastHighPrice));
     }
 }

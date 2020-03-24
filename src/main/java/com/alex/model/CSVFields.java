@@ -13,8 +13,6 @@ public class CSVFields {
     private String symbol;
     private Integer period;
     private String dateTime;
-    private Integer upGlobalX3Trend;
-    private Integer upLocalX3Trend;
     private Integer upZigZagLocalTrend;
     private Integer upZigZagMainTrend;
     private Integer sefc10Up;
@@ -28,6 +26,5 @@ public class CSVFields {
     private Double lastPrice;
     private Double lastLowPrice;
     private Double lastHighPrice;
-    private String condition;
 
 }

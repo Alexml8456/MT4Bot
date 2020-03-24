@@ -28,11 +28,10 @@ public class SQLRepository {
             "\t\t\t`SYMBOL` varchar(50) NOT NULL,\n" +
             "\t\t\t`PERIOD` int(11) NOT NULL,\n" +
             "\t\t\t`DT` datetime NOT NULL,\n" +
-            "\t\t\t`UPGlobalX3Trend` int(1) NOT NULL,\n" +
-            "\t\t\t`UPLocalX3Trend` int(1) NOT NULL,\n" +
             "\t\t\t`UPZigZagLocalTrend` int(1) NOT NULL,\n" +
             "\t\t\t`UPZigZagMainTrend` int(1) NOT NULL,\n" +
             "\t\t\t`SEFC10UP` int(1) NOT NULL,\n" +
+            "\t\t\t`HRBUP` int(1) NOT NULL,\n" +
             "\t\t\t`HalfTrendUP` int(1) NOT NULL,\n" +
             "\t\t\t`BBUpTrend` int(1) NOT NULL,\n" +
             "\t\t\t`BBUpMainTrend` int(1) NOT NULL,\n" +
@@ -40,21 +39,14 @@ public class SQLRepository {
             "\t\t\t`BBDownTrendIndex` int(100) NOT NULL,\n" +
             "\t\t\t`BrainTrend2StopUP` int(1) NOT NULL,\n" +
             "\t\t\t`BrainTrend2StopMainUP` int(1) NOT NULL,\n" +
-            "\t\t\t`KX45ChannelUP` int(1) NOT NULL,\n" +
-            "\t\t\t`KX430ChannelUP` int(1) NOT NULL,\n" +
-            "\t\t\t`KX4ChannelUP` int(1) NOT NULL,\n" +
-            "\t\t\t`KX4ChannelBuyIndex` int(100) NOT NULL,\n" +
-            "\t\t\t`KX4ChannelSellIndex` int(100) NOT NULL,\n" +
-            "\t\t\t`KX4LineUP` int(1) NOT NULL,\n" +
-            "\t\t\t`KX4LineBuyIndex` int(100) NOT NULL,\n" +
-            "\t\t\t`KX4LineSellIndex` int(100) NOT NULL,\n" +
-            "\t\t\t`KX4FLineUP` int(1) NOT NULL,\n" +
-            "\t\t\t`KX4FLineBuyIndex` int(100) NOT NULL,\n" +
-            "\t\t\t`KX4FLineSellIndex` int(100) NOT NULL,\n" +
+            "\t\t\t`FL23` DOUBLE NOT NULL,\n" +
+            "\t\t\t`FL23Switch` int(1) NOT NULL,\n" +
+            "\t\t\t`ReversalValue` DOUBLE NOT NULL,\n" +
+            "\t\t\t`GLineValue` DOUBLE NOT NULL,\n" +
+            "\t\t\t`BLineValue` DOUBLE NOT NULL,\n" +
             "\t\t\t`LastPrice` DOUBLE NOT NULL,\n" +
             "\t\t\t`LastLowPrice` DOUBLE NOT NULL,\n" +
             "\t\t\t`LastHighPrice` DOUBLE NOT NULL,\n" +
-            "\t\t\t`TCondition` varchar(50),\n" +
             "\t\t\tINDEX(\n" +
             "\t\t\t\tSYMBOL,\n" +
             "\t\t\t\tPERIOD,\n" +
@@ -65,11 +57,10 @@ public class SQLRepository {
     private static final String ALTER_COLUMN = "ALTER TABLE\n" +
             "\tmt4_statistics ADD KX430ChannelUP int(1) NOT NULL AFTER BrainTrend2StopMainUP;";
 
-    private static final String INSERT_VALUES = "INSERT INTO mt4_statistics(SYMBOL, PERIOD, DT, UPGlobalX3Trend, UPLocalX3Trend, UPZigZagLocalTrend, UPZigZagMainTrend," +
-            "SEFC10UP, HalfTrendUP, BBUpTrend, BBUpMainTrend, BBUpTrendIndex, BBDownTrendIndex, BrainTrend2StopUP, BrainTrend2StopMainUP," +
-            "KX45ChannelUP, KX430ChannelUP, KX4ChannelUP, KX4ChannelBuyIndex, KX4ChannelSellIndex, KX4LineUP, KX4LineBuyIndex, KX4LineSellIndex," +
-            "KX4FLineUP, KX4FLineBuyIndex, KX4FLineSellIndex," +
-            "LastPrice, LastLowPrice, LastHighPrice, TCondition) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    private static final String INSERT_VALUES = "INSERT INTO mt4_statistics(SYMBOL, PERIOD, DT, UPZigZagLocalTrend, UPZigZagMainTrend," +
+            "SEFC10UP, HRBUP, HalfTrendUP, BBUpTrend, BBUpMainTrend, BBUpTrendIndex, BBDownTrendIndex, BrainTrend2StopUP, BrainTrend2StopMainUP," +
+            "FL23, FL23Switch, ReversalValue, GLineValue, BLineValue," +
+            "LastPrice, LastLowPrice, LastHighPrice) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 
     private static final String DROP_MT4 = "DROP TABLE IF EXISTS mt4_statistics;";
