@@ -63,12 +63,27 @@ public class CSVMapping {
     private Double BLineValue;
 
     @CsvBindByPosition(position = 19)
-    private Double lastPrice;
+    private Double FL23H4;
 
     @CsvBindByPosition(position = 20)
-    private Double lastLowPrice;
+    private Integer FL23SwitchH4;
 
     @CsvBindByPosition(position = 21)
+    private Double reversalValueH4;
+
+    @CsvBindByPosition(position = 22)
+    private Double GLineValueH4;
+
+    @CsvBindByPosition(position = 23)
+    private Double BLineValueH4;
+
+    @CsvBindByPosition(position = 24)
+    private Double lastPrice;
+
+    @CsvBindByPosition(position = 25)
+    private Double lastLowPrice;
+
+    @CsvBindByPosition(position = 26)
     private Double lastHighPrice;
 
     public String getSymbol() {
@@ -157,5 +172,25 @@ public class CSVMapping {
 
     public Integer getHrbUp() {
         return hrbUp;
+    }
+
+    public Double getBLineValueH4() {
+        return BLineValueH4;
+    }
+
+    public Double getGLineValueH4() {
+        return GLineValueH4;
+    }
+
+    public Double getReversalValueH4() {
+        return reversalValueH4;
+    }
+
+    public Integer getFL23SwitchH4() {
+        return FL23SwitchH4;
+    }
+
+    public Double getFL23H4() {
+        return FL23H4;
     }
 }

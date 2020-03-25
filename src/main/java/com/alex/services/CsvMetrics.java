@@ -34,8 +34,9 @@ public class CsvMetrics {
 
     public void saveMt4MetricsToList(String symbol, Integer period, String dateTime, Integer upZigZagLocalTrend,
                                      Integer upZigZagMainTrend, Integer sefc10Up, Integer hrbUp, Integer halfTrendUp, Integer bbUpTrend, Integer bbMainUpTrend, Integer bbUpTrendIndex, Integer bbDownTrendIndex,
-                                     Integer brainTrend2StopUp, Integer brainTrend2StopMainUp, Double fl23, Integer fl23Switch, Double reversalValue,
-                                     Double gLineValue, Double bLineValue,
+                                     Integer brainTrend2StopUp, Integer brainTrend2StopMainUp,
+                                     Double fl23, Integer fl23Switch, Double reversalValue, Double gLineValue, Double bLineValue,
+                                     Double fl23H4, Integer fl23SwitchH4, Double reversalValueH4, Double gLineValueH4, Double bLineValueH4,
                                      Double lastPrice, Double lastLowPrice, Double lastHighPrice){
         Object[] tmp = {
                 symbol,
@@ -57,6 +58,11 @@ public class CsvMetrics {
                 reversalValue,
                 gLineValue,
                 bLineValue,
+                fl23H4,
+                fl23SwitchH4,
+                reversalValueH4,
+                gLineValueH4,
+                bLineValueH4,
                 lastPrice,
                 lastLowPrice,
                 lastHighPrice
