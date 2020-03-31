@@ -6,7 +6,7 @@
 
     <groupId>MT4Bot</groupId>
     <artifactId>MT4Bot</artifactId>
-    <version>1.15.6</version>
+    <version>1.15.7</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

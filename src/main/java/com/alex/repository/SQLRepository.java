@@ -44,11 +44,15 @@ public class SQLRepository {
             "\t\t\t`ReversalValue` DOUBLE NOT NULL,\n" +
             "\t\t\t`GLineValue` DOUBLE NOT NULL,\n" +
             "\t\t\t`BLineValue` DOUBLE NOT NULL,\n" +
+            "\t\t\t`FL23H1` DOUBLE NOT NULL,\n" +
+            "\t\t\t`FL23SwitchH1` int(1) NOT NULL,\n" +
             "\t\t\t`FL23H4` DOUBLE NOT NULL,\n" +
             "\t\t\t`FL23SwitchH4` int(1) NOT NULL,\n" +
             "\t\t\t`ReversalValueH4` DOUBLE NOT NULL,\n" +
             "\t\t\t`GLineValueH4` DOUBLE NOT NULL,\n" +
             "\t\t\t`BLineValueH4` DOUBLE NOT NULL,\n" +
+            "\t\t\t`FL23D1` DOUBLE NOT NULL,\n" +
+            "\t\t\t`FL23SwitchD1` int(1) NOT NULL,\n" +
             "\t\t\t`LastPrice` DOUBLE NOT NULL,\n" +
             "\t\t\t`LastLowPrice` DOUBLE NOT NULL,\n" +
             "\t\t\t`LastHighPrice` DOUBLE NOT NULL,\n" +
@@ -64,8 +68,9 @@ public class SQLRepository {
 
     private static final String INSERT_VALUES = "INSERT INTO mt4_statistics(SYMBOL, PERIOD, DT, UPZigZagLocalTrend, UPZigZagMainTrend," +
             "SEFC10UP, HRBUP, HalfTrendUP, BBUpTrend, BBUpMainTrend, BBUpTrendIndex, BBDownTrendIndex, BrainTrend2StopUP, BrainTrend2StopMainUP," +
-            "FL23, FL23Switch, ReversalValue, GLineValue, BLineValue,FL23H4,FL23SwitchH4,ReversalValueH4,GLineValueH4,BLineValueH4," +
-            "LastPrice, LastLowPrice, LastHighPrice) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            "FL23, FL23Switch, ReversalValue, GLineValue, BLineValue,FL23H1,FL23SwitchH1,FL23H4,FL23SwitchH4,ReversalValueH4,GLineValueH4,BLineValueH4," +
+            "FL23D1,FL23SwitchD1," +
+            "LastPrice, LastLowPrice, LastHighPrice) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 
     private static final String DROP_MT4 = "DROP TABLE IF EXISTS mt4_statistics;";

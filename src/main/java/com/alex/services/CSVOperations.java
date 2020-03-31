@@ -75,7 +75,9 @@ public class CSVOperations {
                         csvMapping.getHrbUp(), csvMapping.getHalfTrendUp(), csvMapping.getBbUpTrend(), csvMapping.getBbUpMainTrend(), csvMapping.getBbUpTrendIndex(),
                         csvMapping.getBbDownTrendIndex(), csvMapping.getBrainTrend2StopUp(), csvMapping.getBrainTrend2StopMainUp(),
                         csvMapping.getFL23(),csvMapping.getFL23Switch(), csvMapping.getReversalValue(),csvMapping.getGLineValue(),csvMapping.getBLineValue(),
+                        csvMapping.getFL23H1(),csvMapping.getFL23SwitchH1(),
                         csvMapping.getFL23H4(),csvMapping.getFL23SwitchH4(), csvMapping.getReversalValueH4(),csvMapping.getGLineValueH4(),csvMapping.getBLineValueH4(),
+                        csvMapping.getFL23D1(),csvMapping.getFL23SwitchD1(),
                         csvMapping.getLastPrice(), csvMapping.getLastLowPrice(), csvMapping.getLastHighPrice());
             }
             log.info(Arrays.toString(csvMetrics.getCsvList().get(0)));
