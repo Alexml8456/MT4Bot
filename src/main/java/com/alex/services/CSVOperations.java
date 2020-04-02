@@ -2,6 +2,7 @@ package com.alex.services;
 
 
 import com.alex.csv.CSVMapping;
+import com.alex.telegram.TelegramBot;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.CsvToBean;
@@ -24,6 +25,9 @@ import java.util.List;
 @Slf4j
 @Service
 public class CSVOperations {
+
+    @Autowired
+    private TelegramBot telegramBot;
 
     @Value("${instrument}")
     private String instrument;
@@ -74,10 +78,10 @@ public class CSVOperations {
                 csvMetrics.saveMt4MetricsToList(csvMapping.getSymbol(), csvMapping.getPeriod(), csvMapping.getDateTime(), csvMapping.getUpZigZagLocalTrend(), csvMapping.getUpZigZagMainTrend(), csvMapping.getSefc10Up(),
                         csvMapping.getHrbUp(), csvMapping.getHalfTrendUp(), csvMapping.getBbUpTrend(), csvMapping.getBbUpMainTrend(), csvMapping.getBbUpTrendIndex(),
                         csvMapping.getBbDownTrendIndex(), csvMapping.getBrainTrend2StopUp(), csvMapping.getBrainTrend2StopMainUp(),
-                        csvMapping.getFL23(),csvMapping.getFL23Switch(), csvMapping.getReversalValue(),csvMapping.getGLineValue(),csvMapping.getBLineValue(),
-                        csvMapping.getFL23H1(),csvMapping.getFL23SwitchH1(),
-                        csvMapping.getFL23H4(),csvMapping.getFL23SwitchH4(), csvMapping.getReversalValueH4(),csvMapping.getGLineValueH4(),csvMapping.getBLineValueH4(),
-                        csvMapping.getFL23D1(),csvMapping.getFL23SwitchD1(),
+                        csvMapping.getFL23(), csvMapping.getFL23Switch(), csvMapping.getReversalValue(), csvMapping.getGLineValue(), csvMapping.getBLineValue(),
+                        csvMapping.getFL23H1(), csvMapping.getFL23SwitchH1(),
+                        csvMapping.getFL23H4(), csvMapping.getFL23SwitchH4(), csvMapping.getReversalValueH4(), csvMapping.getGLineValueH4(), csvMapping.getBLineValueH4(),
+                        csvMapping.getFL23D1(), csvMapping.getFL23SwitchD1(),
                         csvMapping.getLastPrice(), csvMapping.getLastLowPrice(), csvMapping.getLastHighPrice());
             }
             log.info(Arrays.toString(csvMetrics.getCsvList().get(0)));
@@ -107,5 +111,23 @@ public class CSVOperations {
                 log.error("Can't delete data from file. " + e.getMessage(), e);
             }
         });
+    }
+
+    public void checkTradeCondition(Object[] values) {
+        try {
+            String newValues = Arrays.toString(values).replaceAll("\\[", "").replaceAll("]", "");
+            if (newValues.split(",")[0].equals("ETHUSD")) {
+                double FL23H1 = Double.parseDouble(newValues.split(",")[19]);
+                double FL23SwitchH1 = Double.parseDouble(newValues.split(",")[20]);
+                double FL23H4 = Double.parseDouble(newValues.split(",")[21]);
+                double FL23SwitchH4 = Double.parseDouble(newValues.split(",")[22]);
+                if (FL23SwitchH1 > 0 || FL23SwitchH4 > 0) {
+                    telegramBot.pushMessage(dataHolder.getSubscriptions(), "Check possibility to open trade!");
+                }
+                //log.info(FL23H1 + " " + FL23SwitchH1 + " " + FL23H4 + " " + FL23SwitchH4);
+            }
+        } catch (Exception e) {
+            log.error("Can't parse data from file. " + e.getMessage(), e);
+        }
     }
 }
