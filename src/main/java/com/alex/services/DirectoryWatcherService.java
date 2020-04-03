@@ -49,11 +49,15 @@ public class DirectoryWatcherService {
                         final Path changed = (Path) event.context();
                         if (changed.toString().endsWith(".csv")) {
                             csvOperations.saveValuesToList(mt4Folder + "/" + event.context());
-                            csvOperations.checkTradeCondition(csvMetrics.getCsvList().get(0));
+                            try{
+                                csvOperations.checkTradeCondition(csvMetrics.getCsvList().get(0));
+                            } catch (Exception e){
+                                log.error("Can't parse data from file. " + e.getMessage(), e);
+                            }
                             try {
                                 sqlRepository.insertValues();
                             } catch (
-                                    DataIntegrityViolationException e
+                                    Exception e
                                     ) {
                                 log.warn("Some data may be missed during writing to DB!");
                             }
@@ -64,7 +68,7 @@ public class DirectoryWatcherService {
                     key.reset();
                 }
             }
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             log.error("Exception during process event  - ", e);
         }
     }

@@ -114,31 +114,27 @@ public class CSVOperations {
     }
 
     public void checkTradeCondition(Object[] values) {
-        try {
-            String newValues = Arrays.toString(values).replaceAll("\\[", "").replaceAll("]", "");
-            if (newValues.split(",")[0].equals("ETHUSD")) {
-                double FL23H1 = Double.parseDouble(newValues.split(",")[19]);
-                double FL23SwitchH1 = Double.parseDouble(newValues.split(",")[20]);
-                double FL23H4 = Double.parseDouble(newValues.split(",")[21]);
-                double FL23SwitchH4 = Double.parseDouble(newValues.split(",")[22]);
+        String newValues = Arrays.toString(values).replaceAll("\\[", "").replaceAll("]", "");
+        if (newValues.split(",")[0].equals("ETHUSD")) {
+            double FL23H1 = Double.parseDouble(newValues.split(",")[19]);
+            double FL23SwitchH1 = Double.parseDouble(newValues.split(",")[20]);
+            double FL23H4 = Double.parseDouble(newValues.split(",")[21]);
+            double FL23SwitchH4 = Double.parseDouble(newValues.split(",")[22]);
 
-                if (FL23SwitchH1 > 0) {
-                    if (FL23H1 > 0) {
-                        telegramBot.pushMessage(dataHolder.getSubscriptions(), "H1 - Check possibility to open buy trade!");
-                    } else {
-                        telegramBot.pushMessage(dataHolder.getSubscriptions(), "H1 - Check possibility to open sell trade!");
-                    }
-                } else if (FL23SwitchH4 > 0) {
-                    if (FL23H4 > 0) {
-                        telegramBot.pushMessage(dataHolder.getSubscriptions(), "H4 - Check possibility to open buy trade!");
-                    } else {
-                        telegramBot.pushMessage(dataHolder.getSubscriptions(), "H4 - Check possibility to open sell trade!");
-                    }
+            if (FL23SwitchH1 > 0) {
+                if (FL23H1 > 0) {
+                    //telegramBot.pushMessage(dataHolder.getSubscriptions(), "H1 - Check possibility to open buy trade!");
+                } else {
+                    //telegramBot.pushMessage(dataHolder.getSubscriptions(), "H1 - Check possibility to open sell trade!");
                 }
-                //log.info(FL23H1 + " " + FL23SwitchH1 + " " + FL23H4 + " " + FL23SwitchH4);
+            } else if (FL23SwitchH4 > 0) {
+                if (FL23H4 > 0) {
+                    telegramBot.pushMessage(dataHolder.getSubscriptions(), "H4 - Check possibility to open buy trade!");
+                } else {
+                    telegramBot.pushMessage(dataHolder.getSubscriptions(), "H4 - Check possibility to open sell trade!");
+                }
             }
-        } catch (Exception e) {
-            log.error("Can't parse data from file. " + e.getMessage(), e);
+            //log.info(FL23H1 + " " + FL23SwitchH1 + " " + FL23H4 + " " + FL23SwitchH4);
         }
     }
 }
