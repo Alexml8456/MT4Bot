@@ -52,4 +52,10 @@ public class FileOperations {
             log.error("Cannot clean directory - {}", e.getMessage());
         }
     }
+
+    public void deleteFile(String filePath){
+        File fileToDelete = FileUtils.getFile(filePath);
+        FileUtils.deleteQuietly(fileToDelete);
+        log.info("File was delete - "+filePath);
+    }
 }

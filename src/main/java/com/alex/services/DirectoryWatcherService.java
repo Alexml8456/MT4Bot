@@ -18,6 +18,9 @@ public class DirectoryWatcherService {
     private String mt4Folder;
 
     @Autowired
+    private FileOperations fileOperations;
+
+    @Autowired
     private CSVOperations csvOperations;
 
     @Autowired
@@ -53,6 +56,7 @@ public class DirectoryWatcherService {
                                 csvOperations.checkTradeCondition(csvMetrics.getCsvList().get(0));
                             } catch (Exception e){
                                 log.error("Can't parse data from file. " + e.getMessage(), e);
+                                fileOperations.deleteFile(mt4Folder + "/" + event.context());
                             }
                             try {
                                 sqlRepository.insertValues();
