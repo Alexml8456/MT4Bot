@@ -5,6 +5,7 @@ import com.alex.utils.DateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.client.WebSocketConnectionManager;
@@ -79,7 +80,7 @@ public class Scheduling {
 
 
     //@Scheduled(cron = "05 0/5 * ? * *")
-    //@Scheduled(cron = "10 0/1 * ? * *")
+    @Scheduled(cron = "10 0/1 * ? * *")
     public void saveFiles() {
         fileOperations.saveFilesToList();
 

@@ -17,7 +17,7 @@ public class MT4Controller {
     @Value("${mt4.files.folder}")
     private String mt4Folder;
 
-    //@Autowired
+    @Autowired
     private TelegramBot telegramBot;
 
     @Autowired
@@ -41,6 +41,13 @@ public class MT4Controller {
     public ResponseEntity pushEurImage() {
         log.info("Manual image get request for EURUSD was sent...");
         telegramBot.pushFile(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("EUR.png"));
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/get/image/jpy")
+    public ResponseEntity pushJpyImage() {
+        log.info("Manual image get request for USDJPY was sent...");
+        telegramBot.pushFile(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("JPY.png"));
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }
