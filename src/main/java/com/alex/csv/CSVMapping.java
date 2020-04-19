@@ -21,81 +21,63 @@ public class CSVMapping {
     private Integer upZigZagMainTrend;
 
     @CsvBindByPosition(position = 5)
-    private Integer sefc10Up;
-
-    @CsvBindByPosition(position = 6)
-    private Integer hrbUp;
-
-    @CsvBindByPosition(position = 7)
-    private Integer halfTrendUp;
-
-    @CsvBindByPosition(position = 8)
     private Integer bbUpTrend;
 
-    @CsvBindByPosition(position = 9)
+    @CsvBindByPosition(position = 6)
     private Integer bbUpMainTrend;
 
-    @CsvBindByPosition(position = 10)
+    @CsvBindByPosition(position =7)
     private Integer bbUpTrendIndex;
 
-    @CsvBindByPosition(position = 11)
+    @CsvBindByPosition(position = 8)
     private Integer bbDownTrendIndex;
 
-    @CsvBindByPosition(position = 12)
+    @CsvBindByPosition(position = 9)
     private Integer brainTrend2StopUp;
 
-    @CsvBindByPosition(position = 13)
+    @CsvBindByPosition(position = 10)
     private Integer brainTrend2StopMainUp;
 
-    @CsvBindByPosition(position = 14)
+    @CsvBindByPosition(position = 11)
     private Double FL23;
 
-    @CsvBindByPosition(position = 15)
+    @CsvBindByPosition(position = 12)
     private Integer FL23Switch;
 
-    @CsvBindByPosition(position = 16)
-    private Double reversalValue;
-
-    @CsvBindByPosition(position = 17)
-    private Double GLineValue;
-
-    @CsvBindByPosition(position = 18)
-    private Double BLineValue;
-
-    @CsvBindByPosition(position = 19)
+    @CsvBindByPosition(position = 13)
     private Double FL23H1;
 
-    @CsvBindByPosition(position = 20)
+    @CsvBindByPosition(position = 14)
     private Integer FL23SwitchH1;
 
-    @CsvBindByPosition(position = 21)
+    @CsvBindByPosition(position = 15)
     private Double FL23H4;
 
-    @CsvBindByPosition(position = 22)
+    @CsvBindByPosition(position = 16)
     private Integer FL23SwitchH4;
 
-    @CsvBindByPosition(position = 23)
-    private Double reversalValueH4;
-
-    @CsvBindByPosition(position = 24)
-    private Double GLineValueH4;
-
-    @CsvBindByPosition(position = 25)
-    private Double BLineValueH4;
-
-    @CsvBindByPosition(position = 26)
+    @CsvBindByPosition(position = 17)
     private Double FL23D1;
 
-    @CsvBindByPosition(position = 27)
+    @CsvBindByPosition(position = 18)
     private Integer FL23SwitchD1;
 
-    @CsvBindByPosition(position = 28)
+    @CsvBindByPosition(position = 19)
+    private Double DDS;
+
+    @CsvBindByPosition(position = 20)
+    private Double DDSH1;
+
+    @CsvBindByPosition(position = 21)
+    private Double DDSH4;
+
+    @CsvBindByPosition(position = 22)
     private Double lastPrice;
 
-    @CsvBindByPosition(position = 29)
+    @CsvBindByPosition(position = 23)
     private Double lastLowPrice;
 
-    @CsvBindByPosition(position = 30)
+    @CsvBindByPosition(position = 24)
     private Double lastHighPrice;
 
     public String getSymbol() {
@@ -116,14 +98,6 @@ public class CSVMapping {
 
     public Integer getUpZigZagMainTrend() {
         return upZigZagMainTrend;
-    }
-
-    public Integer getSefc10Up() {
-        return sefc10Up;
-    }
-
-    public Integer getHalfTrendUp() {
-        return halfTrendUp;
     }
 
     public Integer getBbUpTrend() {
@@ -162,40 +136,12 @@ public class CSVMapping {
         return bbUpMainTrend;
     }
 
-    public Double getGLineValue() {
-        return GLineValue;
-    }
-
-    public Double getBLineValue() {
-        return BLineValue;
-    }
-
-    public Double getReversalValue() {
-        return reversalValue;
-    }
-
     public Double getFL23() {
         return FL23;
     }
 
     public Integer getFL23Switch() {
         return FL23Switch;
-    }
-
-    public Integer getHrbUp() {
-        return hrbUp;
-    }
-
-    public Double getBLineValueH4() {
-        return BLineValueH4;
-    }
-
-    public Double getGLineValueH4() {
-        return GLineValueH4;
-    }
-
-    public Double getReversalValueH4() {
-        return reversalValueH4;
     }
 
     public Integer getFL23SwitchH4() {
@@ -220,5 +166,17 @@ public class CSVMapping {
 
     public Integer getFL23SwitchH1() {
         return FL23SwitchH1;
+    }
+
+    public Double getDDS() {
+        return DDS;
+    }
+
+    public Double getDDSH1() {
+        return DDSH1;
+    }
+
+    public Double getDDSH4() {
+        return DDSH4;
     }
 }

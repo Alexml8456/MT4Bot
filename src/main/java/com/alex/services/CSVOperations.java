@@ -41,7 +41,7 @@ public class CSVOperations {
     @Autowired
     private CsvMetrics csvMetrics;
 
-    @SuppressWarnings("unchecked assignment")
+    /*@SuppressWarnings("unchecked assignment")
     public void saveValuesToMap(String filePath) {
         //String fineName = new File(file).getName().replaceFirst("[.][^.]+$", "");
         //Integer key = Integer.valueOf(fineName.split("_")[1]);
@@ -63,7 +63,7 @@ public class CSVOperations {
             log.error("Can't read data from file. " + e.getMessage(), e);
         }
         //log.info("Values has been saved from file - {}", fineName);
-    }
+    }*/
 
     @SuppressWarnings("unchecked assignment")
     public void saveValuesToList(String filePath) {
@@ -75,13 +75,14 @@ public class CSVOperations {
                     .withIgnoreLeadingWhiteSpace(true).build();
 
             for (CSVMapping csvMapping : csvToBean) {
-                csvMetrics.saveMt4MetricsToList(csvMapping.getSymbol(), csvMapping.getPeriod(), csvMapping.getDateTime(), csvMapping.getUpZigZagLocalTrend(), csvMapping.getUpZigZagMainTrend(), csvMapping.getSefc10Up(),
-                        csvMapping.getHrbUp(), csvMapping.getHalfTrendUp(), csvMapping.getBbUpTrend(), csvMapping.getBbUpMainTrend(), csvMapping.getBbUpTrendIndex(),
+                csvMetrics.saveMt4MetricsToList(csvMapping.getSymbol(), csvMapping.getPeriod(), csvMapping.getDateTime(), csvMapping.getUpZigZagLocalTrend(), csvMapping.getUpZigZagMainTrend(),
+                        csvMapping.getBbUpTrend(), csvMapping.getBbUpMainTrend(), csvMapping.getBbUpTrendIndex(),
                         csvMapping.getBbDownTrendIndex(), csvMapping.getBrainTrend2StopUp(), csvMapping.getBrainTrend2StopMainUp(),
-                        csvMapping.getFL23(), csvMapping.getFL23Switch(), csvMapping.getReversalValue(), csvMapping.getGLineValue(), csvMapping.getBLineValue(),
+                        csvMapping.getFL23(), csvMapping.getFL23Switch(),
                         csvMapping.getFL23H1(), csvMapping.getFL23SwitchH1(),
-                        csvMapping.getFL23H4(), csvMapping.getFL23SwitchH4(), csvMapping.getReversalValueH4(), csvMapping.getGLineValueH4(), csvMapping.getBLineValueH4(),
+                        csvMapping.getFL23H4(), csvMapping.getFL23SwitchH4(),
                         csvMapping.getFL23D1(), csvMapping.getFL23SwitchD1(),
+                        csvMapping.getDDS(),csvMapping.getDDSH1(),csvMapping.getDDSH4(),
                         csvMapping.getLastPrice(), csvMapping.getLastLowPrice(), csvMapping.getLastHighPrice());
             }
             log.info(Arrays.toString(csvMetrics.getCsvList().get(0)));
@@ -118,9 +119,9 @@ public class CSVOperations {
         String symbol = newValues.split(",")[0];
         double FL23H1 = Double.parseDouble(newValues.split(",")[19]);
         double FL23SwitchH1 = Double.parseDouble(newValues.split(",")[20]);
-        double FL23H4 = Double.parseDouble(newValues.split(",")[21]);
-        double FL23SwitchH4 = Double.parseDouble(newValues.split(",")[22]);
-        double lastPrice = Double.parseDouble(newValues.split(",")[28]);
+        double FL23H4 = Double.parseDouble(newValues.split(",")[15]);
+        double FL23SwitchH4 = Double.parseDouble(newValues.split(",")[16]);
+        double lastPrice = Double.parseDouble(newValues.split(",")[22]);
         if (FL23SwitchH4 > 0) {
             if (FL23H4 >= 0) {
                 telegramBot.pushMessage(dataHolder.getSubscriptions(), "Check possibility to open buy trade on " + symbol + " by " + lastPrice);
