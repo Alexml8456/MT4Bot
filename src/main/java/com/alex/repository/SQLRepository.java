@@ -62,8 +62,8 @@ public class SQLRepository {
 
     private static final String INSERT_VALUES = "INSERT INTO mt4_statistics(SYMBOL, PERIOD, DT, UPZigZagLocalTrend, UPZigZagMainTrend," +
             "BBUpTrend, BBUpMainTrend, BBUpTrendIndex, BBDownTrendIndex, BrainTrend2StopUP, BrainTrend2StopMainUP," +
-            "FL23, FL23Switch, FL23H1,FL23SwitchH1,FL23H4,FL23SwitchH4,FL23D1,FL23SwitchD1" +
-            "DDS,DDSH1,DDSH4" +
+            "FL23, FL23Switch, FL23H1,FL23SwitchH1,FL23H4,FL23SwitchH4,FL23D1,FL23SwitchD1," +
+            "DDS,DDSH1,DDSH4," +
             "LastPrice, LastLowPrice, LastHighPrice) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 
