@@ -2,7 +2,6 @@ package com.alex.services;
 
 
 import com.alex.csv.CSVMapping;
-import com.alex.telegram.TelegramBot;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.CsvToBean;
@@ -25,9 +24,6 @@ import java.util.List;
 @Slf4j
 @Service
 public class CSVOperations {
-
-    @Autowired
-    private TelegramBot telegramBot;
 
     @Value("${instrument}")
     private String instrument;
@@ -112,24 +108,5 @@ public class CSVOperations {
                 log.error("Can't delete data from file. " + e.getMessage(), e);
             }
         });
-    }
-
-    public void checkTradeCondition(Object[] values) {
-        String newValues = Arrays.toString(values).replaceAll("\\[", "").replaceAll("]", "");
-        String symbol = newValues.split(",")[0];
-        double FL23H1 = Double.parseDouble(newValues.split(",")[19]);
-        double FL23SwitchH1 = Double.parseDouble(newValues.split(",")[20]);
-        double FL23H4 = Double.parseDouble(newValues.split(",")[15]);
-        double FL23SwitchH4 = Double.parseDouble(newValues.split(",")[16]);
-        double lastPrice = Double.parseDouble(newValues.split(",")[22]);
-        if (FL23SwitchH4 > 0) {
-            if (FL23H4 >= 0) {
-                telegramBot.pushMessage(dataHolder.getSubscriptions(), "Check possibility to open buy trade on " + symbol + " by " + lastPrice);
-            } else {
-                telegramBot.pushMessage(dataHolder.getSubscriptions(), "Check possibility to open sell trade on " + symbol + " by " + lastPrice);
-            }
-        }
-        //log.info(FL23H1 + " " + FL23SwitchH1 + " " + FL23H4 + " " + FL23SwitchH4);
-
     }
 }

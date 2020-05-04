@@ -2,6 +2,8 @@ package com.alex.services;
 
 import com.alex.telegram.TelegramBot;
 import com.alex.utils.DateTime;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +13,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -39,6 +44,12 @@ public class TradeCondition {
 
     private boolean bullMarket = false;
 
+    private boolean telegramPush = true;
+
+    @Getter
+    @Setter
+    private Map<String, Boolean> symbolCondition = new HashMap<>();
+
     public void checkTradeCondition() {
         LocalDateTime minutesBefore = DateTime.getGMTTimeMillis().truncatedTo(ChronoUnit.MINUTES).minusMinutes(14);
 
@@ -46,21 +57,21 @@ public class TradeCondition {
 
         if (lastConditionTime.isBefore(minutesBefore)) {
             if (reEnterAfterSell() && bullMarket) {
-                log.info("Re enter to buy, after sell!");
+                log.info("Re enter to buyCondition, after sell!");
                 telegramBot.pushFile(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("MT4.png"));
-                telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("First buy after sell!"));
+                telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("First buyCondition after sell!"));
                 bullMarket = false;
             } else if (firstFilteringBuyLevel()) {
-                log.info("First buy filtering level was passed!");
+                log.info("First buyCondition filtering level was passed!");
                 if (secondFilteringBuyLevel()) {
-                    //log.info("Second buy filtering level was passed!");
+                    //log.info("Second buyCondition filtering level was passed!");
                     lastConditionTime = DateTime.getGMTTimeMillis();
-                    log.info(getValues("Second buy filtering level was passed - time to Buy!"));
+                    log.info(getValues("Second buyCondition filtering level was passed - time to Buy!"));
                     telegramBot.pushFile(dataHolder.getSubscriptions(), mt4Folder.concat("/ScreenShots/").concat("MT4.png"));
                     telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Buy-all conditions passed"));
 //                    if (thirdFilteringBuyLevel()) {
 //                        lastConditionTime = DateTime.getGMTTimeMillis();
-//                        log.info(getValues("Third buy filtering level was passed - time to Buy!"s));
+//                        log.info(getValues("Third buyCondition filtering level was passed - time to Buy!"s));
 //                        telegramBot.pushMessage(dataHolder.getSubscriptions(), getValues("Buy-all conditions passed"));
 //                    }
                 }
@@ -82,6 +93,16 @@ public class TradeCondition {
                 }
             }
         }
+    }
+
+    public void checkSellBuyCondition(Object[] values) {
+        String newValues = Arrays.toString(values).replaceAll("\\[", "").replaceAll("]", "");
+        String symbol = newValues.split(",")[0];
+        double DDSH1 = Double.parseDouble(newValues.split(",")[20]);
+        double DDSH4 = Double.parseDouble(newValues.split(",")[21]);
+        double lastPrice = Double.parseDouble(newValues.split(",")[22]);
+        pushMessage(symbol, DDSH1, DDSH4, lastPrice);
+        checkTrade(symbol, DDSH1, DDSH4);
     }
 
     private boolean firstFilteringSellLevel() {
@@ -205,5 +226,48 @@ public class TradeCondition {
             return key;
         } else
             return key.minusMinutes(Integer.valueOf(period));
+    }
+
+    private void checkTrade(String symbol, double h1, double h4) {
+        if (sellSignal(h1, h4)) {
+            saveTradeCondition(symbol, false);
+        } else if (buySignal(h1, h4)) {
+            saveTradeCondition(symbol, true);
+        }
+    }
+
+    private void saveTradeCondition(String symbol, Boolean condition) {
+        if (symbolCondition.containsKey(symbol)) {
+            symbolCondition.put(symbol, condition);
+        }
+        symbolCondition.putIfAbsent(symbol, condition);
+    }
+
+    private boolean sellSignal(double h1, double h4) {
+        return h1 > 80 && h4 > 80;
+    }
+
+    private boolean buySignal(double h1, double h4) {
+        return h1 < 20 && h4 < 20;
+    }
+
+    private void pushMessage(String symbol, double h1, double h4, double lastPrice) {
+        if (symbolCondition.containsKey(symbol)) {
+            if (buySignal(h1, h4) || sellSignal(h1, h4)) {
+                if (symbolCondition.get(symbol).compareTo(buySignal(h1, h4)) != 0) {
+                    if (buySignal(h1, h4)) {
+                        telegramBot.pushMessage(dataHolder.getSubscriptions(), "Buy stochastic pattern appeared for " + symbol + " at " + lastPrice);
+                    } else {
+                        telegramBot.pushMessage(dataHolder.getSubscriptions(), "Sell stochastic pattern appeared for " + symbol + " at " + lastPrice);
+                    }
+                }
+            }
+        } else if (!symbolCondition.containsKey(symbol) && (buySignal(h1, h4) || sellSignal(h1, h4))) {
+            if (buySignal(h1, h4)) {
+                telegramBot.pushMessage(dataHolder.getSubscriptions(), "Buy stochastic pattern appeared for " + symbol + " at " + lastPrice);
+            } else {
+                telegramBot.pushMessage(dataHolder.getSubscriptions(), "Sell stochastic pattern appeared for " + symbol + " at " + lastPrice);
+            }
+        }
     }
 }
