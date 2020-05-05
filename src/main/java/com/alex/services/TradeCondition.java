@@ -31,7 +31,7 @@ public class TradeCondition {
     @Autowired
     private VolumeGenerationService volumeGenerationService;
 
-    //@Autowired
+    @Autowired
     private TelegramBot telegramBot;
 
     @Autowired
