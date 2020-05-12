@@ -244,11 +244,11 @@ public class TradeCondition {
     }
 
     private boolean sellSignal(double h1, double h4) {
-        return h1 > 80 && h4 > 80;
+        return h1 > 80;
     }
 
     private boolean buySignal(double h1, double h4) {
-        return h1 < 20 && h4 < 20;
+        return h1 < 20;
     }
 
     private void pushMessage(String symbol, double h1, double h4, double lastPrice) {
