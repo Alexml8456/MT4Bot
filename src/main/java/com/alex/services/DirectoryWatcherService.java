@@ -60,7 +60,7 @@ public class DirectoryWatcherService {
                                 fileOperations.deleteFile(mt4Folder + "/" + event.context());
                             }
                             try {
-                                sqlRepository.insertValues();
+                                //sqlRepository.insertValues();
                             } catch (
                                     Exception e
                                     ) {
