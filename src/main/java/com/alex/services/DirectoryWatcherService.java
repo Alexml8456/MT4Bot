@@ -54,7 +54,7 @@ public class DirectoryWatcherService {
                         if (changed.toString().endsWith(".csv")) {
                             csvOperations.saveValuesToList(mt4Folder + "/" + event.context());
                             try{
-                                tradeCondition.checkSellBuyCondition(csvMetrics.getCsvList().get(0));
+                                tradeCondition.checkSellBuyCondition(csvMetrics.getCsvList());
                             } catch (Exception e){
                                 log.error("Can't parse data from file. " + e.getMessage(), e);
                                 fileOperations.deleteFile(mt4Folder + "/" + event.context());

@@ -6,9 +6,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 @Slf4j
@@ -21,7 +19,7 @@ public class CsvMetrics {
 
     @Getter
     @Setter
-    private List<Object[]> csvList = new ArrayList<>();
+    private List<Object> csvList = new ArrayList<>();
 
     @Getter
     @Setter
@@ -32,43 +30,25 @@ public class CsvMetrics {
         //csvMetrics.get(fileName).add(new CSVFields(dateTime, ssValue, tfxValue, closePrice));
     }
 
-    public void saveMt4MetricsToList(String symbol, Integer period, String dateTime, Integer upZigZagLocalTrend,
-                                     Integer upZigZagMainTrend, Integer bbUpTrend, Integer bbMainUpTrend, Integer bbUpTrendIndex, Integer bbDownTrendIndex,
-                                     Integer brainTrend2StopUp, Integer brainTrend2StopMainUp,
-                                     Double fl23, Integer fl23Switch,
-                                     Double fl23H1, Integer fl23SwitchH1,
-                                     Double fl23H4, Integer fl23SwitchH4,
-                                     Double fl23D1, Integer fl23SwitchD1,
+    public void saveMt4MetricsToList(String symbol, Integer period, String dateTime,
                                      Double dds,Double ddsh1,Double ddsh4,
+                                     Integer buyDirection, Double buyOrder, Double sellOrder,
                                      Double lastPrice, Double lastLowPrice, Double lastHighPrice){
         Object[] tmp = {
                 symbol,
                 period,
                 dateTime,
-                upZigZagLocalTrend,
-                upZigZagMainTrend,
-                bbUpTrend,
-                bbMainUpTrend,
-                bbUpTrendIndex,
-                bbDownTrendIndex,
-                brainTrend2StopUp,
-                brainTrend2StopMainUp,
-                fl23,
-                fl23Switch,
-                fl23H1,
-                fl23SwitchH1,
-                fl23H4,
-                fl23SwitchH4,
-                fl23D1,
-                fl23SwitchD1,
                 dds,
                 ddsh1,
                 ddsh4,
+                buyDirection,
+                buyOrder,
+                sellOrder,
                 lastPrice,
                 lastLowPrice,
                 lastHighPrice
         };
-        csvList.add(tmp);
+        csvList.addAll(Arrays.asList(tmp));
     }
 
     public void saveMt4Metrics(String symbol, Integer period, String dateTime, Integer upZigZagLocalTrend,

@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -71,17 +70,12 @@ public class CSVOperations {
                     .withIgnoreLeadingWhiteSpace(true).build();
 
             for (CSVMapping csvMapping : csvToBean) {
-                csvMetrics.saveMt4MetricsToList(csvMapping.getSymbol(), csvMapping.getPeriod(), csvMapping.getDateTime(), csvMapping.getUpZigZagLocalTrend(), csvMapping.getUpZigZagMainTrend(),
-                        csvMapping.getBbUpTrend(), csvMapping.getBbUpMainTrend(), csvMapping.getBbUpTrendIndex(),
-                        csvMapping.getBbDownTrendIndex(), csvMapping.getBrainTrend2StopUp(), csvMapping.getBrainTrend2StopMainUp(),
-                        csvMapping.getFL23(), csvMapping.getFL23Switch(),
-                        csvMapping.getFL23H1(), csvMapping.getFL23SwitchH1(),
-                        csvMapping.getFL23H4(), csvMapping.getFL23SwitchH4(),
-                        csvMapping.getFL23D1(), csvMapping.getFL23SwitchD1(),
-                        csvMapping.getDDS(),csvMapping.getDDSH1(),csvMapping.getDDSH4(),
+                csvMetrics.saveMt4MetricsToList(csvMapping.getSymbol(), csvMapping.getPeriod(), csvMapping.getDateTime(),
+                        csvMapping.getDDS(),csvMapping.getDDSH1(), csvMapping.getDDSH4(),
+                        csvMapping.getBuyDirection(), csvMapping.getBuyOrder(), csvMapping.getSellOrder(),
                         csvMapping.getLastPrice(), csvMapping.getLastLowPrice(), csvMapping.getLastHighPrice());
             }
-            log.info(Arrays.toString(csvMetrics.getCsvList().get(0)));
+            log.info(csvMetrics.getCsvList().toString());
 
         } catch (Exception e) {
             log.error("Can't read data from file. " + e.getMessage(), e);

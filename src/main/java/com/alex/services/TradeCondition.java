@@ -13,10 +13,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -95,12 +92,11 @@ public class TradeCondition {
         }
     }
 
-    public void checkSellBuyCondition(Object[] values) {
-        String newValues = Arrays.toString(values).replaceAll("\\[", "").replaceAll("]", "");
-        String symbol = newValues.split(",")[0];
-        double DDSH1 = Double.parseDouble(newValues.split(",")[20]);
-        double DDSH4 = Double.parseDouble(newValues.split(",")[21]);
-        double lastPrice = Double.parseDouble(newValues.split(",")[22]);
+    public void checkSellBuyCondition(List values) {
+        String symbol = values.get(0).toString();
+        double DDSH1 = Double.parseDouble(values.get(4).toString());
+        double DDSH4 = Double.parseDouble(values.get(5).toString());
+        double lastPrice = Double.parseDouble(values.get(9).toString());
         pushMessage(symbol, DDSH1, DDSH4, lastPrice);
         checkTrade(symbol, DDSH1, DDSH4);
     }
