@@ -48,7 +48,7 @@ public class CsvMetrics {
                 lastLowPrice,
                 lastHighPrice
         };
-        csvList.addAll(Arrays.asList(tmp));
+        csvList.addAll(0,Arrays.asList(tmp));
     }
 
     public void saveMt4Metrics(String symbol, Integer period, String dateTime, Integer upZigZagLocalTrend,
