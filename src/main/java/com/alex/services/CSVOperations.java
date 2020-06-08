@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -75,7 +76,7 @@ public class CSVOperations {
                         csvMapping.getBuyDirection(), csvMapping.getBuyOrder(), csvMapping.getSellOrder(),
                         csvMapping.getLastPrice(), csvMapping.getLastLowPrice(), csvMapping.getLastHighPrice());
             }
-            log.info(csvMetrics.getCsvList().toString());
+            log.info(Arrays.toString(csvMetrics.getCsvList().get(0)));
 
         } catch (Exception e) {
             log.error("Can't read data from file. " + e.getMessage(), e);

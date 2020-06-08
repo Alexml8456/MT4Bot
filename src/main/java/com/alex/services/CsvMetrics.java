@@ -19,7 +19,7 @@ public class CsvMetrics {
 
     @Getter
     @Setter
-    private List<Object> csvList = new ArrayList<>();
+    private List<Object[]> csvList = new ArrayList<>();
 
     @Getter
     @Setter
@@ -48,7 +48,7 @@ public class CsvMetrics {
                 lastLowPrice,
                 lastHighPrice
         };
-        csvList.addAll(0,Arrays.asList(tmp));
+        csvList.add(tmp);
     }
 
     public void saveMt4Metrics(String symbol, Integer period, String dateTime, Integer upZigZagLocalTrend,

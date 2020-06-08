@@ -92,11 +92,12 @@ public class TradeCondition {
         }
     }
 
-    public void checkSellBuyCondition(List values) {
-        String symbol = values.get(0).toString();
-        double DDSH1 = Double.parseDouble(values.get(4).toString());
-        double DDSH4 = Double.parseDouble(values.get(5).toString());
-        double lastPrice = Double.parseDouble(values.get(9).toString());
+    public void checkSellBuyCondition(Object[] values) {
+        String newValues = Arrays.toString(values).replaceAll("\\[", "").replaceAll("]", "");
+        String symbol = newValues.split(",")[0];
+        double DDSH1 = Double.parseDouble(newValues.split(",")[4]);
+        double DDSH4 = Double.parseDouble(newValues.split(",")[5]);
+        double lastPrice = Double.parseDouble(newValues.split(",")[9]);
         pushMessage(symbol, DDSH1, DDSH4, lastPrice);
         checkTrade(symbol, DDSH1, DDSH4);
     }
