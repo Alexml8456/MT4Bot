@@ -13,7 +13,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -28,7 +31,7 @@ public class TradeCondition {
     @Autowired
     private VolumeGenerationService volumeGenerationService;
 
-    @Autowired
+    //@Autowired
     private TelegramBot telegramBot;
 
     @Autowired
@@ -46,6 +49,10 @@ public class TradeCondition {
     @Getter
     @Setter
     private Map<String, Boolean> symbolCondition = new HashMap<>();
+
+    @Getter
+    @Setter
+    private Map<String, Map<String, Double>> orderStorage = new HashMap<>();
 
     public void checkTradeCondition() {
         LocalDateTime minutesBefore = DateTime.getGMTTimeMillis().truncatedTo(ChronoUnit.MINUTES).minusMinutes(14);
@@ -98,9 +105,20 @@ public class TradeCondition {
         double DDSH1 = Double.parseDouble(newValues.split(",")[4]);
         double DDSH4 = Double.parseDouble(newValues.split(",")[5]);
         double lastPrice = Double.parseDouble(newValues.split(",")[9]);
-        pushMessage(symbol, DDSH1, DDSH4, lastPrice);
+        pushDDSMessage(symbol, DDSH1, DDSH4, lastPrice);
         checkTrade(symbol, DDSH1, DDSH4);
     }
+
+    public void checkOrderCondition(Object[] values) {
+        String newValues = Arrays.toString(values).replaceAll("\\[", "").replaceAll("]", "");
+        String symbol = newValues.split(",")[0];
+        int orderDirection = Integer.parseInt(newValues.split(",")[6].trim());
+        double buyOrder = Double.parseDouble(newValues.split(",")[7]);
+        double sellOrder = Double.parseDouble(newValues.split(",")[8]);
+        pushOrderMessage(symbol, orderDirection, buyOrder, sellOrder);
+        saveOrders(symbol, buyOrder, sellOrder);
+    }
+
 
     private boolean firstFilteringSellLevel() {
         int key = 5;
@@ -240,6 +258,35 @@ public class TradeCondition {
         symbolCondition.putIfAbsent(symbol, condition);
     }
 
+    private void saveOrders(String symbol, Double buyOrder, Double sellOrder) {
+        if (orderStorage.containsKey(symbol)) {
+            orderStorage.get(symbol).put("buyOrder", buyOrder);
+            orderStorage.get(symbol).put("sellOrder", sellOrder);
+        } else {
+            orderStorage.putIfAbsent(symbol, new HashMap<>());
+            orderStorage.get(symbol).put("buyOrder", buyOrder);
+            orderStorage.get(symbol).put("sellOrder", sellOrder);
+        }
+    }
+
+    private void pushOrderMessage(String symbol, int direction, Double buyOrder, Double sellOrder) {
+        if (orderStorage.containsKey(symbol)) {
+            if (orderStorage.get(symbol).get("buyOrder").compareTo(buyOrder) != 0) {
+                telegramBot.pushMessage(dataHolder.getSubscriptions(), "Buy order changed for symbol- " + symbol + " direction- " + orderDirection(direction) + " Buy order- " + buyOrder);
+            } else if (orderStorage.get(symbol).get("sellOrder").compareTo(sellOrder) != 0) {
+                telegramBot.pushMessage(dataHolder.getSubscriptions(), "Sell order changed for symbol- " + symbol + " direction- " + orderDirection(direction) + " Sell order- " + sellOrder);
+            }
+        }
+    }
+
+    private String orderDirection(Integer direction) {
+        if (direction>0) {
+            return "Buy";
+        } else {
+            return "Sell";
+        }
+    }
+
     private boolean sellSignal(double h1, double h4) {
         return h1 > 80;
     }
@@ -248,7 +295,7 @@ public class TradeCondition {
         return h1 < 20;
     }
 
-    private void pushMessage(String symbol, double h1, double h4, double lastPrice) {
+    private void pushDDSMessage(String symbol, double h1, double h4, double lastPrice) {
         if (symbolCondition.containsKey(symbol)) {
             if (buySignal(h1, h4) || sellSignal(h1, h4)) {
                 if (symbolCondition.get(symbol).compareTo(buySignal(h1, h4)) != 0) {
