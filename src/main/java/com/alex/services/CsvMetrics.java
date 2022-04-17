@@ -30,26 +30,6 @@ public class CsvMetrics {
         //csvMetrics.get(fileName).add(new CSVFields(dateTime, ssValue, tfxValue, closePrice));
     }
 
-    public void saveMt4MetricsToList(String symbol, Integer period, String dateTime,
-                                     Double dds,Double ddsh1,Double ddsh4,
-                                     Integer buyDirection, Double buyOrder, Double sellOrder,
-                                     Double lastPrice, Double lastLowPrice, Double lastHighPrice){
-        Object[] tmp = {
-                symbol,
-                period,
-                dateTime,
-                dds,
-                ddsh1,
-                ddsh4,
-                buyDirection,
-                buyOrder,
-                sellOrder,
-                lastPrice,
-                lastLowPrice,
-                lastHighPrice
-        };
-        csvList.add(tmp);
-    }
 
     public void saveMt4Metrics(String symbol, Integer period, String dateTime, Integer upZigZagLocalTrend,
                                Integer upZigZagMainTrend, Integer sefc10Up, Integer halfTrendUp, Integer bbUpTrend, Integer bbMainUpTrend, Integer bbUpTrendIndex, Integer bbDownTrendIndex,

@@ -71,12 +71,15 @@ public class CSVOperations {
                     .withIgnoreLeadingWhiteSpace(true).build();
 
             for (CSVMapping csvMapping : csvToBean) {
-                csvMetrics.saveMt4MetricsToList(csvMapping.getSymbol(), csvMapping.getPeriod(), csvMapping.getDateTime(),
-                        csvMapping.getDDS(),csvMapping.getDDSH1(), csvMapping.getDDSH4(),
-                        csvMapping.getBuyDirection(), csvMapping.getBuyOrder(), csvMapping.getSellOrder(),
-                        csvMapping.getLastPrice(), csvMapping.getLastLowPrice(), csvMapping.getLastHighPrice());
+                Object[] tmp = {csvMapping.getDateTime(), csvMapping.getUpGlobalTrend(), csvMapping.getUpLocalTrend(),
+                        csvMapping.getUpZigZagLocalTrend(), csvMapping.getUpZigZagMainTrend(), csvMapping.getX3GlobalUPIndex(),
+                        csvMapping.getX3GlobalDownIndex(), csvMapping.getHrb4UP(), csvMapping.getHrbUP(), csvMapping.getHrbUpIndex(),
+                        csvMapping.getHrbDownIndex(), csvMapping.getHalfTrendUP(), csvMapping.getHalfTrendUpIndex(), csvMapping.getHalfTrendDownIndex(),
+                        csvMapping.getBb4UpTrend(), csvMapping.getBbUpTrend(), csvMapping.getBbUpTrendIndex(), csvMapping.getBbDownTrendIndex(),
+                        csvMapping.getBrainTrend2StopUp(), csvMapping.getDrakeDsh1(), csvMapping.getDrakeDsh4(), csvMapping.getLastPrice(), csvMapping.getCondition()};
+                csvMetrics.getCsvList().add(tmp);
             }
-            log.info(Arrays.toString(csvMetrics.getCsvList().get(0)));
+            log.info(Arrays.toString(csvMetrics.getCsvList().get(csvMetrics.getCsvList().size() - 1)));
 
         } catch (Exception e) {
             log.error("Can't read data from file. " + e.getMessage(), e);

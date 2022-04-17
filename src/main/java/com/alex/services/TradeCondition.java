@@ -5,6 +5,7 @@ import com.alex.utils.DateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -101,12 +102,14 @@ public class TradeCondition {
 
     public void checkSellBuyCondition(Object[] values) {
         String newValues = Arrays.toString(values).replaceAll("\\[", "").replaceAll("]", "");
-        String symbol = newValues.split(",")[0];
-        double DDSH1 = Double.parseDouble(newValues.split(",")[4]);
-        double DDSH4 = Double.parseDouble(newValues.split(",")[5]);
-        double lastPrice = Double.parseDouble(newValues.split(",")[9]);
-        pushDDSMessage(symbol, DDSH1, DDSH4, lastPrice);
-        checkTrade(symbol, DDSH1, DDSH4);
+        double DDSH1 = Double.parseDouble(newValues.split(",")[19]);
+        double DDSH4 = Double.parseDouble(newValues.split(",")[20]);
+        double lastPrice = Double.parseDouble(newValues.split(",")[21]);
+        String condition = newValues.split(",")[22];
+        if (StringUtils.isNotBlank(condition)) {
+            pushMessage(condition, DDSH1, DDSH4, lastPrice);
+        }
+        //checkTrade(symbol, DDSH1, DDSH4);
     }
 
     public void checkOrderCondition(Object[] values) {
@@ -280,7 +283,7 @@ public class TradeCondition {
     }
 
     private String orderDirection(Integer direction) {
-        if (direction>0) {
+        if (direction > 0) {
             return "Buy";
         } else {
             return "Sell";
@@ -313,5 +316,28 @@ public class TradeCondition {
                 telegramBot.pushMessage(dataHolder.getSubscriptions(), "Sell stochastic pattern appeared for " + symbol + " at " + lastPrice);
             }
         }
+    }
+
+    private void pushMessage(String condition, double h1, double h4, double lastPrice) {
+        telegramBot.pushMessage(dataHolder.getSubscriptions(), buildMessage(condition, h1, h4, lastPrice));
+    }
+
+    private String buildMessage(String condition, double h1, double h4, double lastPrice) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("DrakeH1=");
+        builder.append(h1);
+        builder.append(";");
+        builder.append(" ");
+        builder.append("DrakeH4=");
+        builder.append(h4);
+        builder.append(";");
+        builder.append(" ");
+        builder.append("Price=");
+        builder.append(lastPrice);
+        builder.append(";");
+        builder.append(" ");
+        builder.append("Condition=");
+        builder.append(condition);
+        return builder.toString();
     }
 }
