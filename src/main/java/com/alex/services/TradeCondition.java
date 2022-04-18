@@ -45,6 +45,8 @@ public class TradeCondition {
 
     private boolean bullMarket = false;
 
+    private String oldDateTime = null;
+
     private boolean telegramPush = true;
 
     @Getter
@@ -102,13 +104,15 @@ public class TradeCondition {
 
     public void checkSellBuyCondition(Object[] values) {
         String newValues = Arrays.toString(values).replaceAll("\\[", "").replaceAll("]", "");
+        String newDateTime = newValues.split(",")[0];
         double DDSH1 = Double.parseDouble(newValues.split(",")[19]);
         double DDSH4 = Double.parseDouble(newValues.split(",")[20]);
         double lastPrice = Double.parseDouble(newValues.split(",")[21]);
         String condition = newValues.split(",")[22];
-        if (StringUtils.isNotBlank(condition)) {
+        if (StringUtils.isNotBlank(condition) && checkTime(oldDateTime, newDateTime)) {
             pushMessage(condition, DDSH1, DDSH4, lastPrice);
         }
+        oldDateTime = newDateTime;
         //checkTrade(symbol, DDSH1, DDSH4);
     }
 
@@ -339,5 +343,9 @@ public class TradeCondition {
         builder.append("Condition=");
         builder.append(condition);
         return builder.toString();
+    }
+
+    private Boolean checkTime(String oldTime, String newTime) {
+        return (oldTime == null) || (!oldTime.equals(newTime));
     }
 }
