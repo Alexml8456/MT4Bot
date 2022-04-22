@@ -63,15 +63,21 @@ public class CSVMapping {
     private Integer brainTrend2StopUp;
 
     @CsvBindByPosition(position = 19)
-    private Double drakeDsh1;
+    private Double drakeDsm15;
 
     @CsvBindByPosition(position = 20)
-    private Double drakeDsh4;
+    private Double drakeDsm30;
 
     @CsvBindByPosition(position = 21)
-    private Double lastPrice;
+    private Double drakeDsh1;
 
     @CsvBindByPosition(position = 22)
+    private Double drakeDsh4;
+
+    @CsvBindByPosition(position = 23)
+    private Double lastPrice;
+
+    @CsvBindByPosition(position = 24)
     private String condition;
 
     public String getDateTime() {
@@ -148,6 +154,14 @@ public class CSVMapping {
 
     public Integer getBrainTrend2StopUp() {
         return brainTrend2StopUp;
+    }
+
+    public Double getDrakeDsm15() {
+        return drakeDsm15;
+    }
+
+    public Double getDrakeDsm30() {
+        return drakeDsm30;
     }
 
     public Double getDrakeDsh1() {

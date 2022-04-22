@@ -105,10 +105,10 @@ public class TradeCondition {
     public void checkSellBuyCondition(Object[] values) {
         String newValues = Arrays.toString(values).replaceAll("\\[", "").replaceAll("]", "");
         String newDateTime = newValues.split(",")[0];
-        double DDSH1 = Double.parseDouble(newValues.split(",")[19]);
-        double DDSH4 = Double.parseDouble(newValues.split(",")[20]);
-        double lastPrice = Double.parseDouble(newValues.split(",")[21]);
-        String condition = newValues.split(",")[22];
+        double DDSH1 = Double.parseDouble(newValues.split(",")[21]);
+        double DDSH4 = Double.parseDouble(newValues.split(",")[22]);
+        double lastPrice = Double.parseDouble(newValues.split(",")[23]);
+        String condition = newValues.split(",")[24];
         if (StringUtils.isNotBlank(condition) && checkTime(oldDateTime, newDateTime)) {
             pushMessage(condition, DDSH1, DDSH4, lastPrice);
         }

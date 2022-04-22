@@ -76,7 +76,7 @@ public class CSVOperations {
                         csvMapping.getX3GlobalDownIndex(), csvMapping.getHrb4UP(), csvMapping.getHrbUP(), csvMapping.getHrbUpIndex(),
                         csvMapping.getHrbDownIndex(), csvMapping.getHalfTrendUP(), csvMapping.getHalfTrendUpIndex(), csvMapping.getHalfTrendDownIndex(),
                         csvMapping.getBb4UpTrend(), csvMapping.getBbUpTrend(), csvMapping.getBbUpTrendIndex(), csvMapping.getBbDownTrendIndex(),
-                        csvMapping.getBrainTrend2StopUp(), csvMapping.getDrakeDsh1(), csvMapping.getDrakeDsh4(), csvMapping.getLastPrice(), csvMapping.getCondition()};
+                        csvMapping.getBrainTrend2StopUp(), csvMapping.getDrakeDsm15(), csvMapping.getDrakeDsm30(), csvMapping.getDrakeDsh1(), csvMapping.getDrakeDsh4(), csvMapping.getLastPrice(), csvMapping.getCondition()};
                 csvMetrics.getCsvList().add(tmp);
             }
             log.info(Arrays.toString(csvMetrics.getCsvList().get(csvMetrics.getCsvList().size() - 1)));
