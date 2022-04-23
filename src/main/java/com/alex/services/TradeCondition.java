@@ -332,7 +332,7 @@ public class TradeCondition {
         builder.append(";");
         builder.append("m30=");
         builder.append(m30);
-        builder.append(";");
+        builder.append("\n");
         builder.append("h1=");
         builder.append(h1);
         builder.append(";");
