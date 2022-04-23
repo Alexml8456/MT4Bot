@@ -84,7 +84,7 @@ public class SQLRepository {
     }
 
     public void insertValues() {
-        jdbcTemplate.batchUpdate(INSERT_VALUES, csvMetrics.getCsvList());
+        //jdbcTemplate.batchUpdate(INSERT_VALUES, csvMetrics.getCsvList());
         log.info("DB was updated with new values!");
     }
 }

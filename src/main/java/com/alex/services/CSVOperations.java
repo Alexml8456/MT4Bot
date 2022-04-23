@@ -4,7 +4,6 @@ package com.alex.services;
 import com.alex.csv.CSVMapping;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
-import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -62,25 +60,17 @@ public class CSVOperations {
     }*/
 
     @SuppressWarnings("unchecked assignment")
-    public void saveValuesToList(String filePath) {
+    void saveValuesToList(String filePath) {
         try (Reader reader = Files.newBufferedReader(Paths.get(filePath))) {
-            CsvToBean<CSVMapping> csvToBean = new CsvToBeanBuilder(reader)
+            List<CSVMapping> csvToBean = new CsvToBeanBuilder(reader)
                     .withType(CSVMapping.class)
                     .withIgnoreQuotations(true)
-                    .withSkipLines(1)
-                    .withIgnoreLeadingWhiteSpace(true).build();
-
-            for (CSVMapping csvMapping : csvToBean) {
-                Object[] tmp = {csvMapping.getDateTime(), csvMapping.getUpGlobalTrend(), csvMapping.getUpLocalTrend(),
-                        csvMapping.getUpZigZagLocalTrend(), csvMapping.getUpZigZagMainTrend(), csvMapping.getX3GlobalUPIndex(),
-                        csvMapping.getX3GlobalDownIndex(), csvMapping.getHrb4UP(), csvMapping.getHrbUP(), csvMapping.getHrbUpIndex(),
-                        csvMapping.getHrbDownIndex(), csvMapping.getHalfTrendUP(), csvMapping.getHalfTrendUpIndex(), csvMapping.getHalfTrendDownIndex(),
-                        csvMapping.getBb4UpTrend(), csvMapping.getBbUpTrend(), csvMapping.getBbUpTrendIndex(), csvMapping.getBbDownTrendIndex(),
-                        csvMapping.getBrainTrend2StopUp(), csvMapping.getDrakeDsm15(), csvMapping.getDrakeDsm30(), csvMapping.getDrakeDsh1(), csvMapping.getDrakeDsh4(), csvMapping.getLastPrice(), csvMapping.getCondition()};
-                csvMetrics.getCsvList().add(tmp);
-            }
-            log.info(Arrays.toString(csvMetrics.getCsvList().get(csvMetrics.getCsvList().size() - 1)));
-
+                    .withIgnoreLeadingWhiteSpace(true)
+                    .build()
+                    .parse();
+            csvMetrics.setCsvList(csvToBean);
+            //log.info(StringUtils.);
+            //log.info(String.valueOf(csvMetrics.getCsvList()));
         } catch (Exception e) {
             log.error("Can't read data from file. " + e.getMessage(), e);
         }

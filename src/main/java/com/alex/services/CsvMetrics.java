@@ -1,12 +1,15 @@
 package com.alex.services;
 
+import com.alex.csv.CSVMapping;
 import com.alex.model.CSVFields;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 @Slf4j
@@ -19,7 +22,7 @@ public class CsvMetrics {
 
     @Getter
     @Setter
-    private List<Object[]> csvList = new ArrayList<>();
+    private List<CSVMapping> csvList = new ArrayList<>();
 
     @Getter
     @Setter

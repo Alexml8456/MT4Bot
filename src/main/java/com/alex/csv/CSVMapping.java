@@ -1,83 +1,83 @@
 package com.alex.csv;
 
-import com.opencsv.bean.CsvBindByPosition;
+import com.opencsv.bean.CsvBindByName;
 
 
 public class CSVMapping {
 
-    @CsvBindByPosition(position = 0)
+    @CsvBindByName(column = "Time")
     private String dateTime;
 
-    @CsvBindByPosition(position = 1)
+    @CsvBindByName(column = "UPGlobalTrend")
     private Integer upGlobalTrend;
 
-    @CsvBindByPosition(position = 2)
+    @CsvBindByName(column = "UPLocalTrend")
     private Integer upLocalTrend;
 
-    @CsvBindByPosition(position = 3)
+    @CsvBindByName(column = "UPZigZagLocalTrend")
     private Integer upZigZagLocalTrend;
 
-    @CsvBindByPosition(position = 4)
+    @CsvBindByName(column = "UPZigZagMainTrend")
     private Integer upZigZagMainTrend;
 
-    @CsvBindByPosition(position = 5)
+    @CsvBindByName(column = "X3GlobalUPIndex")
     private Integer x3GlobalUPIndex;
 
-    @CsvBindByPosition(position = 6)
+    @CsvBindByName(column = "X3GlobalDownIndex")
     private Integer x3GlobalDownIndex;
 
-    @CsvBindByPosition(position = 7)
+    @CsvBindByName(column = "HRB4UP")
     private Integer hrb4UP;
 
-    @CsvBindByPosition(position = 8)
+    @CsvBindByName(column = "HRBUP")
     private Integer hrbUP;
 
-    @CsvBindByPosition(position = 9)
+    @CsvBindByName(column = "HRBUp-index")
     private Integer hrbUpIndex;
 
-    @CsvBindByPosition(position = 10)
+    @CsvBindByName(column = "HRBDown-index")
     private Integer hrbDownIndex;
 
-    @CsvBindByPosition(position = 11)
+    @CsvBindByName(column = "HalfTrendUP")
     private Integer halfTrendUP;
 
-    @CsvBindByPosition(position = 12)
+    @CsvBindByName(column = "HalfTrendUp-index")
     private Integer halfTrendUpIndex;
 
-    @CsvBindByPosition(position = 13)
+    @CsvBindByName(column = "HalfTrendDown-index")
     private Integer halfTrendDownIndex;
 
-    @CsvBindByPosition(position = 14)
+    @CsvBindByName(column = "BB4UpTrend")
     private Integer bb4UpTrend;
 
-    @CsvBindByPosition(position = 15)
+    @CsvBindByName(column = "BBUpTrend")
     private Integer bbUpTrend;
 
-    @CsvBindByPosition(position = 16)
+    @CsvBindByName(column = "BBUpTrend-index")
     private Integer bbUpTrendIndex;
 
-    @CsvBindByPosition(position = 17)
+    @CsvBindByName(column = "BBDownTrend-index")
     private Integer bbDownTrendIndex;
 
-    @CsvBindByPosition(position = 18)
+    @CsvBindByName(column = "BrainTrend2StopUP")
     private Integer brainTrend2StopUp;
 
-    @CsvBindByPosition(position = 19)
+    @CsvBindByName(column = "DrakeDSM15")
     private Double drakeDsm15;
 
-    @CsvBindByPosition(position = 20)
+    @CsvBindByName(column = "DrakeDSM30")
     private Double drakeDsm30;
 
-    @CsvBindByPosition(position = 21)
+    @CsvBindByName(column = "DrakeDSH1")
     private Double drakeDsh1;
 
-    @CsvBindByPosition(position = 22)
+    @CsvBindByName(column = "DrakeDSH4")
     private Double drakeDsh4;
 
-    @CsvBindByPosition(position = 23)
+    @CsvBindByName(column = "LastPrice")
     private Double lastPrice;
 
-    @CsvBindByPosition(position = 24)
+    @CsvBindByName(column = "Condition")
     private String condition;
 
     public String getDateTime() {

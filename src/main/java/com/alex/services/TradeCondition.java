@@ -1,5 +1,6 @@
 package com.alex.services;
 
+import com.alex.csv.CSVMapping;
 import com.alex.telegram.TelegramBot;
 import com.alex.utils.DateTime;
 import lombok.Getter;
@@ -14,10 +15,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -102,18 +100,19 @@ public class TradeCondition {
         }
     }
 
-    public void checkSellBuyCondition(Object[] values) {
-        String newValues = Arrays.toString(values).replaceAll("\\[", "").replaceAll("]", "");
-        String newDateTime = newValues.split(",")[0];
-        double DDSH1 = Double.parseDouble(newValues.split(",")[21]);
-        double DDSH4 = Double.parseDouble(newValues.split(",")[22]);
-        double lastPrice = Double.parseDouble(newValues.split(",")[23]);
-        String condition = newValues.split(",")[24];
+    public void checkSellBuyCondition(CSVMapping csvMapping) {
+        String newDateTime = csvMapping.getDateTime();
+        double drakeDsm15 = csvMapping.getDrakeDsm15();
+        double drakeDsm30 = csvMapping.getDrakeDsm30();
+        double drakeDsh1 = csvMapping.getDrakeDsh1();
+        double drakeDsh4 = csvMapping.getDrakeDsh4();
+        double lastPrice = csvMapping.getLastPrice();
+        String condition = csvMapping.getCondition();
         if (StringUtils.isNotBlank(condition) && checkTime(oldDateTime, newDateTime)) {
-            pushMessage(condition, DDSH1, DDSH4, lastPrice);
+            pushMessage(condition, drakeDsm15, drakeDsm30, drakeDsh1, drakeDsh4, lastPrice);
         }
         oldDateTime = newDateTime;
-        //checkTrade(symbol, DDSH1, DDSH4);
+        //checkTrade(symbol, drakeDsh1, drakeDsh4);
     }
 
     public void checkOrderCondition(Object[] values) {
@@ -322,26 +321,30 @@ public class TradeCondition {
         }
     }
 
-    private void pushMessage(String condition, double h1, double h4, double lastPrice) {
-        telegramBot.pushMessage(dataHolder.getSubscriptions(), buildMessage(condition, h1, h4, lastPrice));
+    private void pushMessage(String condition, double m15, double m30, double h1, double h4, double lastPrice) {
+        telegramBot.pushMessage(dataHolder.getSubscriptions(), buildMessage(condition, m15, m30, h1, h4, lastPrice));
     }
 
-    private String buildMessage(String condition, double h1, double h4, double lastPrice) {
+    private String buildMessage(String condition, double m15, double m30, double h1, double h4, double lastPrice) {
         StringBuilder builder = new StringBuilder();
-        builder.append("DrakeH1=");
+        builder.append("m15=");
+        builder.append(m15);
+        builder.append(";");
+        builder.append("m30=");
+        builder.append(m30);
+        builder.append(";");
+        builder.append("h1=");
         builder.append(h1);
         builder.append(";");
-        builder.append(" ");
-        builder.append("DrakeH4=");
+        builder.append("h4=");
         builder.append(h4);
         builder.append(";");
-        builder.append(" ");
-        builder.append("Price=");
+        builder.append("price=");
         builder.append(lastPrice);
         builder.append(";");
         builder.append(" ");
         builder.append("Condition=");
-        builder.append(condition);
+        builder.append(condition.replaceAll("\\s", ""));
         return builder.toString();
     }
 
