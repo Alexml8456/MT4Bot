@@ -69,8 +69,7 @@ public class CSVOperations {
                     .build()
                     .parse();
             csvMetrics.setCsvList(csvToBean);
-            //log.info(StringUtils.);
-            //log.info(String.valueOf(csvMetrics.getCsvList()));
+            log.info(csvMetrics.getCsvList().get(csvMetrics.getCsvList().size()-1).getAll());
         } catch (Exception e) {
             log.error("Can't read data from file. " + e.getMessage(), e);
         }

@@ -179,4 +179,58 @@ public class CSVMapping {
     public String getCondition() {
         return condition;
     }
+
+    public String getAll() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(getDateTime());
+        builder.append(", ");
+        builder.append(getUpGlobalTrend());
+        builder.append(", ");
+        builder.append(getUpLocalTrend());
+        builder.append(", ");
+        builder.append(getUpZigZagLocalTrend());
+        builder.append(", ");
+        builder.append(getUpZigZagMainTrend());
+        builder.append(", ");
+        builder.append(getX3GlobalUPIndex());
+        builder.append(", ");
+        builder.append(getX3GlobalDownIndex());
+        builder.append(", ");
+        builder.append(getHrb4UP());
+        builder.append(", ");
+        builder.append(getHrbUP());
+        builder.append(", ");
+        builder.append(getHrbUpIndex());
+        builder.append(", ");
+        builder.append(getHrbDownIndex());
+        builder.append(", ");
+        builder.append(getHalfTrendUP());
+        builder.append(", ");
+        builder.append(getHalfTrendUpIndex());
+        builder.append(", ");
+        builder.append(getHalfTrendDownIndex());
+        builder.append(", ");
+        builder.append(getBb4UpTrend());
+        builder.append(", ");
+        builder.append(getBbUpTrend());
+        builder.append(", ");
+        builder.append(getBbUpTrendIndex());
+        builder.append(", ");
+        builder.append(getBbDownTrendIndex());
+        builder.append(", ");
+        builder.append(getBrainTrend2StopUp());
+        builder.append(", ");
+        builder.append(getDrakeDsm15());
+        builder.append(", ");
+        builder.append(getDrakeDsm30());
+        builder.append(", ");
+        builder.append(getDrakeDsh1());
+        builder.append(", ");
+        builder.append(getDrakeDsh4());
+        builder.append(", ");
+        builder.append(getLastPrice());
+        builder.append(", ");
+        builder.append(getCondition());
+        return builder.toString();
+    }
 }
