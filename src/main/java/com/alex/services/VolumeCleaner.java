@@ -14,10 +14,10 @@ public class VolumeCleaner {
 
     @Autowired
     private VolumeGenerationService volumeGenerationService;
-    @Value("${candles.depth}")
+    @Value("20")
     private long candleDepth;
 
-    @Scheduled(fixedDelay = 10000)
+    //@Scheduled(fixedDelay = 10000)
     public void checkAndClean() {
         volumeGenerationService.getVolume().entrySet().stream()
                 .filter(period -> period.getValue().entrySet().size() > candleDepth)

@@ -53,10 +53,13 @@ public class DirectoryWatcherService {
                         final Path changed = (Path) event.context();
                         if (changed.toString().endsWith(".csv")) {
                             csvOperations.saveValuesToList(mt4Folder + "/" + event.context());
-                            try{
+                            csvMetrics.saveBuySellOrders();
+                            log.info("Buy Orders Size - {},{}", csvMetrics.getBuyOrders().size(), csvMetrics.getBuyOrders());
+                            log.info("Sell Orders Size - {},{}", csvMetrics.getSellOrders().size(), csvMetrics.getSellOrders());
+                            try {
                                 tradeCondition.checkSellBuyCondition(csvMetrics.getCsvList().get(csvMetrics.getCsvList().size() - 1));
-                                //tradeCondition.checkOrderCondition(csvMetrics.getCsvList().get(0));
-                            } catch (Exception e){
+                                tradeCondition.checkOrderCondition(csvMetrics.getCsvList().get(csvMetrics.getCsvList().size() - 1));
+                            } catch (Exception e) {
                                 log.error("Can't parse data from file. " + e.getMessage(), e);
                                 fileOperations.deleteFile(mt4Folder + "/" + event.context());
                             }
@@ -64,7 +67,7 @@ public class DirectoryWatcherService {
                                 //sqlRepository.insertValues();
                             } catch (
                                     Exception e
-                                    ) {
+                            ) {
                                 log.warn("Some data may be missed during writing to DB!");
                             }
                             ;

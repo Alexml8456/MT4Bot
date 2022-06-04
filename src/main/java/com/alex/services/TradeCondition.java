@@ -115,14 +115,75 @@ public class TradeCondition {
         //checkTrade(symbol, drakeDsh1, drakeDsh4);
     }
 
-    public void checkOrderCondition(Object[] values) {
-        String newValues = Arrays.toString(values).replaceAll("\\[", "").replaceAll("]", "");
-        String symbol = newValues.split(",")[0];
-        int orderDirection = Integer.parseInt(newValues.split(",")[6].trim());
-        double buyOrder = Double.parseDouble(newValues.split(",")[7]);
-        double sellOrder = Double.parseDouble(newValues.split(",")[8]);
-        pushOrderMessage(symbol, orderDirection, buyOrder, sellOrder);
-        saveOrders(symbol, buyOrder, sellOrder);
+    public void checkOrderCondition(CSVMapping csvMapping) {
+        double highPrice = csvMapping.getHighPrice();
+        double lowPrice = csvMapping.getLowPrice();
+        double drakeDsm15 = csvMapping.getDrakeDsm15();
+        double drakeDsm30 = csvMapping.getDrakeDsm30();
+        double drakeDsh1 = csvMapping.getDrakeDsh1();
+        double drakeDsh4 = csvMapping.getDrakeDsh4();
+        double lastPrice = csvMapping.getLastPrice();
+        List<Double> buyList = new ArrayList<>(timeMetrics.getBuyOrders().keySet());
+        for (int i = 0; i < buyList.size(); i++) {
+            Double buyOrder = Double.valueOf(timeMetrics.getBuyOrders().get(buyList.get(i)).get("BuyOrderValues").get("Order").toString());
+            Boolean orderIsActivated = Boolean.getBoolean(timeMetrics.getBuyOrders().get(buyOrder).get("BuyOrderValues").get("OrderActivated").toString());
+            Double stopLossOrder = Double.valueOf(timeMetrics.getBuyOrders().get(buyOrder).get("BuyOrderValues").get("SLOrder").toString());
+            Boolean stopLossOrderIsActivated = Boolean.getBoolean(timeMetrics.getBuyOrders().get(buyOrder).get("BuyOrderValues").get("SLOrderActivated").toString());
+            if (buyOrder > lowPrice && stopLossOrder > lowPrice) {
+                timeMetrics.getBuyOrders().get(buyOrder).get("BuyOrderValues").put("OrderActivated", true);
+                timeMetrics.getBuyOrders().get(buyOrder).get("BuyOrderValues").put("SLOrderActivated", true);
+                if (timeMetrics.getBuyOrders().size() > 1) {
+                    log.info("Hit buy limit - {}, and stop loss order - {}", buyOrder, stopLossOrder);
+                    String condition = "HitBuyLimitStop";
+                    pushMessage(condition, drakeDsm15, drakeDsm30, drakeDsh1, drakeDsh4, lastPrice);
+                }
+            } else if (stopLossOrder > lowPrice && stopLossOrderIsActivated.equals(false)) {
+                timeMetrics.getBuyOrders().get(buyOrder).get("BuyOrderValues").put("SLOrderActivated", true);
+                if (timeMetrics.getBuyOrders().size() > 1) {
+                    log.info("Hit Buy Stop limit order - {}", stopLossOrder);
+                    String condition = "HitBuyStop";
+                    pushMessage(condition, drakeDsm15, drakeDsm30, drakeDsh1, drakeDsh4, lastPrice);
+                }
+            } else if (buyOrder > lowPrice && orderIsActivated.equals(false)) {
+                timeMetrics.getBuyOrders().get(buyOrder).get("BuyOrderValues").put("OrderActivated", true);
+                if (timeMetrics.getBuyOrders().size() > 1) {
+                    log.info("Hit Buy limit order - {}, stop loss order set to {}", buyOrder, stopLossOrder);
+                    String condition = "HitBuyLimit";
+                    pushMessage(condition, drakeDsm15, drakeDsm30, drakeDsh1, drakeDsh4, lastPrice);
+                }
+            }
+        }
+
+        List<Double> sellList = new ArrayList<>(timeMetrics.getSellOrders().keySet());
+        for (int i = 0; i < sellList.size(); i++) {
+            Double sellOrder = Double.valueOf(timeMetrics.getSellOrders().get(sellList.get(i)).get("SellOrderValues").get("Order").toString());
+            Boolean orderIsActivated = Boolean.getBoolean(timeMetrics.getSellOrders().get(sellOrder).get("SellOrderValues").get("OrderActivated").toString());
+            Double stopLossOrder = Double.valueOf(timeMetrics.getSellOrders().get(sellOrder).get("SellOrderValues").get("SLOrder").toString());
+            Boolean stopLossOrderIsActivated = Boolean.getBoolean(timeMetrics.getSellOrders().get(sellOrder).get("SellOrderValues").get("SLOrderActivated").toString());
+            if (sellOrder < highPrice && stopLossOrder < highPrice) {
+                timeMetrics.getSellOrders().get(sellOrder).get("SellOrderValues").put("OrderActivated", true);
+                timeMetrics.getSellOrders().get(sellOrder).get("SellOrderValues").put("SLOrderActivated", true);
+                if (timeMetrics.getSellOrders().size() > 1) {
+                    log.info("Hit sell limit - {}, and stop loss order - {}", sellOrder, stopLossOrder);
+                    String condition = "HitSellLimitStop";
+                    pushMessage(condition, drakeDsm15, drakeDsm30, drakeDsh1, drakeDsh4, lastPrice);
+                }
+            } else if (stopLossOrder < highPrice && stopLossOrderIsActivated.equals(false)) {
+                timeMetrics.getSellOrders().get(sellOrder).get("SellOrderValues").put("SLOrderActivated", true);
+                if (timeMetrics.getSellOrders().size() > 1) {
+                    log.info("Hit Sell Stop limit order - {}", stopLossOrder);
+                    String condition = "HitSellStop";
+                    pushMessage(condition, drakeDsm15, drakeDsm30, drakeDsh1, drakeDsh4, lastPrice);
+                }
+            } else if (sellOrder < highPrice && orderIsActivated.equals(false)) {
+                timeMetrics.getSellOrders().get(sellOrder).get("SellOrderValues").put("OrderActivated", true);
+                if (timeMetrics.getSellOrders().size() > 1) {
+                    log.info("Hit Sell limit order - {}, stop loss order set to {}", sellOrder, stopLossOrder);
+                    String condition = "HitSellLimit";
+                    pushMessage(condition, drakeDsm15, drakeDsm30, drakeDsh1, drakeDsh4, lastPrice);
+                }
+            }
+        }
     }
 
 

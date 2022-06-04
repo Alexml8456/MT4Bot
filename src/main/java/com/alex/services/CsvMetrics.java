@@ -7,9 +7,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 @Slf4j
@@ -23,6 +21,14 @@ public class CsvMetrics {
     @Getter
     @Setter
     private List<CSVMapping> csvList = new ArrayList<>();
+
+    @Getter
+    @Setter
+    private Map<Double, Map<String, Map<String, Object>>> buyOrders = new HashMap<>();
+
+    @Getter
+    @Setter
+    private Map<Double, Map<String, Map<String, Object>>> sellOrders = new HashMap<>();
 
     @Getter
     @Setter
@@ -43,5 +49,28 @@ public class CsvMetrics {
                 , sefc10Up, halfTrendUp, bbUpTrend, bbMainUpTrend, bbUpTrendIndex, bbDownTrendIndex,
                 brainTrend2StopUp, brainTrend2StopMainUp, lastPrice, lastLowPrice,
                 lastHighPrice));
+    }
+
+    public void saveBuySellOrders() {
+        Double buyOrder = csvList.get(csvList.size() - 1).getBuyOrder();
+        Double buySLOrder = csvList.get(csvList.size() - 1).getBuySLOrder();
+        Double sellOrder = csvList.get(csvList.size() - 1).getSellOrder();
+        Double sellSLOrder = csvList.get(csvList.size() - 1).getSellSLOrder();
+        if (!buyOrders.containsKey(buyOrder)) {
+            buyOrders.put(buyOrder, new HashMap<>());
+            buyOrders.get(buyOrder).put("BuyOrderValues", new HashMap<>());
+            buyOrders.get(buyOrder).get("BuyOrderValues").put("Order", buyOrder);
+            buyOrders.get(buyOrder).get("BuyOrderValues").put("SLOrder", buySLOrder);
+            buyOrders.get(buyOrder).get("BuyOrderValues").put("OrderActivated", false);
+            buyOrders.get(buyOrder).get("BuyOrderValues").put("SLOrderActivated", false);
+        }
+        if (!sellOrders.containsKey(sellOrder)) {
+            sellOrders.put(sellOrder, new HashMap<>());
+            sellOrders.get(sellOrder).put("SellOrderValues", new HashMap<>());
+            sellOrders.get(sellOrder).get("SellOrderValues").put("Order", sellOrder);
+            sellOrders.get(sellOrder).get("SellOrderValues").put("SLOrder", sellSLOrder);
+            sellOrders.get(sellOrder).get("SellOrderValues").put("OrderActivated", false);
+            sellOrders.get(sellOrder).get("SellOrderValues").put("SLOrderActivated", false);
+        }
     }
 }

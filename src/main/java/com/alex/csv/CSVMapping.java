@@ -74,15 +74,43 @@ public class CSVMapping {
     @CsvBindByName(column = "DrakeDSH4")
     private Double drakeDsh4;
 
+    @CsvBindByName(column = "BuyOrder")
+    private Double buyOrder;
+
+    @CsvBindByName(column = "BuySLOrder")
+    private Double buySLOrder;
+
+    @CsvBindByName(column = "SellOrder")
+    private Double sellOrder;
+
+    @CsvBindByName(column = "SellSLOrder")
+    private Double sellSLOrder;
+
+    @CsvBindByName(column = "HighPrice")
+    private Double highPrice;
+
+    @CsvBindByName(column = "LowPrice")
+    private Double lowPrice;
+
     @CsvBindByName(column = "LastPrice")
     private Double lastPrice;
 
     @CsvBindByName(column = "Condition")
     private String condition;
 
-    public String getDateTime() {
-        return dateTime;
-    }
+    public String getDateTime() { return dateTime; }
+
+    public Double getBuyOrder() { return buyOrder; }
+
+    public Double getBuySLOrder() { return buySLOrder; }
+
+    public Double getSellOrder() { return sellOrder; }
+
+    public Double getSellSLOrder() { return sellSLOrder; }
+
+    public Double getHighPrice() { return highPrice; }
+
+    public Double getLowPrice() { return lowPrice; }
 
     public Integer getUpGlobalTrend() {
         return upGlobalTrend;
@@ -179,6 +207,7 @@ public class CSVMapping {
     public String getCondition() {
         return condition;
     }
+
 
     public String getAll() {
         StringBuilder builder = new StringBuilder();
