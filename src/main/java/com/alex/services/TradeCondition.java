@@ -44,6 +44,7 @@ public class TradeCondition {
     private boolean bullMarket = false;
 
     private String oldDateTime = null;
+    private String oldOrderDateTime = null;
 
     private boolean telegramPush = true;
 
@@ -116,8 +117,7 @@ public class TradeCondition {
 
     public void checkOrderCondition(CSVMapping csvMapping) {
         String newDateTime = csvMapping.getDateTime();
-        String conditionValue = csvMapping.getCondition();
-        if (StringUtils.isNotBlank(conditionValue) && checkTime(oldDateTime, newDateTime)) {
+        if (checkTime(oldOrderDateTime, newDateTime)) {
             double highPrice = csvMapping.getHighPrice();
             double lowPrice = csvMapping.getLowPrice();
             double drakeDsm15 = csvMapping.getDrakeDsm15();
@@ -187,7 +187,7 @@ public class TradeCondition {
                 }
             }
         }
-        oldDateTime = newDateTime;
+        oldOrderDateTime = newDateTime;
     }
 
 
