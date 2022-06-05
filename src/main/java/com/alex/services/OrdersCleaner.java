@@ -1,4 +1,4 @@
-package com.alex.services.handlers;
+package com.alex.services;
 
 import com.alex.services.CsvMetrics;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ public class OrdersCleaner {
     @Value("10")
     private long ordersDepth;
 
-    @Scheduled(cron = "0 20 17 * * *")
+    @Scheduled(cron = "0 20 7,15,23 * * *")
     public void checkAndClean() {
         log.info("Checking orders depth");
         if (csvMetrics.getBuyOrders().size() > ordersDepth) {

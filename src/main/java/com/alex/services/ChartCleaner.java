@@ -18,7 +18,7 @@ public class ChartCleaner {
     private long candleDepth;
 
 
-    @Scheduled(fixedDelay = 10000)
+    //@Scheduled(fixedDelay = 10000)
     public void checkAndClean() {
         candleGenerationService.getCharts().entrySet().stream()
                 .filter(period -> period.getValue().entrySet().size() > candleDepth)
