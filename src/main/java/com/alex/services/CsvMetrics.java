@@ -2,11 +2,13 @@ package com.alex.services;
 
 import com.alex.csv.CSVMapping;
 import com.alex.model.CSVFields;
+import com.alex.utils.DateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
 
@@ -56,6 +58,7 @@ public class CsvMetrics {
         Double buySLOrder = csvList.get(csvList.size() - 1).getBuySLOrder();
         Double sellOrder = csvList.get(csvList.size() - 1).getSellOrder();
         Double sellSLOrder = csvList.get(csvList.size() - 1).getSellSLOrder();
+        LocalDateTime orderTime = DateTime.getMT4OrderLastTime(csvList.get(csvList.size() - 1).getDateTime());
         if (!buyOrders.containsKey(buyOrder)) {
             buyOrders.put(buyOrder, new HashMap<>());
             buyOrders.get(buyOrder).put("BuyOrderValues", new HashMap<>());
@@ -63,6 +66,8 @@ public class CsvMetrics {
             buyOrders.get(buyOrder).get("BuyOrderValues").put("SLOrder", buySLOrder);
             buyOrders.get(buyOrder).get("BuyOrderValues").put("OrderActivated", false);
             buyOrders.get(buyOrder).get("BuyOrderValues").put("SLOrderActivated", false);
+            buyOrders.get(buyOrder).get("BuyOrderValues").put("OrderTime", orderTime);
+
         }
         if (!sellOrders.containsKey(sellOrder)) {
             sellOrders.put(sellOrder, new HashMap<>());
@@ -71,6 +76,7 @@ public class CsvMetrics {
             sellOrders.get(sellOrder).get("SellOrderValues").put("SLOrder", sellSLOrder);
             sellOrders.get(sellOrder).get("SellOrderValues").put("OrderActivated", false);
             sellOrders.get(sellOrder).get("SellOrderValues").put("SLOrderActivated", false);
+            sellOrders.get(sellOrder).get("SellOrderValues").put("OrderTime", orderTime);
         }
     }
 }

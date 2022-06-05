@@ -33,4 +33,9 @@ public class DateTime {
         return LocalDateTime.ofInstant(Instant.now().truncatedTo(ChronoUnit.MINUTES).minus(minutes, ChronoUnit.MINUTES),
                 TimeZone.getTimeZone("UTC").toZoneId());
     }
+
+    public static LocalDateTime getMT4OrderLastTime(String time){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
+        return LocalDateTime.parse(time, formatter);
+    }
 }
