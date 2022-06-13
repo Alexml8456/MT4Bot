@@ -6,6 +6,7 @@ import com.alex.utils.DateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,6 +16,9 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @Slf4j
 @Service
 public class CsvMetrics {
+
+    @Value("${tp.coefficient}")
+    private int tpCoefficient;
 
     @Getter
     @Setter
@@ -26,11 +30,11 @@ public class CsvMetrics {
 
     @Getter
     @Setter
-    private Map<Double, Map<String, Map<String, Object>>> buyOrders = new HashMap<>();
+    private Map<Double, Map<String, Map<String, Object>>> buyOrders = new ConcurrentSkipListMap<>();
 
     @Getter
     @Setter
-    private Map<Double, Map<String, Map<String, Object>>> sellOrders = new HashMap<>();
+    private Map<Double, Map<String, Map<String, Object>>> sellOrders = new ConcurrentSkipListMap<>();
 
     @Getter
     @Setter
@@ -56,14 +60,21 @@ public class CsvMetrics {
     public void saveBuySellOrders() {
         Double buyOrder = csvList.get(csvList.size() - 1).getBuyOrder();
         Double buySLOrder = csvList.get(csvList.size() - 1).getBuySLOrder();
+        Double buySLPercent = TradeCondition.round((buyOrder / buySLOrder - 1) * 100,1);
+        Double buyTPOrder = TradeCondition.round(buyOrder * (buySLPercent * tpCoefficient) / 100 + buyOrder, 1);
         Double sellOrder = csvList.get(csvList.size() - 1).getSellOrder();
         Double sellSLOrder = csvList.get(csvList.size() - 1).getSellSLOrder();
+        Double sellSLPercent = TradeCondition.round((sellSLOrder / sellOrder - 1) * 100,1);
+        Double sellTPOrder = TradeCondition.round(-sellOrder * (sellSLPercent * tpCoefficient) / 100 + sellOrder, 1);
         LocalDateTime orderTime = DateTime.getMT4OrderLastTime(csvList.get(csvList.size() - 1).getDateTime());
         if (!buyOrders.containsKey(buyOrder)) {
             buyOrders.put(buyOrder, new HashMap<>());
             buyOrders.get(buyOrder).put("BuyOrderValues", new HashMap<>());
             buyOrders.get(buyOrder).get("BuyOrderValues").put("Order", buyOrder);
             buyOrders.get(buyOrder).get("BuyOrderValues").put("SLOrder", buySLOrder);
+            buyOrders.get(buyOrder).get("BuyOrderValues").put("SLPercent", buySLPercent);
+            buyOrders.get(buyOrder).get("BuyOrderValues").put("TPOrder", buyTPOrder);
+            buyOrders.get(buyOrder).get("BuyOrderValues").put("TPOrderActivated", false);
             buyOrders.get(buyOrder).get("BuyOrderValues").put("OrderActivated", false);
             buyOrders.get(buyOrder).get("BuyOrderValues").put("SLOrderActivated", false);
             buyOrders.get(buyOrder).get("BuyOrderValues").put("OrderTime", orderTime);
@@ -74,6 +85,9 @@ public class CsvMetrics {
             sellOrders.get(sellOrder).put("SellOrderValues", new HashMap<>());
             sellOrders.get(sellOrder).get("SellOrderValues").put("Order", sellOrder);
             sellOrders.get(sellOrder).get("SellOrderValues").put("SLOrder", sellSLOrder);
+            sellOrders.get(sellOrder).get("SellOrderValues").put("SLPercent", sellSLPercent);
+            sellOrders.get(sellOrder).get("SellOrderValues").put("TPOrder", sellTPOrder);
+            sellOrders.get(sellOrder).get("SellOrderValues").put("TPOrderActivated", false);
             sellOrders.get(sellOrder).get("SellOrderValues").put("OrderActivated", false);
             sellOrders.get(sellOrder).get("SellOrderValues").put("SLOrderActivated", false);
             sellOrders.get(sellOrder).get("SellOrderValues").put("OrderTime", orderTime);
