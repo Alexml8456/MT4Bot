@@ -265,6 +265,12 @@ public class CSVMapping {
         builder.append("Drake4h:");
         builder.append(getDrakeDsh4());
         builder.append(", ");
+        builder.append("HighPrice:");
+        builder.append(getHighPrice());
+        builder.append(", ");
+        builder.append("LowPrice:");
+        builder.append(getLowPrice());
+        builder.append(", ");
         builder.append("LastPrice:");
         builder.append(getLastPrice());
         builder.append(", ");
