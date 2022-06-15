@@ -141,7 +141,7 @@ public class TradeCondition {
                         String condition = "HitBuyStop";
                         pushMessageForOrder(condition, drakeDsm15, drakeDsm30, drakeDsh1, drakeDsh4, lastPrice, 0, stopLossOrder);
                     }
-                } else if (tpOrder > highPrice && tpOrderIsActivated.equals(false) && orderIsActivated.equals(true) && stopLossOrderIsActivated.equals(false)) {
+                } else if (tpOrder < highPrice && tpOrderIsActivated.equals(false) && orderIsActivated.equals(true) && stopLossOrderIsActivated.equals(false)) {
                     csvMetrics.getBuyOrders().get(buyOrder).get("BuyOrderValues").put("TPOrderActivated", true);
                     log.info("Hit Buy take profit order - {}", tpOrder);
                     String condition = "HitBuyTP";
