@@ -387,9 +387,13 @@ public class TradeCondition {
     }
 
     private void pushMessageForOrder(String condition, double m15, double m30, double h1, double h4, double lastPrice, double tpOrder, double slOrder) {
-        Double buyKey = getNearest(csvMetrics.getBuyOrders(), "BuyOrderValues");
-        Double sellKey = getNearest(csvMetrics.getSellOrders(), "SellOrderValues");
-        telegramBot.pushMessage(dataHolder.getSubscriptions(), buildMessageForOrder(condition, m15, m30, h1, h4, lastPrice, tpOrder, slOrder, buyKey, sellKey));
+        Double buyKey = getNearest(csvMetrics.getBuyOrders(), "BuyOrderValues", "Order");
+        Double sellKey = getNearest(csvMetrics.getSellOrders(), "SellOrderValues", "Order");
+        Double buySL = getNearest(csvMetrics.getBuyOrders(), "BuyOrderValues", "SLOrder");
+        Double sellSL = getNearest(csvMetrics.getSellOrders(), "SellOrderValues", "SLOrder");
+        Double buyTP = getNearest(csvMetrics.getBuyOrders(), "BuyOrderValues", "TPOrder");
+        Double sellTP = getNearest(csvMetrics.getSellOrders(), "SellOrderValues", "TPOrder");
+        telegramBot.pushMessage(dataHolder.getSubscriptions(), buildMessageForOrder(condition, m15, m30, h1, h4, lastPrice, tpOrder, slOrder, buyKey, sellKey, buySL, sellSL, buyTP, sellTP));
     }
 
     private String buildMessageForTrade(String condition, double m15, double m30, double h1, double h4, double lastPrice) {
@@ -415,7 +419,7 @@ public class TradeCondition {
         return builder.toString();
     }
 
-    private String buildMessageForOrder(String condition, double m15, double m30, double h1, double h4, double lastPrice, double tpOrder, double slOrder, double buyOrder, double sellOrder) {
+    private String buildMessageForOrder(String condition, double m15, double m30, double h1, double h4, double lastPrice, double tpOrder, double slOrder, double buyOrder, double sellOrder, double buySL, double sellSL, double buyTP, double sellTP) {
         StringBuilder builder = new StringBuilder();
         builder.append("m15=");
         builder.append(m15);
@@ -444,8 +448,20 @@ public class TradeCondition {
         builder.append("NB=");
         builder.append(buyOrder);
         builder.append(";");
+        builder.append("NBSL=");
+        builder.append(buySL);
+        builder.append("\n");
+        builder.append("NBTP=");
+        builder.append(buyTP);
+        builder.append("\n");
         builder.append("NS=");
         builder.append(sellOrder);
+        builder.append(";");
+        builder.append("NSSL=");
+        builder.append(sellSL);
+        builder.append("\n");
+        builder.append("NSTP=");
+        builder.append(sellTP);
         return builder.toString();
     }
 
@@ -453,7 +469,7 @@ public class TradeCondition {
         return (oldTime == null) || (!oldTime.equals(newTime));
     }
 
-    private Double getNearest(Map<Double, Map<String, Map<String, Object>>> orders, String orderType) {
+    private Double getNearest(Map<Double, Map<String, Map<String, Object>>> orders, String orderType, String orderKey) {
         List<LocalDateTime> timeList = new ArrayList<>();
         orders.entrySet().forEach(order -> {
             Boolean orderIsActivated = (Boolean) order.getValue().get(orderType).get("OrderActivated");
@@ -468,7 +484,7 @@ public class TradeCondition {
             for (Map.Entry<Double, Map<String, Map<String, Object>>> order : orders.entrySet()) {
                 LocalDateTime orderTime = (LocalDateTime) order.getValue().get(orderType).get("OrderTime");
                 if (orderTime.isEqual(maxTime)) {
-                    return (Double) order.getValue().get(orderType).get("Order");
+                    return (Double) order.getValue().get(orderType).get(orderKey);
                 }
             }
         }
