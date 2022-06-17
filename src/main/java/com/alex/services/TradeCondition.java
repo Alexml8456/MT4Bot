@@ -428,11 +428,10 @@ public class TradeCondition {
         builder.append(";");
         builder.append("h4=");
         builder.append(h4);
-        builder.append(";");
+        builder.append("\n");
         builder.append("price=");
         builder.append(lastPrice);
-        builder.append(";");
-        builder.append(" ");
+        builder.append("\n");
         builder.append("Condition=");
         builder.append(condition.replaceAll("\\s", ""));
         builder.append("\n");
