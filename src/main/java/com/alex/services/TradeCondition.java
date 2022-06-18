@@ -163,7 +163,7 @@ public class TradeCondition {
                 Boolean stopLossOrderIsActivated = (Boolean) csvMetrics.getSellOrders().get(sellOrder).get("SellOrderValues").get("SLOrderActivated");
                 Double tpOrder = Double.valueOf(csvMetrics.getSellOrders().get(sellOrder).get("SellOrderValues").get("TPOrder").toString());
                 Boolean tpOrderIsActivated = (Boolean) csvMetrics.getSellOrders().get(sellOrder).get("SellOrderValues").get("TPOrderActivated");
-                LocalDateTime orderTime = (LocalDateTime) csvMetrics.getBuyOrders().get(sellOrder).get("SellOrderValues").get("OrderTime");
+                LocalDateTime orderTime = (LocalDateTime) csvMetrics.getSellOrders().get(sellOrder).get("SellOrderValues").get("OrderTime");
                 if (sellOrder < highPrice && stopLossOrder < highPrice && stopLossOrderIsActivated.equals(false)) {
                     csvMetrics.getSellOrders().get(sellOrder).get("SellOrderValues").put("OrderActivated", true);
                     csvMetrics.getSellOrders().get(sellOrder).get("SellOrderValues").put("SLOrderActivated", true);
