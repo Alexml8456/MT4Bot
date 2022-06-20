@@ -27,7 +27,10 @@ public class OrdersCleaner {
         if (csvMetrics.getBuyOrders().size() > ordersDepth) {
             List<LocalDateTime> timeList = new ArrayList<>();
             csvMetrics.getBuyOrders().entrySet().forEach(order -> {
-                timeList.add((LocalDateTime) order.getValue().get("BuyOrderValues").get("OrderTime"));
+                Boolean orderIsActivated = (Boolean) order.getValue().get("BuyOrderValues").get("OrderActivated");
+                if (orderIsActivated.equals(true)) {
+                    timeList.add((LocalDateTime) order.getValue().get("BuyOrderValues").get("OrderTime"));
+                }
             });
             LocalDateTime minTime = timeList.stream().min(LocalDateTime::compareTo).get();
             csvMetrics.getBuyOrders().entrySet().forEach(order -> {
@@ -41,7 +44,10 @@ public class OrdersCleaner {
         } else if (csvMetrics.getSellOrders().size() > ordersDepth) {
             List<LocalDateTime> timeList = new ArrayList<>();
             csvMetrics.getSellOrders().entrySet().forEach(order -> {
-                timeList.add((LocalDateTime) order.getValue().get("SellOrderValues").get("OrderTime"));
+                Boolean orderIsActivated = (Boolean) order.getValue().get("SellOrderValues").get("OrderActivated");
+                if (orderIsActivated.equals(true)) {
+                    timeList.add((LocalDateTime) order.getValue().get("SellOrderValues").get("OrderTime"));
+                }
             });
             LocalDateTime minTime = timeList.stream().min(LocalDateTime::compareTo).get();
             csvMetrics.getSellOrders().entrySet().forEach(order -> {

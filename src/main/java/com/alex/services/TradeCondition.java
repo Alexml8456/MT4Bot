@@ -125,13 +125,13 @@ public class TradeCondition {
             double drakeDsh1 = csvMapping.getDrakeDsh1();
             double drakeDsh4 = csvMapping.getDrakeDsh4();
             double lastPrice = csvMapping.getLastPrice();
-            List<Double> buyList = new ArrayList<>(csvMetrics.getBuyOrders().keySet());
+            List<Integer> buyList = new ArrayList<>(csvMetrics.getBuyOrders().keySet());
             for (int i = 0; i < buyList.size(); i++) {
-                Double buyOrder = Double.valueOf(csvMetrics.getBuyOrders().get(buyList.get(i)).get("BuyOrderValues").get("Order").toString());
+                Integer buyOrder = (Integer) csvMetrics.getBuyOrders().get(buyList.get(i)).get("BuyOrderValues").get("Order");
                 Boolean orderIsActivated = (Boolean) csvMetrics.getBuyOrders().get(buyOrder).get("BuyOrderValues").get("OrderActivated");
-                Double stopLossOrder = Double.valueOf(csvMetrics.getBuyOrders().get(buyOrder).get("BuyOrderValues").get("SLOrder").toString());
+                Integer stopLossOrder = (Integer) csvMetrics.getBuyOrders().get(buyOrder).get("BuyOrderValues").get("SLOrder");
                 Boolean stopLossOrderIsActivated = (Boolean) csvMetrics.getBuyOrders().get(buyOrder).get("BuyOrderValues").get("SLOrderActivated");
-                Double tpOrder = Double.valueOf(csvMetrics.getBuyOrders().get(buyOrder).get("BuyOrderValues").get("TPOrder").toString());
+                Integer tpOrder = (Integer) csvMetrics.getBuyOrders().get(buyOrder).get("BuyOrderValues").get("TPOrder");
                 Boolean tpOrderIsActivated = (Boolean) csvMetrics.getBuyOrders().get(buyOrder).get("BuyOrderValues").get("TPOrderActivated");
                 LocalDateTime orderTime = (LocalDateTime) csvMetrics.getBuyOrders().get(buyOrder).get("BuyOrderValues").get("OrderTime");
                 if (buyOrder > lowPrice && stopLossOrder > lowPrice && stopLossOrderIsActivated.equals(false)) {
@@ -155,13 +155,13 @@ public class TradeCondition {
                 }
             }
 
-            List<Double> sellList = new ArrayList<>(csvMetrics.getSellOrders().keySet());
+            List<Integer> sellList = new ArrayList<>(csvMetrics.getSellOrders().keySet());
             for (int i = 0; i < sellList.size(); i++) {
-                Double sellOrder = Double.valueOf(csvMetrics.getSellOrders().get(sellList.get(i)).get("SellOrderValues").get("Order").toString());
+                Integer sellOrder = (Integer) csvMetrics.getSellOrders().get(sellList.get(i)).get("SellOrderValues").get("Order");
                 Boolean orderIsActivated = (Boolean) csvMetrics.getSellOrders().get(sellOrder).get("SellOrderValues").get("OrderActivated");
-                Double stopLossOrder = Double.valueOf(csvMetrics.getSellOrders().get(sellOrder).get("SellOrderValues").get("SLOrder").toString());
+                Integer stopLossOrder = (Integer) csvMetrics.getSellOrders().get(sellOrder).get("SellOrderValues").get("SLOrder");
                 Boolean stopLossOrderIsActivated = (Boolean) csvMetrics.getSellOrders().get(sellOrder).get("SellOrderValues").get("SLOrderActivated");
-                Double tpOrder = Double.valueOf(csvMetrics.getSellOrders().get(sellOrder).get("SellOrderValues").get("TPOrder").toString());
+                Integer tpOrder = (Integer) csvMetrics.getSellOrders().get(sellOrder).get("SellOrderValues").get("TPOrder");
                 Boolean tpOrderIsActivated = (Boolean) csvMetrics.getSellOrders().get(sellOrder).get("SellOrderValues").get("TPOrderActivated");
                 LocalDateTime orderTime = (LocalDateTime) csvMetrics.getSellOrders().get(sellOrder).get("SellOrderValues").get("OrderTime");
                 if (sellOrder < highPrice && stopLossOrder < highPrice && stopLossOrderIsActivated.equals(false)) {
@@ -293,6 +293,11 @@ public class TradeCondition {
         return bd.doubleValue();
     }
 
+    public static int getInt(double value){
+        BigDecimal bd = new BigDecimal(value);
+        return bd.intValue();
+    }
+
     private String valueMapping(String key) {
         switch (key) {
             case "240":
@@ -388,13 +393,13 @@ public class TradeCondition {
         telegramBot.pushMessage(dataHolder.getSubscriptions(), buildMessageForTrade(condition, m15, m30, h1, h4, lastPrice));
     }
 
-    private void pushMessageForOrder(String condition, double m15, double m30, double h1, double h4, double lastPrice, double tpOrder, double slOrder) {
-        Double buyKey = getNearest(csvMetrics.getBuyOrders(), "BuyOrderValues", "Order");
-        Double sellKey = getNearest(csvMetrics.getSellOrders(), "SellOrderValues", "Order");
-        Double buySL = getNearest(csvMetrics.getBuyOrders(), "BuyOrderValues", "SLOrder");
-        Double sellSL = getNearest(csvMetrics.getSellOrders(), "SellOrderValues", "SLOrder");
-        Double buyTP = getNearest(csvMetrics.getBuyOrders(), "BuyOrderValues", "TPOrder");
-        Double sellTP = getNearest(csvMetrics.getSellOrders(), "SellOrderValues", "TPOrder");
+    private void pushMessageForOrder(String condition, double m15, double m30, double h1, double h4, double lastPrice, int tpOrder, int slOrder) {
+        Integer buyKey = getNearest(csvMetrics.getBuyOrders(), "BuyOrderValues", "Order");
+        Integer sellKey = getNearest(csvMetrics.getSellOrders(), "SellOrderValues", "Order");
+        Integer buySL = getNearest(csvMetrics.getBuyOrders(), "BuyOrderValues", "SLOrder");
+        Integer sellSL = getNearest(csvMetrics.getSellOrders(), "SellOrderValues", "SLOrder");
+        Integer buyTP = getNearest(csvMetrics.getBuyOrders(), "BuyOrderValues", "TPOrder");
+        Integer sellTP = getNearest(csvMetrics.getSellOrders(), "SellOrderValues", "TPOrder");
         telegramBot.pushMessage(dataHolder.getSubscriptions(), buildMessageForOrder(condition, m15, m30, h1, h4, lastPrice, tpOrder, slOrder, buyKey, sellKey, buySL, sellSL, buyTP, sellTP));
     }
 
@@ -476,7 +481,7 @@ public class TradeCondition {
         return !currentSchedulerTime.isEqual(orderTime);
     }
 
-    private Double getNearest(Map<Double, Map<String, Map<String, Object>>> orders, String orderType, String orderKey) {
+    private Integer getNearest(Map<Integer, Map<String, Map<String, Object>>> orders, String orderType, String orderKey) {
         List<LocalDateTime> timeList = new ArrayList<>();
         orders.entrySet().forEach(order -> {
             Boolean orderIsActivated = (Boolean) order.getValue().get(orderType).get("OrderActivated");
@@ -488,13 +493,13 @@ public class TradeCondition {
         });
         if (!timeList.isEmpty()) {
             LocalDateTime maxTime = timeList.stream().max(LocalDateTime::compareTo).get();
-            for (Map.Entry<Double, Map<String, Map<String, Object>>> order : orders.entrySet()) {
+            for (Map.Entry<Integer, Map<String, Map<String, Object>>> order : orders.entrySet()) {
                 LocalDateTime orderTime = (LocalDateTime) order.getValue().get(orderType).get("OrderTime");
                 if (orderTime.isEqual(maxTime)) {
-                    return (Double) order.getValue().get(orderType).get(orderKey);
+                    return (Integer) order.getValue().get(orderType).get(orderKey);
                 }
             }
         }
-        return 0.0;
+        return 0;
     }
 }

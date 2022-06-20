@@ -2,10 +2,12 @@ package com.alex.services;
 
 import com.alex.csv.CSVMapping;
 import com.alex.model.CSVFields;
+import com.alex.telegram.TelegramBot;
 import com.alex.utils.DateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,12 @@ public class CsvMetrics {
     @Value("${tp.coefficient}")
     private int tpCoefficient;
 
+    @Autowired
+    private TelegramBot telegramBot;
+
+    @Autowired
+    private DataHolder dataHolder;
+
     @Getter
     @Setter
     private Map<Integer, List<CSVFields>> csvMetrics = new ConcurrentSkipListMap<>();
@@ -30,11 +38,11 @@ public class CsvMetrics {
 
     @Getter
     @Setter
-    private Map<Double, Map<String, Map<String, Object>>> buyOrders = new ConcurrentSkipListMap<>();
+    private Map<Integer, Map<String, Map<String, Object>>> buyOrders = new ConcurrentSkipListMap<>();
 
     @Getter
     @Setter
-    private Map<Double, Map<String, Map<String, Object>>> sellOrders = new ConcurrentSkipListMap<>();
+    private Map<Integer, Map<String, Map<String, Object>>> sellOrders = new ConcurrentSkipListMap<>();
 
     @Getter
     @Setter
@@ -58,14 +66,14 @@ public class CsvMetrics {
     }
 
     public void saveBuySellOrders() {
-        Double buyOrder = csvList.get(csvList.size() - 1).getBuyOrder();
-        Double buySLOrder = csvList.get(csvList.size() - 1).getBuySLOrder();
-        Double buySLPercent = TradeCondition.round((buyOrder / buySLOrder - 1) * 100,1);
-        Double buyTPOrder = TradeCondition.round(buyOrder * (buySLPercent * tpCoefficient) / 100 + buyOrder, 1);
-        Double sellOrder = csvList.get(csvList.size() - 1).getSellOrder();
-        Double sellSLOrder = csvList.get(csvList.size() - 1).getSellSLOrder();
-        Double sellSLPercent = TradeCondition.round((sellSLOrder / sellOrder - 1) * 100,1);
-        Double sellTPOrder = TradeCondition.round(-sellOrder * (sellSLPercent * tpCoefficient) / 100 + sellOrder, 1);
+        Integer buyOrder = TradeCondition.getInt(csvList.get(csvList.size() - 1).getBuyOrder());
+        Integer buySLOrder = TradeCondition.getInt(csvList.get(csvList.size() - 1).getBuySLOrder());
+        double buySLPercent = TradeCondition.round((buyOrder / buySLOrder - 1) * 100, 1);
+        Integer buyTPOrder = TradeCondition.getInt(buyOrder * (buySLPercent * tpCoefficient) / 100 + buyOrder);
+        Integer sellOrder = TradeCondition.getInt(csvList.get(csvList.size() - 1).getSellOrder());
+        Integer sellSLOrder = TradeCondition.getInt(csvList.get(csvList.size() - 1).getSellSLOrder());
+        double sellSLPercent = TradeCondition.round((sellSLOrder / sellOrder - 1) * 100, 1);
+        Integer sellTPOrder = TradeCondition.getInt(-sellOrder * (sellSLPercent * tpCoefficient) / 100 + sellOrder);
         LocalDateTime orderTime = DateTime.getMT4OrderLastTime(csvList.get(csvList.size() - 1).getDateTime());
         if (!buyOrders.containsKey(buyOrder)) {
             buyOrders.put(buyOrder, new HashMap<>());
@@ -78,7 +86,9 @@ public class CsvMetrics {
             buyOrders.get(buyOrder).get("BuyOrderValues").put("OrderActivated", false);
             buyOrders.get(buyOrder).get("BuyOrderValues").put("SLOrderActivated", false);
             buyOrders.get(buyOrder).get("BuyOrderValues").put("OrderTime", orderTime);
-
+            if (buyOrders.size() > 1) {
+                telegramBot.pushMessage(dataHolder.getSubscriptions(), buildMessageForNewOrder("NewBuyOrder:", buyOrder, buyTPOrder, buySLOrder));
+            }
         }
         if (!sellOrders.containsKey(sellOrder)) {
             sellOrders.put(sellOrder, new HashMap<>());
@@ -91,6 +101,21 @@ public class CsvMetrics {
             sellOrders.get(sellOrder).get("SellOrderValues").put("OrderActivated", false);
             sellOrders.get(sellOrder).get("SellOrderValues").put("SLOrderActivated", false);
             sellOrders.get(sellOrder).get("SellOrderValues").put("OrderTime", orderTime);
+            if (sellOrders.size() > 1) {
+                telegramBot.pushMessage(dataHolder.getSubscriptions(), buildMessageForNewOrder("NewSellOrder:", sellOrder, sellTPOrder, sellSLOrder));
+            }
         }
+    }
+
+    private String buildMessageForNewOrder(String orderType, Integer order, Integer orderTP, Integer orderSL) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(orderType);
+        builder.append(order);
+        builder.append("\n");
+        builder.append("TP:");
+        builder.append(orderTP);
+        builder.append("SL:");
+        builder.append(orderSL);
+        return builder.toString();
     }
 }
