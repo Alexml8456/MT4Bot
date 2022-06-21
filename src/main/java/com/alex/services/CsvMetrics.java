@@ -68,11 +68,11 @@ public class CsvMetrics {
     public void saveBuySellOrders() {
         Integer buyOrder = TradeCondition.getInt(csvList.get(csvList.size() - 1).getBuyOrder());
         Integer buySLOrder = TradeCondition.getInt(csvList.get(csvList.size() - 1).getBuySLOrder());
-        double buySLPercent = TradeCondition.round((buyOrder / buySLOrder - 1) * 100, 1);
+        double buySLPercent = TradeCondition.round(((double) buyOrder / buySLOrder - 1) * 100, 1);
         Integer buyTPOrder = TradeCondition.getInt(buyOrder * (buySLPercent * tpCoefficient) / 100 + buyOrder);
         Integer sellOrder = TradeCondition.getInt(csvList.get(csvList.size() - 1).getSellOrder());
         Integer sellSLOrder = TradeCondition.getInt(csvList.get(csvList.size() - 1).getSellSLOrder());
-        double sellSLPercent = TradeCondition.round((sellSLOrder / sellOrder - 1) * 100, 1);
+        double sellSLPercent = TradeCondition.round(((double) sellSLOrder / sellOrder - 1) * 100, 1);
         Integer sellTPOrder = TradeCondition.getInt(-sellOrder * (sellSLPercent * tpCoefficient) / 100 + sellOrder);
         LocalDateTime orderTime = DateTime.getMT4OrderLastTime(csvList.get(csvList.size() - 1).getDateTime());
         if (!buyOrders.containsKey(buyOrder)) {
@@ -87,7 +87,7 @@ public class CsvMetrics {
             buyOrders.get(buyOrder).get("BuyOrderValues").put("SLOrderActivated", false);
             buyOrders.get(buyOrder).get("BuyOrderValues").put("OrderTime", orderTime);
             if (buyOrders.size() > 1) {
-                telegramBot.pushMessage(dataHolder.getSubscriptions(), buildMessageForNewOrder("NewBuyOrder:", buyOrder, buyTPOrder, buySLOrder));
+                telegramBot.pushMessage(dataHolder.getSubscriptions(), buildMessageForNewOrder("NewBuyOrder:", buyOrder, buyTPOrder, buySLOrder, buySLPercent));
             }
         }
         if (!sellOrders.containsKey(sellOrder)) {
@@ -102,12 +102,12 @@ public class CsvMetrics {
             sellOrders.get(sellOrder).get("SellOrderValues").put("SLOrderActivated", false);
             sellOrders.get(sellOrder).get("SellOrderValues").put("OrderTime", orderTime);
             if (sellOrders.size() > 1) {
-                telegramBot.pushMessage(dataHolder.getSubscriptions(), buildMessageForNewOrder("NewSellOrder:", sellOrder, sellTPOrder, sellSLOrder));
+                telegramBot.pushMessage(dataHolder.getSubscriptions(), buildMessageForNewOrder("NewSellOrder:", sellOrder, sellTPOrder, sellSLOrder, sellSLPercent));
             }
         }
     }
 
-    private String buildMessageForNewOrder(String orderType, Integer order, Integer orderTP, Integer orderSL) {
+    private String buildMessageForNewOrder(String orderType, Integer order, Integer orderTP, Integer orderSL, double slPercent) {
         StringBuilder builder = new StringBuilder();
         builder.append(orderType);
         builder.append(order);
@@ -116,6 +116,9 @@ public class CsvMetrics {
         builder.append(orderTP);
         builder.append("SL:");
         builder.append(orderSL);
+        builder.append("\n");
+        builder.append("SLPercent:");
+        builder.append(slPercent);
         return builder.toString();
     }
 }
