@@ -114,6 +114,7 @@ public class CsvMetrics {
         builder.append("\n");
         builder.append("TP:");
         builder.append(orderTP);
+        builder.append(";");
         builder.append("SL:");
         builder.append(orderSL);
         builder.append("\n");
