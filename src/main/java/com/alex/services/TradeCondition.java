@@ -124,7 +124,7 @@ public class TradeCondition {
             double drakeDsm30 = csvMapping.getDrakeDsm30();
             double drakeDsh1 = csvMapping.getDrakeDsh1();
             double drakeDsh4 = csvMapping.getDrakeDsh4();
-            double lastPrice = csvMapping.getLastPrice();
+            int lastPrice = getInt(csvMapping.getLastPrice());
             List<Integer> buyList = new ArrayList<>(csvMetrics.getBuyOrders().keySet());
             for (int i = 0; i < buyList.size(); i++) {
                 Integer buyOrder = (Integer) csvMetrics.getBuyOrders().get(buyList.get(i)).get("BuyOrderValues").get("Order");
@@ -293,7 +293,7 @@ public class TradeCondition {
         return bd.doubleValue();
     }
 
-    public static int getInt(double value){
+    public static int getInt(double value) {
         BigDecimal bd = new BigDecimal(value);
         return bd.intValue();
     }
@@ -393,7 +393,7 @@ public class TradeCondition {
         telegramBot.pushMessage(dataHolder.getSubscriptions(), buildMessageForTrade(condition, m15, m30, h1, h4, lastPrice));
     }
 
-    private void pushMessageForOrder(String condition, double m15, double m30, double h1, double h4, double lastPrice, int tpOrder, int slOrder) {
+    private void pushMessageForOrder(String condition, double m15, double m30, double h1, double h4, int lastPrice, int tpOrder, int slOrder) {
         Integer buyKey = getNearest(csvMetrics.getBuyOrders(), "BuyOrderValues", "Order");
         Integer sellKey = getNearest(csvMetrics.getSellOrders(), "SellOrderValues", "Order");
         Integer buySL = getNearest(csvMetrics.getBuyOrders(), "BuyOrderValues", "SLOrder");
@@ -426,7 +426,7 @@ public class TradeCondition {
         return builder.toString();
     }
 
-    private String buildMessageForOrder(String condition, double m15, double m30, double h1, double h4, double lastPrice, double tpOrder, double slOrder, double buyOrder, double sellOrder, double buySL, double sellSL, double buyTP, double sellTP) {
+    private String buildMessageForOrder(String condition, double m15, double m30, double h1, double h4, int lastPrice, int tpOrder, int slOrder, int buyOrder, int sellOrder, int buySL, int sellSL, int buyTP, int sellTP) {
         StringBuilder builder = new StringBuilder();
         builder.append("m15=");
         builder.append(m15);
