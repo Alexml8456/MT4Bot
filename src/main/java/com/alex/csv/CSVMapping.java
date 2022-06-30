@@ -74,17 +74,41 @@ public class CSVMapping {
     @CsvBindByName(column = "DrakeDSH4")
     private Double drakeDsh4;
 
-    @CsvBindByName(column = "BuyOrder")
-    private Double buyOrder;
+    @CsvBindByName(column = "BuyOrderH1")
+    private Double buyOrderH1;
 
-    @CsvBindByName(column = "BuySLOrder")
-    private Double buySLOrder;
+    @CsvBindByName(column = "BuySLOrderH1")
+    private Double buySLOrderH1;
 
-    @CsvBindByName(column = "SellOrder")
-    private Double sellOrder;
+    @CsvBindByName(column = "SellOrderH1")
+    private Double sellOrderH1;
 
-    @CsvBindByName(column = "SellSLOrder")
-    private Double sellSLOrder;
+    @CsvBindByName(column = "SellSLOrderH1")
+    private Double sellSLOrderH1;
+
+    @CsvBindByName(column = "BuyOrderH4")
+    private Double buyOrderH4;
+
+    @CsvBindByName(column = "BuySLOrderH4")
+    private Double buySLOrderH4;
+
+    @CsvBindByName(column = "SellOrderH4")
+    private Double sellOrderH4;
+
+    @CsvBindByName(column = "SellSLOrderH4")
+    private Double sellSLOrderH4;
+
+    @CsvBindByName(column = "BuyOrderD1")
+    private Double buyOrderD1;
+
+    @CsvBindByName(column = "BuySLOrderD1")
+    private Double buySLOrderD1;
+
+    @CsvBindByName(column = "SellOrderD1")
+    private Double sellOrderD1;
+
+    @CsvBindByName(column = "SellSLOrderD1")
+    private Double sellSLOrderD1;
 
     @CsvBindByName(column = "HighPrice")
     private Double highPrice;
@@ -100,13 +124,29 @@ public class CSVMapping {
 
     public String getDateTime() { return dateTime; }
 
-    public Double getBuyOrder() { return buyOrder; }
+    public Double getBuyOrderH1() { return buyOrderH1; }
 
-    public Double getBuySLOrder() { return buySLOrder; }
+    public Double getBuySLOrderH1() { return buySLOrderH1; }
 
-    public Double getSellOrder() { return sellOrder; }
+    public Double getSellOrderH1() { return sellOrderH1; }
 
-    public Double getSellSLOrder() { return sellSLOrder; }
+    public Double getSellSLOrderH1() { return sellSLOrderH1; }
+
+    public Double getBuyOrderH4() { return buyOrderH4; }
+
+    public Double getBuySLOrderH4() { return buySLOrderH4; }
+
+    public Double getSellOrderH4() { return sellOrderH4; }
+
+    public Double getSellSLOrderH4() { return sellSLOrderH4; }
+
+    public Double getBuyOrderD1() { return buyOrderD1; }
+
+    public Double getBuySLOrderD1() { return buySLOrderD1; }
+
+    public Double getSellOrderD1() { return sellOrderD1; }
+
+    public Double getSellSLOrderD1() { return sellSLOrderD1; }
 
     public Double getHighPrice() { return highPrice; }
 
