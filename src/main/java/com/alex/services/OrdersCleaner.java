@@ -1,6 +1,5 @@
 package com.alex.services;
 
-import com.alex.services.CsvMetrics;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,7 +35,7 @@ public class OrdersCleaner {
             csvMetrics.getBuyOrders().entrySet().forEach(order -> {
                 LocalDateTime orderTime = (LocalDateTime) order.getValue().get("BuyOrderValues").get("OrderTime");
                 if (orderTime.isEqual(minTime)) {
-                    Double key = (Double) order.getValue().get("BuyOrderValues").get("Order");
+                    int key = (int) order.getValue().get("BuyOrderValues").get("Order");
                     log.info("Buy order {} is too old. Will be deleted", key);
                     csvMetrics.getBuyOrders().remove(key);
                 }
@@ -53,7 +52,7 @@ public class OrdersCleaner {
             csvMetrics.getSellOrders().entrySet().forEach(order -> {
                 LocalDateTime orderTime = (LocalDateTime) order.getValue().get("SellOrderValues").get("OrderTime");
                 if (orderTime.isEqual(minTime)) {
-                    Double key = (Double) order.getValue().get("SellOrderValues").get("Order");
+                    int key = (int) order.getValue().get("SellOrderValues").get("Order");
                     log.info("Sell order {} is too old. Will be deleted", key);
                     csvMetrics.getSellOrders().remove(key);
                 }
