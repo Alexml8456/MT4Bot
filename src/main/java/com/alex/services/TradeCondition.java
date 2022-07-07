@@ -448,11 +448,11 @@ public class TradeCondition {
         builder.append("Condition=");
         builder.append(condition.replaceAll("\\s", ""));
         builder.append("\n");
-        builder.append("TP=");
-        builder.append(tpOrder);
-        builder.append(";");
         builder.append("SL=");
         builder.append(slOrder);
+        builder.append(";");
+        builder.append("TP=");
+        builder.append(tpOrder);
         builder.append("\n");
         builder.append("NB=");
         builder.append(buyOrder);
