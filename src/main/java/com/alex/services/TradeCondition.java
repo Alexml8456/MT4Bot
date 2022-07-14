@@ -484,24 +484,23 @@ public class TradeCondition {
     }
 
     private Integer getNearest(Map<Integer, Map<String, Map<String, Object>>> orders, String orderType, String orderKey) {
-        List<LocalDateTime> timeList = new ArrayList<>();
+        int nearestOrder;
+        List<Integer> orderList = new ArrayList<>();
         orders.entrySet().forEach(order -> {
             Boolean orderIsActivated = (Boolean) order.getValue().get(orderType).get("OrderActivated");
             Boolean stopLossOrderIsActivated = (Boolean) order.getValue().get(orderType).get("SLOrderActivated");
             Boolean tpOrderIsActivated = (Boolean) order.getValue().get(orderType).get("TPOrderActivated");
             if (orderIsActivated.equals(false) && stopLossOrderIsActivated.equals(false) && tpOrderIsActivated.equals(false)) {
-                timeList.add((LocalDateTime) order.getValue().get(orderType).get("OrderTime"));
+                orderList.add((Integer) order.getValue().get(orderType).get("Order"));
             }
         });
-        if (!timeList.isEmpty()) {
-            LocalDateTime maxTime = timeList.stream().max(LocalDateTime::compareTo).get();
-            for (Map.Entry<Integer, Map<String, Map<String, Object>>> order : orders.entrySet()) {
-                LocalDateTime orderTime = (LocalDateTime) order.getValue().get(orderType).get("OrderTime");
-                Boolean orderIsActivated = (Boolean) order.getValue().get(orderType).get("OrderActivated");
-                if (orderTime.isEqual(maxTime) && orderIsActivated.equals(false)) {
-                    return (Integer) order.getValue().get(orderType).get(orderKey);
-                }
+        if (!orderList.isEmpty()) {
+            if (orderType.contains("Buy")) {
+                nearestOrder = orderList.stream().max(Integer::compareTo).get();
+            } else {
+                nearestOrder = orderList.stream().min(Integer::compareTo).get();
             }
+            return (Integer) orders.get(nearestOrder).get(orderType).get(orderKey);
         }
         return 0;
     }
