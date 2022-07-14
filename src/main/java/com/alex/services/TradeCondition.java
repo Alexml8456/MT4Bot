@@ -488,9 +488,7 @@ public class TradeCondition {
         List<Integer> orderList = new ArrayList<>();
         orders.entrySet().forEach(order -> {
             Boolean orderIsActivated = (Boolean) order.getValue().get(orderType).get("OrderActivated");
-            Boolean stopLossOrderIsActivated = (Boolean) order.getValue().get(orderType).get("SLOrderActivated");
-            Boolean tpOrderIsActivated = (Boolean) order.getValue().get(orderType).get("TPOrderActivated");
-            if (orderIsActivated.equals(false) && stopLossOrderIsActivated.equals(false) && tpOrderIsActivated.equals(false)) {
+            if (orderIsActivated.equals(false)) {
                 orderList.add((Integer) order.getValue().get(orderType).get("Order"));
             }
         });

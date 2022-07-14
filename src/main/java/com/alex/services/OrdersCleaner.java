@@ -34,9 +34,10 @@ public class OrdersCleaner {
             LocalDateTime minTime = timeList.stream().min(LocalDateTime::compareTo).get();
             csvMetrics.getBuyOrders().entrySet().forEach(order -> {
                 LocalDateTime orderTime = (LocalDateTime) order.getValue().get("BuyOrderValues").get("OrderTime");
-                if (orderTime.isEqual(minTime)) {
+                Boolean orderIsActivated = (Boolean) order.getValue().get("BuyOrderValues").get("OrderActivated");
+                if (orderTime.isEqual(minTime) && orderIsActivated.equals(true)) {
                     int key = (int) order.getValue().get("BuyOrderValues").get("Order");
-                    log.info("Buy order {} is too old. Will be deleted", key);
+                    log.info("Buy order {} with time {} is too old. Will be deleted", key, minTime);
                     csvMetrics.getBuyOrders().remove(key);
                 }
             });
@@ -51,9 +52,10 @@ public class OrdersCleaner {
             LocalDateTime minTime = timeList.stream().min(LocalDateTime::compareTo).get();
             csvMetrics.getSellOrders().entrySet().forEach(order -> {
                 LocalDateTime orderTime = (LocalDateTime) order.getValue().get("SellOrderValues").get("OrderTime");
-                if (orderTime.isEqual(minTime)) {
+                Boolean orderIsActivated = (Boolean) order.getValue().get("SellOrderValues").get("OrderActivated");
+                if (orderTime.isEqual(minTime) && orderIsActivated.equals(true)) {
                     int key = (int) order.getValue().get("SellOrderValues").get("Order");
-                    log.info("Sell order {} is too old. Will be deleted", key);
+                    log.info("Sell order {} with time {} is too old. Will be deleted", key, minTime);
                     csvMetrics.getSellOrders().remove(key);
                 }
             });
