@@ -145,7 +145,7 @@ public class TradeCondition {
                     }
                 } else if (tpOrder < highPrice && tpOrderIsActivated.equals(false) && orderIsActivated.equals(true) && stopLossOrderIsActivated.equals(false)) {
                     csvMetrics.getBuyOrders().get(buyOrder).get("BuyOrderValues").put("TPOrderActivated", true);
-                    log.info("Hit Buy take profit order - {}", tpOrder);
+                    log.info("Hit Buy {} take profit order - {}", buyOrder, tpOrder);
                     String condition = "HitBuyTP" + timeFrame;
                     pushMessageForOrder(condition, drakeDsm15, drakeDsm30, drakeDsh1, drakeDsh4, lastPrice, tpOrder, 0);
                 } else if (buyOrder > lowPrice && orderIsActivated.equals(false) && checkOrderTime(newDateTime, orderTime)) {
@@ -176,7 +176,7 @@ public class TradeCondition {
                     }
                 } else if (tpOrder > lowPrice && tpOrderIsActivated.equals(false) && orderIsActivated.equals(true) && stopLossOrderIsActivated.equals(false)) {
                     csvMetrics.getSellOrders().get(sellOrder).get("SellOrderValues").put("TPOrderActivated", true);
-                    log.info("Hit Sell take profit order - {}", tpOrder);
+                    log.info("Hit Sell {} take profit order - {}", sellOrder, tpOrder);
                     String condition = "HitSellTP" + timeFrame;
                     pushMessageForOrder(condition, drakeDsm15, drakeDsm30, drakeDsh1, drakeDsh4, lastPrice, tpOrder, 0);
                 } else if (sellOrder < highPrice && orderIsActivated.equals(false) && checkOrderTime(newDateTime, orderTime)) {
